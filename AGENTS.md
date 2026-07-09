@@ -63,3 +63,29 @@ scripts/            # Asset download scripts
 - After editing `.claude/skills/clone-website/SKILL.md`, run `node scripts/sync-skills.mjs` to regenerate the skill for all platforms.
 
 @docs/research/INSPECTION_GUIDE.md
+
+---
+
+## Session Summary (10 Jul 2026)
+
+### Current State
+- **Project:** Mainwave Seat Covers (clone of bullantseatcovers.com.au)
+- **Stack:** Next.js 16.2.1, React 19.2.4, Prisma 7 (adapter-pg), Tailwind v4, AI SDK 7
+- **Database:** PostgreSQL + pgvector, Redis — both via Docker, healthy
+- **Seed:** 13 vehicles, 20 seat cover products, 13 merchandise products, 11 blog posts
+- **Routes:** 35 all serving 200 OK
+- **AI Chat API:** POST /api/chat returns 200 (needs LLM_API_KEY in .env to call DeepSeek)
+
+### What We Built Today
+- Fixed footer.tsx JSX parse error (stale Turbopack cache)
+- All pages verified working: /, /shop, /product/**, /vehicle/**, /blog, /admin/vehicles, /about-us, etc
+- Chat API confirmed working with valid request body
+- Created docs/plan.md with tomorrow's task breakdown
+- Known issues: merchandise images 404, missing LLM_API_KEY, no cart/checkout yet
+
+### Key Technical Notes
+- `useChat` v7 API: no input/handleInputChange, use `sendMessage({ text })`, `parts` for rendering
+- `createOpenAI` from @ai-sdk/openai with custom baseURL for DeepSeek/Kimi/GLM
+- Zod 4.4.3 — `.describe()` exists but `_def` lacks `description`
+- Prisma client at `src/generated/prisma/client` — all imports use `/client` suffix
+- Prisma v7 adapter pattern: `new PrismaClient({ adapter })` with `@prisma/adapter-pg`
