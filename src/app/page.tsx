@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ProductCard } from "@/components/product-card";
+import { VehicleSelector } from "@/components/vehicle-selector";
 import { QuoteIcon, ChevronRightIcon } from "@/components/icons";
 import { getVehicles, getPopularProducts, getBlogPosts, getAllProducts } from "@/lib/db";
 
@@ -41,6 +42,9 @@ export default async function HomePage() {
           >
             SHOP NOW →
           </Link>
+          <div className="mt-6 flex justify-center">
+            <VehicleSelector vehicles={vehicles} />
+          </div>
         </div>
       </section>
 

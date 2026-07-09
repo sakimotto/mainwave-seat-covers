@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { PhoneIcon, CartIcon, MenuIcon, XIcon, ChevronDownIcon, SearchIcon, FacebookIcon, InstagramIcon } from "@/components/icons";
-import { vehicles } from "@/lib/data";
+import type { Vehicle } from "@/types";
 
-export function Header() {
+export function Header({ vehicles }: { vehicles: Vehicle[] }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [vehicleDropdownOpen, setVehicleDropdownOpen] = useState(false);
 
@@ -45,31 +45,63 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-mainwave-text">
             <Link href="/" className="hover:text-mainwave-red transition-colors uppercase tracking-wider text-xs">Home</Link>
             <div className="relative group"
-              onMouseEnter={() => {}}
-              onMouseLeave={() => {}}
-              onFocus={() => {}}
-              onBlur={() => {}}>
+              onMouseEnter={() => setVehicleDropdownOpen(true)}
+              onMouseLeave={() => setVehicleDropdownOpen(false)}
+              onFocus={() => setVehicleDropdownOpen(true)}
+              onBlur={() => setVehicleDropdownOpen(false)}>
               <button
                 className="flex items-center gap-1 hover:text-mainwave-red transition-colors uppercase tracking-wider text-xs"
                 aria-expanded={vehicleDropdownOpen}
-                onClick={() => setVehicleDropdownOpen(!vehicleDropdownOpen)}
               >
                 Shop By Make
-                <ChevronDownIcon className="w-3 h-3" />
+                <ChevronDownIcon className={`w-3 h-3 transition-transform ${vehicleDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              <div className={`absolute top-full left-0 pt-2 z-50 ${vehicleDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible group-hover:opacity-100 group-hover:visible'} transition-all duration-200`}>
-                <div className="bg-white border border-mainwave-border shadow-lg min-w-[200px]">
-                  <div className="grid grid-cols-2 gap-0">
-                    {vehicles.map((v) => (
+              <div className={`absolute top-full left-0 pt-2 z-50 ${vehicleDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-200`}>
+                <div className="bg-white border border-mainwave-border shadow-lg min-w-[220px] max-h-[60vh] overflow-y-auto">
+                  {vehicles.map((v) => (
+                    <div key={v.id} className="relative group/sub">
                       <Link
-                        key={v.id}
                         href={`/vehicle/${v.slug}`}
                         className="block px-4 py-2.5 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors border-b border-mainwave-border/50"
                       >
-                        {v.make}
+                        <span className="flex items-center justify-between">
+                          {v.make}
+                          {v.models.length > 0 && <ChevronDownIcon className="w-2.5 h-2.5 -rotate-90 opacity-50" />}
+                        </span>
                       </Link>
-                    ))}
-                  </div>
+                      {v.models.length > 0 && (
+                        <div className="absolute left-full top-0 pl-1 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200">
+                          <div className="bg-white border border-mainwave-border shadow-lg min-w-[180px]">
+                            {v.models.map((model) => (
+                              <Link
+                                key={model}
+                                href={`/shop/${v.slug}/${model.toLowerCase().replace(/\s+/g, "-")}`}
+                                className="block px-4 py-2 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors border-b border-mainwave-border/50 last:border-b-0"
+                              >
+                                {v.make} {model}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="relative group">
+              <Link
+                href="/shop"
+                className="flex items-center gap-1 hover:text-mainwave-red transition-colors uppercase tracking-wider text-xs"
+              >
+                Merchandise
+                <ChevronDownIcon className="w-3 h-3" />
+              </Link>
+              <div className="absolute top-full left-0 pt-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="bg-white border border-mainwave-border shadow-lg min-w-[160px]">
+                  <Link href="/shop?category=Apparel" className="block px-4 py-2.5 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors border-b border-mainwave-border/50">Apparel</Link>
+                  <Link href="/shop?category=Accessories" className="block px-4 py-2.5 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors border-b border-mainwave-border/50">Accessories</Link>
+                  <Link href="/shop?category=Lifestyle" className="block px-4 py-2.5 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors">Lifestyle</Link>
                 </div>
               </div>
             </div>
@@ -113,20 +145,35 @@ export function Header() {
                 <ChevronDownIcon className={`w-4 h-4 transition-transform ${vehicleDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {vehicleDropdownOpen && (
-                <div className="pl-4 pb-2 space-y-1">
+                <div className="pb-2 space-y-0">
                   {vehicles.map((v) => (
-                    <Link
-                      key={v.id}
-                      href={`/vehicle/${v.slug}`}
-                      className="block py-1.5 text-xs text-mainwave-text hover:text-mainwave-red transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {v.make}
-                    </Link>
+                    <div key={v.id}>
+                      <Link
+                        href={`/vehicle/${v.slug}`}
+                        className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {v.make} — All Models
+                      </Link>
+                      {v.models.map((model) => (
+                        <Link
+                          key={model}
+                          href={`/shop/${v.slug}/${model.toLowerCase().replace(/\s+/g, "-")}`}
+                          className="block py-1.5 pl-8 text-xs text-gray-500 hover:text-mainwave-red transition-colors"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {v.make} {model}
+                        </Link>
+                      ))}
+                    </div>
                   ))}
                 </div>
               )}
             </div>
+            <Link href="/shop" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>All Products</Link>
+            <Link href="/shop?category=Apparel" className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Apparel</Link>
+            <Link href="/shop?category=Accessories" className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Accessories</Link>
+            <Link href="/shop?category=Lifestyle" className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Lifestyle</Link>
             <Link href="/about-us" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
             <Link href="/installation" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Installation</Link>
             <Link href="/blog/6-car-care-tips" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Blog</Link>

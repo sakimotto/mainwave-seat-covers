@@ -7,7 +7,7 @@ import { ChevronRightIcon } from "@/components/icons"
 import { cn } from "@/lib/utils"
 import { ProductCard } from "@/components/product-card"
 
-const categories = ["All", "Front Set", "Rear Set", "Full Set"]
+const categories = ["All", "Front Set", "Rear Set", "Full Set", "Apparel", "Accessories", "Lifestyle"]
 
 const sortOptions = [
   { label: "Popularity", value: "popularity" },
@@ -21,12 +21,14 @@ const ITEMS_PER_PAGE = 9
 export function ShopPageClient({
   initialProducts,
   initialVehicles,
+  initialCategory,
 }: {
   initialProducts: Product[]
   initialVehicles: Vehicle[]
+  initialCategory?: string
 }) {
   const [selectedMakes, setSelectedMakes] = useState<string[]>([])
-  const [selectedCategory, setSelectedCategory] = useState("All")
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory ?? "All")
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000])
   const [sort, setSort] = useState("popularity")
   const [page, setPage] = useState(1)
@@ -83,7 +85,7 @@ export function ShopPageClient({
             <ChevronRightIcon className="w-3 h-3" />
             <span className="text-mainwave-black">Shop</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-mainwave-black">All Seat Covers</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-mainwave-black">All Products</h1>
           <p className="text-sm text-gray-500 mt-1">{filtered.length} products found</p>
         </div>
       </div>

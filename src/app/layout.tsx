@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ChatWidget } from "@/components/chat-widget";
+import { getVehicles } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: {
@@ -42,15 +43,16 @@ const jsonLd = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const vehicles = await getVehicles()
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <Header />
+        <Header vehicles={vehicles} />
         <main className="flex-1">{children}</main>
         <Footer />
         <ChatWidget />

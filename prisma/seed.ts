@@ -44,6 +44,17 @@ const productsData = [
   { name: "Full Set Neoprene Seat Covers - Mitsubishi Pajero Sport", slug: "full-set-seat-covers-mitsubishi-pajero-sport", image: "/images/products/mitsubishi-pajero-full.jpg", price: 349.95, originalPrice: 579.95, rating: 4.5, reviewCount: 66, vehicle: "Mitsubishi Pajero Sport", category: "Full Set", isSale: true, color: "Black with Red Stitching", sku: "MN4025N" },
 ]
 
+const merchandiseData = [
+  { name: "Mainwave Premium Cotton T-Shirt", slug: "mainwave-cotton-tshirt", image: "/images/products/merch-tshirt.jpg", price: 49.95, category: "Apparel", color: "Black", sku: "MW-APP-T01", colorHex: "#1a1a1a", description: "Premium heavy-weight cotton t-shirt with embroidered Mainwave logo.", material: "100% Cotton 250gsm" },
+  { name: "Mainwave Cap — Structured Fit", slug: "mainwave-structured-cap", image: "/images/products/merch-cap.jpg", price: 34.95, category: "Apparel", color: "Black/Red", sku: "MW-APP-C01", colorHex: "#1a1a1a", description: "Structured 6-panel cap with embroidered Mainwave logo and adjustable strap.", material: "Cotton Twill" },
+  { name: "Mainwave Duffel Bag — 60L", slug: "mainwave-duffel-bag-60l", image: "/images/products/merch-duffel.jpg", price: 89.95, originalPrice: 129.95, category: "Accessories", color: "Black", sku: "MW-ACC-D01", colorHex: "#1a1a1a", description: "Heavy-duty 60L duffel bag with waterproof base and Mainwave branding.", material: "600D Polyester" },
+  { name: "Mainwave Camping Chair — Heavy Duty", slug: "mainwave-camping-chair", image: "/images/products/merch-chair.jpg", price: 119.95, originalPrice: 169.95, category: "Accessories", color: "Black/Red", sku: "MW-ACC-C01", colorHex: "#1a1a1a", description: "Heavy-duty folding camping chair with cup holder, armrests, and Mainwave embroidery.", material: "Steel Frame + Oxford Fabric" },
+  { name: "Mainwave Keyring — Leather", slug: "mainwave-leather-keyring", image: "/images/products/merch-keyring.jpg", price: 19.95, category: "Accessories", color: "Black", sku: "MW-ACC-K01", colorHex: "#1a1a1a", description: "Genuine leather keyring with embossed Mainwave logo.", material: "Genuine Leather" },
+  { name: "Mainwave Stubby Cooler", slug: "mainwave-stubby-cooler", image: "/images/products/merch-stubby.jpg", price: 24.95, category: "Accessories", color: "Black/Red", sku: "MW-ACC-S01", colorHex: "#1a1a1a", description: "Neoprene stubby cooler to keep your drink cold. Same material as our seat covers!", material: "4mm Neoprene" },
+  { name: "Mainwave Outdoor Blanket — Picnic Size", slug: "mainwave-outdoor-blanket", image: "/images/products/merch-blanket.jpg", price: 69.95, category: "Lifestyle", color: "Black/Red", sku: "MW-LIF-B01", colorHex: "#1a1a1a", description: "Waterproof outdoor blanket with carry handle and Mainwave branding. Perfect for camping, picnics, and the beach.", material: "300D Polyester with waterproof backing" },
+  { name: "Mainwave Insulated Lunch Bag", slug: "mainwave-insulated-lunch-bag", image: "/images/products/merch-lunch.jpg", price: 39.95, category: "Lifestyle", color: "Black", sku: "MW-LIF-L01", colorHex: "#1a1a1a", description: "Insulated lunch bag with Mainwave logo. Keeps food cold for up to 6 hours.", material: "Insulated Polyester" },
+]
+
 const blogPostsData = [
   { title: "6 Car Care Tips to Keep Your Vehicle Looking New", slug: "blog/6-car-care-tips", excerpt: "Keep your car looking showroom fresh with these 6 essential car care tips.", image: "/images/blog/car-care-tips.jpg", date: new Date("2026-03-15"), category: "Car Care", content: "Full article content here..." },
   { title: "What Is Neoprene? Benefits & Features for Seat Covers", slug: "blog/what-is-neoprene-seat-cover-material", excerpt: "Discover why neoprene is the ultimate material for car seat covers.", image: "/images/blog/neoprene-material.jpg", date: new Date("2026-02-28"), category: "Materials", content: "Full article content here..." },
@@ -59,7 +70,22 @@ const blogPostsData = [
 ]
 
 async function main() {
-  console.log("Seeding database...")
+  console.log("Clearing existing data...")
+  await prisma.productEmbedding.deleteMany()
+  await prisma.fitment.deleteMany()
+  await prisma.review.deleteMany()
+  await prisma.orderItem.deleteMany()
+  await prisma.order.deleteMany()
+  await prisma.cartItem.deleteMany()
+  await prisma.cart.deleteMany()
+  await prisma.customer.deleteMany()
+  await prisma.productVariant.deleteMany()
+  await prisma.product.deleteMany()
+  await prisma.vehicleModel.deleteMany()
+  await prisma.vehicle.deleteMany()
+  await prisma.inquiry.deleteMany()
+  await prisma.blogPost.deleteMany()
+  console.log("Cleared. Seeding database...")
 
   for (const v of vehiclesData) {
     const vehicle = await prisma.vehicle.create({
@@ -107,6 +133,33 @@ async function main() {
       },
     })
     console.log(`  Product: ${product.name}`)
+  }
+
+  for (const m of merchandiseData) {
+    await prisma.product.create({
+      data: {
+        name: m.name,
+        slug: m.slug,
+        image: m.image,
+        images: [m.image],
+        description: m.description,
+        material: m.material,
+        features: ["Official Mainwave merchandise", "Premium quality"],
+        category: m.category,
+        isSale: !!m.originalPrice,
+        variants: {
+          create: {
+            color: m.color,
+            colorHex: m.colorHex,
+            sku: m.sku,
+            price: m.price,
+            originalPrice: m.originalPrice ?? null,
+            stock: 100,
+          },
+        },
+      },
+    })
+    console.log(`  Merch: ${m.name}`)
   }
 
   for (const b of blogPostsData) {
