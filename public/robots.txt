@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.mainwaveseatcovers.com.au/sitemap.xml

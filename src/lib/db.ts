@@ -1,0 +1,158 @@
+import { prisma } from "@/lib/prisma"
+import type { Vehicle, Product, BlogPost } from "@/types"
+import { cache } from "react"
+
+const mapVehicle = (v: {
+  id: string; make: string; slug: string; image: string;
+  models: { name: string }[]
+}): Vehicle => ({
+  id: v.id,
+  make: v.make,
+  slug: v.slug,
+  image: v.image,
+  models: v.models.map((m) => m.name),
+})
+
+function mapProduct(p: {
+  id: string; name: string; slug: string; image: string;
+  category: string | null; vehicleLabel: string | null;
+  isSale: boolean; description: string | null; features: string[];
+  variants: { price: unknown; originalPrice: unknown }[];
+  reviews: { rating: number }[];
+}): Product {
+  const v = p.variants[0]
+  const avgRating = p.reviews.length > 0
+    ? p.reviews.reduce((s, r) => s + r.rating, 0) / p.reviews.length
+    : 0
+  return {
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    image: p.image,
+    price: v ? Number(v.price) : 0,
+    originalPrice: v?.originalPrice ? Number(v.originalPrice) : undefined,
+    rating: Math.round(avgRating * 10) / 10 || 4.5,
+    reviewCount: p.reviews.length || 0,
+    vehicle: p.vehicleLabel ?? "",
+    category: p.category ?? "",
+    isSale: p.isSale || undefined,
+    description: p.description ?? undefined,
+    features: p.features.length > 0 ? p.features : undefined,
+  }
+}
+
+const mapBlogPost = (b: {
+  id: string; title: string; slug: string; excerpt: string;
+  image: string; date: Date; category: string; content: string | null;
+}): BlogPost => ({
+  id: b.id,
+  title: b.title,
+  slug: b.slug,
+  excerpt: b.excerpt,
+  image: b.image,
+  date: b.date.toLocaleDateString("en-AU", {
+    year: "numeric", month: "long", day: "numeric",
+  }),
+  category: b.category,
+  content: b.content ?? undefined,
+})
+
+export const getVehicles = cache(async (): Promise<Vehicle[]> => {
+  const rows = await prisma.vehicle.findMany({
+    include: { models: { select: { name: true } } },
+    orderBy: { make: "asc" },
+  })
+  return rows.map(mapVehicle)
+})
+
+export const getVehicleBySlug = cache(async (slug: string): Promise<Vehicle | null> => {
+  const row = await prisma.vehicle.findUnique({
+    where: { slug },
+    include: { models: { select: { name: true } } },
+  })
+  return row ? mapVehicle(row) : null
+})
+
+const productInclude = {
+  variants: { select: { price: true, originalPrice: true }, take: 1 },
+  reviews: { select: { rating: true } },
+} as const
+
+export const getAllProducts = cache(async (): Promise<Product[]> => {
+  const rows = await prisma.product.findMany({
+    include: productInclude,
+    orderBy: { createdAt: "desc" },
+  })
+  return rows.map(mapProduct)
+})
+
+export const getProductBySlug = cache(async (slug: string): Promise<Product | null> => {
+  const row = await prisma.product.findUnique({
+    where: { slug },
+    include: productInclude,
+  })
+  return row ? mapProduct(row) : null
+})
+
+export const getProductsByVehicle = cache(async (vehicleSlug: string): Promise<Product[]> => {
+  const vehicle = await prisma.vehicle.findUnique({
+    where: { slug: vehicleSlug },
+    select: { id: true, make: true },
+  })
+  if (!vehicle) return []
+  const rows = await prisma.product.findMany({
+    where: { vehicleId: vehicle.id },
+    include: productInclude,
+    orderBy: { createdAt: "desc" },
+  })
+  return rows.map(mapProduct)
+})
+
+export const getProductsByMakeModel = cache(async (makeSlug: string, modelName: string): Promise<Product[]> => {
+  const vehicle = await prisma.vehicle.findUnique({
+    where: { slug: makeSlug },
+    select: { id: true, make: true },
+  })
+  if (!vehicle) return []
+  const rows = await prisma.product.findMany({
+    where: {
+      vehicleId: vehicle.id,
+      vehicleLabel: { contains: modelName, mode: "insensitive" },
+    },
+    include: productInclude,
+    orderBy: { createdAt: "desc" },
+  })
+  return rows.map(mapProduct)
+})
+
+export const getTopSellingProducts = cache(async (): Promise<Product[]> => {
+  const rows = await prisma.product.findMany({
+    include: productInclude,
+    orderBy: { createdAt: "desc" },
+    take: 10,
+  })
+  return rows.map(mapProduct)
+})
+
+export const getPopularProducts = cache(async (): Promise<Product[]> => {
+  const rows = await prisma.product.findMany({
+    include: productInclude,
+    orderBy: { createdAt: "desc" },
+    take: 8,
+  })
+  return rows.map(mapProduct)
+})
+
+export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
+  const rows = await prisma.blogPost.findMany({
+    orderBy: { date: "desc" },
+  })
+  return rows.map(mapBlogPost)
+})
+
+export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | null> => {
+  const row = await prisma.blogPost.findUnique({
+    where: { slug },
+  })
+  return row ? mapBlogPost(row) : null
+})
