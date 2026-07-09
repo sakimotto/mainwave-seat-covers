@@ -6,6 +6,16 @@ export interface Vehicle {
   models: string[];
 }
 
+export interface ProductVariant {
+  color: string;
+  colorHex?: string;
+  size?: string;
+  sku: string;
+  price: number;
+  originalPrice?: number;
+  stock: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -20,6 +30,8 @@ export interface Product {
   isSale?: boolean;
   description?: string;
   features?: string[];
+  variants?: ProductVariant[];
+  material?: string;
 }
 
 export interface BlogPost {

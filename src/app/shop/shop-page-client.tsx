@@ -7,7 +7,7 @@ import { ChevronRightIcon } from "@/components/icons"
 import { cn } from "@/lib/utils"
 import { ProductCard } from "@/components/product-card"
 
-const categories = ["All", "Front Set", "Rear Set", "Full Set", "Apparel", "Accessories", "Lifestyle"]
+const categories = ["All", "Front Set", "Rear Set", "Full Set", "Apparel", "Car Accessories", "Lifestyle"]
 
 const sortOptions = [
   { label: "Popularity", value: "popularity" },

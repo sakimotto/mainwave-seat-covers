@@ -17,7 +17,8 @@ function mapProduct(p: {
   id: string; name: string; slug: string; image: string;
   category: string | null; vehicleLabel: string | null;
   isSale: boolean; description: string | null; features: string[];
-  variants: { price: unknown; originalPrice: unknown }[];
+  material: string | null;
+  variants: { price: unknown; originalPrice: unknown; color: string; colorHex: string | null; size: string | null; sku: string; stock: number }[];
   reviews: { rating: number }[];
 }): Product {
   const v = p.variants[0]
@@ -38,6 +39,16 @@ function mapProduct(p: {
     isSale: p.isSale || undefined,
     description: p.description ?? undefined,
     features: p.features.length > 0 ? p.features : undefined,
+    material: p.material ?? undefined,
+    variants: p.variants.map((v) => ({
+      color: v.color,
+      colorHex: v.colorHex ?? undefined,
+      size: v.size ?? undefined,
+      sku: v.sku,
+      price: Number(v.price),
+      originalPrice: v.originalPrice ? Number(v.originalPrice) : undefined,
+      stock: v.stock,
+    })),
   }
 }
 
@@ -74,7 +85,12 @@ export const getVehicleBySlug = cache(async (slug: string): Promise<Vehicle | nu
 })
 
 const productInclude = {
-  variants: { select: { price: true, originalPrice: true }, take: 1 },
+  variants: { select: { price: true, originalPrice: true, color: true, colorHex: true, size: true, sku: true, stock: true }, take: 1 },
+  reviews: { select: { rating: true } },
+} as const
+
+const productDetailInclude = {
+  variants: { select: { price: true, originalPrice: true, color: true, colorHex: true, size: true, sku: true, stock: true } },
   reviews: { select: { rating: true } },
 } as const
 
@@ -89,7 +105,7 @@ export const getAllProducts = cache(async (): Promise<Product[]> => {
 export const getProductBySlug = cache(async (slug: string): Promise<Product | null> => {
   const row = await prisma.product.findUnique({
     where: { slug },
-    include: productInclude,
+    include: productDetailInclude,
   })
   return row ? mapProduct(row) : null
 })

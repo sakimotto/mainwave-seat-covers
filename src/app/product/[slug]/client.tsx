@@ -1,29 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import type { Product } from "@/types"
 import { StarIcon, TruckIcon, ShieldIcon, PhoneIcon, ChevronRightIcon, CartIcon } from "@/components/icons"
 import { cn } from "@/lib/utils"
 import { ProductCard } from "@/components/product-card"
 
-const colorOptions = [
-  { name: "Black with Red Stitching", color: "#1a1a1a" },
-  { name: "Charcoal with Grey Stitching", color: "#444444" },
-  { name: "Tan with White Stitching", color: "#d4a574" },
-  { name: "Grey with Black Stitching", color: "#888888" },
-]
-
 const tabs = ["Description", "Specifications", "Warranty", "Reviews"]
-
-const specs = [
-  { label: "Material", value: "Premium 4mm Neoprene" },
-  { label: "Fitment", value: "Custom pattern - tailored to vehicle" },
-  { label: "Color", value: "Black with Red Stitching" },
-  { label: "Warranty", value: "3 Years" },
-  { label: "Installation", value: "DIY - no tools required" },
-  { label: "Cleaning", value: "Machine washable" },
-]
 
 const sampleReviews = [
   { name: "Michael T.", rating: 5, text: "Absolutely fantastic quality. Fit perfectly on my Hilux and looks amazing.", date: "2 weeks ago" },
@@ -48,12 +32,57 @@ function StarDisplay({ rating }: { rating: number }) {
 export function ProductDetailClient({ product, related }: { product: Product; related: Product[] }) {
   const [activeTab, setActiveTab] = useState("Description")
   const [quantity, setQuantity] = useState(1)
-  const [selectedColor, setSelectedColor] = useState(colorOptions[0])
+  const [selectedColor, setSelectedColor] = useState("")
+  const [selectedSize, setSelectedSize] = useState("")
   const [selectedImage, setSelectedImage] = useState(0)
 
-  const salePercentage = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  const colors = useMemo(() => {
+    if (!product.variants?.length) return []
+    const seen = new Set<string>()
+    return product.variants.filter((v) => {
+      if (seen.has(v.color)) return false
+      seen.add(v.color)
+      return true
+    }).map((v) => ({ color: v.color, colorHex: v.colorHex }))
+  }, [product.variants])
+
+  const sizes = useMemo(() => {
+    if (!product.variants?.length) return []
+    const hasSizes = product.variants.some((v) => v.size)
+    if (!hasSizes) return []
+    const seen = new Set<string>()
+    const order = ["S", "M", "L", "XL", "XXL", "OSFM"]
+    return product.variants
+      .filter((v) => !selectedColor || v.color === selectedColor)
+      .filter((v) => {
+        if (seen.has(v.size!)) return false
+        seen.add(v.size!)
+        return true
+      })
+      .map((v) => v.size!)
+      .sort((a, b) => order.indexOf(a) - order.indexOf(b))
+  }, [product.variants, selectedColor])
+
+  const selectedVariant = useMemo(() => {
+    if (!product.variants?.length) return null
+    if (selectedColor && selectedSize) {
+      return product.variants.find((v) => v.color === selectedColor && v.size === selectedSize) ?? null
+    }
+    if (selectedColor && sizes.length === 0) {
+      return product.variants.find((v) => v.color === selectedColor) ?? null
+    }
+    return product.variants[0]
+  }, [product.variants, selectedColor, selectedSize, sizes.length])
+
+  const price = selectedVariant?.price ?? product.price
+  const originalPrice = selectedVariant?.originalPrice ?? product.originalPrice
+
+  const salePercentage = originalPrice
+    ? Math.round(((originalPrice - price) / originalPrice) * 100)
     : 0
+
+  const hasVariants = product.variants && product.variants.length > 1
+  const hasSizes = sizes.length > 0
 
   const breadcrumbVehicle = product.vehicle || "Vehicle"
 
@@ -114,9 +143,9 @@ export function ProductDetailClient({ product, related }: { product: Product; re
             </div>
 
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl font-bold text-mainwave-red">${product.price.toFixed(2)}</span>
-              {product.originalPrice && (
-                <span className="text-base text-gray-400 line-through">${product.originalPrice.toFixed(2)}</span>
+              <span className="text-2xl font-bold text-mainwave-red">${price.toFixed(2)}</span>
+              {originalPrice && (
+                <span className="text-base text-gray-400 line-through">${originalPrice.toFixed(2)}</span>
               )}
               {product.isSale && (
                 <span className="bg-mainwave-red text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider">
@@ -126,29 +155,57 @@ export function ProductDetailClient({ product, related }: { product: Product; re
             </div>
 
             <p className="text-sm text-mainwave-text leading-relaxed mb-6">
-              Premium neoprene seat covers custom patterned to fit your {product.vehicle}. Features 4mm thick neoprene with reinforced stitching, waterproof backing, and UV-resistant fabric. Designed and manufactured in Australia for the perfect fit.
+              {product.description}
             </p>
 
-            <div className="mb-6">
-              <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">Color / Style</h3>
-              <div className="flex flex-wrap gap-2">
-                {colorOptions.map((opt) => (
-                  <button
-                    key={opt.name}
-                    onClick={() => setSelectedColor(opt)}
-                    className={cn(
-                      "flex items-center gap-2 px-3 py-2 text-xs border transition-colors",
-                      selectedColor.name === opt.name
-                        ? "border-mainwave-red bg-mainwave-red/5 text-mainwave-red font-medium"
-                        : "border-mainwave-border text-mainwave-text hover:border-mainwave-red"
-                    )}
-                  >
-                    <span className="w-4 h-4 rounded-full border border-gray-300" style={{ backgroundColor: opt.color }} />
-                    {opt.name}
-                  </button>
-                ))}
+            {hasVariants && colors.length > 0 && (
+              <div className="mb-4">
+                <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">
+                  Colour / Style
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {colors.map((opt) => (
+                    <button
+                      key={opt.color}
+                      onClick={() => { setSelectedColor(opt.color); setSelectedSize("") }}
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-2 text-xs border transition-colors",
+                        selectedColor === opt.color
+                          ? "border-mainwave-red bg-mainwave-red/5 text-mainwave-red font-medium"
+                          : "border-mainwave-border text-mainwave-text hover:border-mainwave-red"
+                      )}
+                    >
+                      {opt.colorHex && (
+                        <span className="w-4 h-4 rounded-full border border-gray-300" style={{ backgroundColor: opt.colorHex }} />
+                      )}
+                      {opt.color}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+
+            {hasSizes && (
+              <div className="mb-4">
+                <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">Size</h3>
+                <div className="flex flex-wrap gap-2">
+                  {sizes.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={cn(
+                        "px-4 py-2 text-xs border font-medium transition-colors min-w-[48px] text-center",
+                        selectedSize === size
+                          ? "border-mainwave-red bg-mainwave-red/5 text-mainwave-red"
+                          : "border-mainwave-border text-mainwave-text hover:border-mainwave-red"
+                      )}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="flex items-center gap-3 mb-6">
               <div className="flex items-center border border-mainwave-border">
@@ -227,14 +284,15 @@ export function ProductDetailClient({ product, related }: { product: Product; re
             {activeTab === "Description" && (
               <div className="max-w-3xl">
                 <p className="text-sm text-mainwave-text leading-relaxed mb-4">
-                  Our premium neoprene seat covers are designed and manufactured right here in Australia. Using 4mm thick neoprene, the same material used in high-end wetsuits, these covers provide exceptional protection against spills, UV damage, and daily wear and tear.
+                  {product.description}
                 </p>
-                <p className="text-sm text-mainwave-text leading-relaxed mb-4">
-                  Each set is custom patterned to match the exact contours of your {product.vehicle} seats, ensuring a snug factory-like fit. The waterproof neoprene backing prevents liquids from reaching your original upholstery, while the UV-resistant outer layer protects against fading and cracking.
-                </p>
-                <p className="text-sm text-mainwave-text leading-relaxed">
-                  Installation is straightforward with our easy-fit design - no tools or professional help required. Simply slip the covers over your existing seats and secure using the integrated fastening system.
-                </p>
+                {product.features && (
+                  <ul className="list-disc pl-5 space-y-1 text-sm text-mainwave-text">
+                    {product.features.map((f, i) => (
+                      <li key={i}>{f}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
             )}
 
@@ -242,12 +300,30 @@ export function ProductDetailClient({ product, related }: { product: Product; re
               <div className="max-w-xl">
                 <table className="w-full text-sm">
                   <tbody>
-                    {specs.map((spec) => (
-                      <tr key={spec.label} className="border-b border-mainwave-border">
-                        <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">{spec.label}</td>
-                        <td className="py-3 text-mainwave-text">{spec.value}</td>
-                      </tr>
-                    ))}
+                    <tr className="border-b border-mainwave-border">
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Material</td>
+                      <td className="py-3 text-mainwave-text">{product.material ?? "Premium 4mm Neoprene"}</td>
+                    </tr>
+                    <tr className="border-b border-mainwave-border">
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Category</td>
+                      <td className="py-3 text-mainwave-text">{product.category}</td>
+                    </tr>
+                    <tr className="border-b border-mainwave-border">
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Vehicle</td>
+                      <td className="py-3 text-mainwave-text">{product.vehicle || "Universal"}</td>
+                    </tr>
+                    <tr className="border-b border-mainwave-border">
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Warranty</td>
+                      <td className="py-3 text-mainwave-text">3 Years</td>
+                    </tr>
+                    <tr className="border-b border-mainwave-border">
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Installation</td>
+                      <td className="py-3 text-mainwave-text">DIY - no tools required</td>
+                    </tr>
+                    <tr className="border-b border-mainwave-border">
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Cleaning</td>
+                      <td className="py-3 text-mainwave-text">Machine washable</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -257,7 +333,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
               <div className="max-w-3xl">
                 <h3 className="text-base font-bold text-mainwave-black mb-3">3 Year Manufacturer&apos;s Warranty</h3>
                 <p className="text-sm text-mainwave-text leading-relaxed mb-4">
-                  All Mainwave Seat Covers are backed by a comprehensive 3-year manufacturer&apos;s warranty against defects in materials and workmanship. We stand by the quality of our Australian-made products.
+                  All Mainwave products are backed by a comprehensive 3-year manufacturer&apos;s warranty against defects in materials and workmanship. We stand by the quality of our Australian-made products.
                 </p>
                 <p className="text-sm text-mainwave-text leading-relaxed mb-4">
                   The warranty covers stitching separation, material degradation, and fastener failure under normal use. It does not cover damage caused by improper installation, accidents, or intentional misuse.

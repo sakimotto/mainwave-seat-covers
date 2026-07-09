@@ -100,7 +100,7 @@ export function Header({ vehicles }: { vehicles: Vehicle[] }) {
               <div className="absolute top-full left-0 pt-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <div className="bg-white border border-mainwave-border shadow-lg min-w-[160px]">
                   <Link href="/shop?category=Apparel" className="block px-4 py-2.5 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors border-b border-mainwave-border/50">Apparel</Link>
-                  <Link href="/shop?category=Accessories" className="block px-4 py-2.5 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors border-b border-mainwave-border/50">Accessories</Link>
+                  <Link href="/shop?category=Car+Accessories" className="block px-4 py-2.5 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors border-b border-mainwave-border/50">Car Accessories</Link>
                   <Link href="/shop?category=Lifestyle" className="block px-4 py-2.5 text-xs hover:bg-mainwave-grey hover:text-mainwave-red transition-colors">Lifestyle</Link>
                 </div>
               </div>
@@ -172,7 +172,7 @@ export function Header({ vehicles }: { vehicles: Vehicle[] }) {
             </div>
             <Link href="/shop" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>All Products</Link>
             <Link href="/shop?category=Apparel" className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Apparel</Link>
-            <Link href="/shop?category=Accessories" className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Accessories</Link>
+            <Link href="/shop?category=Car+Accessories" className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Car Accessories</Link>
             <Link href="/shop?category=Lifestyle" className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Lifestyle</Link>
             <Link href="/about-us" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
             <Link href="/installation" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Installation</Link>
