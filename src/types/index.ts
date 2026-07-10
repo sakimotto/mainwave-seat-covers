@@ -34,6 +34,27 @@ export interface Product {
   material?: string;
 }
 
+export interface CartItem {
+  id: string;
+  variantId: string;
+  productId: string;
+  productName: string;
+  productSlug: string;
+  productImage: string;
+  color: string;
+  size?: string;
+  sku: string;
+  price: number;
+  quantity: number;
+}
+
+export interface Cart {
+  id: string;
+  items: CartItem[];
+  subtotal: number;
+  itemCount: number;
+}
+
 export interface BlogPost {
   id: string;
   title: string;

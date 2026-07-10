@@ -1,52 +1,42 @@
 # Mainwave Seat Covers — Plan
 
-## Current State (10 Jul 2026)
+## Current State (11 Jul 2026)
 
 ### Working
-- 35 routes, all serving 200
+- 36 routes (build successfully)
 - PostgreSQL + Redis via Docker, both healthy
-- Prisma 14 models, 2 migrations applied
+- Prisma 14 models, 3 migrations applied
 - Seed: 13 vehicles + models, 20 seat covers, 13 merchandise products, 11 blog posts
 - Vehicle selector (make→model) on homepage
 - Admin `/admin/vehicles` for make/model management
-- Shop with category filter (All / Front Set / Rear Set / Full Set / Apparel / Car Accessories / Lifestyle)
-- Product detail with dynamic color swatches + size pickers
-- AI chat API (POST /api/chat) returns 200 with valid body
-- Header "Merchandise" dropdown with Apparel / Car Accessories / Lifestyle sub-links
+- Shop with category filter + search params
+- Product detail with dynamic color swatches + size pickers + Add to Cart / Buy Now
+- AI chat API (POST /api/chat) works with DeepSeek
+- Cart with session-based guest carts (server actions)
+- Dynamic cart page with quantity controls, totals, remove
+- Checkout page with contact form, shipping address, order summary
+- Header "Merchandise" dropdown with sub-links
 - "Shop By Make" header dropdown
+- Merchandise images now serve 200 (placeholder JPEGs generated)
+- `.env` has LLM_BASE_URL, LLM_API_KEY, LLM_MODEL for DeepSeek
+- Prisma supports both `adapter-pg` (local) and `adapter-neon` (Cloud Run) via `DATABASE_DRIVER` env var
+- `next.config.ts` has `turbopack.root` set
+- `cloudbuild.yaml` created for Cloud Run deployment
 
 ### Known Issues
-- All merchandise images return 404 (`/images/products/merch-*.jpg`)
-- `/api/chat` can't actually call DeepSeek — missing `LLM_API_KEY` in `.env`
-- `/api/contact` returns 405 for GET (should be POST-only, expected)
-- Turbopack root warning — `turbopack.root` not set in `next.config.ts`
-- Prisma adapter-pg is not serverless-compatible — needs Neon driver for Cloud Run
+- No authentication (customers, cart, orders)
+- Checkout submits but doesn't actually create an Order record (placeholder)
+- No payment integration
+- `<img>` tags should be migrated to Next.js `<Image>` for optimization
+- Prisma client needs `prisma generate` step in Docker build
 
 ---
 
-## Tomorrow's Tasks
-
-### Priority 1: Asset Fixes
-- [ ] Generate placeholder merchandise images (JPEGs at `public/images/products/merch-*.jpg`)
-- [ ] Add `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL` to `.env` (user provides API key)
-
-### Priority 2: Infrastructure
-- [ ] Fix `turbopack.root` in `next.config.ts` to silence workspace root warning
-- [ ] Switch Prisma driver from `@prisma/adapter-pg` to `@prisma/adapter-neon` + `@neondatabase/serverless` for Cloud Run compatibility
-- [ ] Create `cloudbuild.yaml` for Cloud Run deployment
-- [ ] Update `Dockerfile` for serverless (multi-stage, standalone output)
-
-### Priority 3: Cart & Checkout
-- [ ] Add cart table to Prisma schema (migration)
-- [ ] Cart API routes (add/remove/update items)
-- [ ] Cart page with quantity controls, totals
-- [ ] Checkout form (customer details, shipping, payment placeholder)
-
-### Priority 4: Polish
-- [ ] Test chat widget end-to-end with live DeepSeek API key
-- [ ] Add loading/skeleton states for product pages
+## Tasks Remaining (Former Priority 4: Polish)
+- [ ] Loading/skeleton states for product pages
 - [ ] Error boundaries on dynamic routes
 - [ ] SEO meta tags for all pages
+- [ ] Migrate `<img>` to `<Image>` where possible
 
 ---
 

@@ -115,11 +115,13 @@ model Customer {
 
 model Cart {
   id         String     @id @default(cuid())
-  customerId String     @unique
-  customer   Customer   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId String?    @unique
+  customer   Customer?  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  sessionId  String?    @unique
   items      CartItem[]
 
   @@index([customerId])
+  @@index([sessionId])
 }
 
 model CartItem {

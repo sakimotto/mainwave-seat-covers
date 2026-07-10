@@ -1,11 +1,13 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useTransition } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type { Product } from "@/types"
 import { StarIcon, TruckIcon, ShieldIcon, PhoneIcon, ChevronRightIcon, CartIcon } from "@/components/icons"
 import { cn } from "@/lib/utils"
 import { ProductCard } from "@/components/product-card"
+import { addToCart } from "@/lib/actions/cart"
 
 const tabs = ["Description", "Specifications", "Warranty", "Reviews"]
 
@@ -35,6 +37,9 @@ export function ProductDetailClient({ product, related }: { product: Product; re
   const [selectedColor, setSelectedColor] = useState("")
   const [selectedSize, setSelectedSize] = useState("")
   const [selectedImage, setSelectedImage] = useState(0)
+  const [pending, startTransition] = useTransition()
+  const [added, setAdded] = useState(false)
+  const router = useRouter()
 
   const colors = useMemo(() => {
     if (!product.variants?.length) return []
@@ -234,11 +239,34 @@ export function ProductDetailClient({ product, related }: { product: Product; re
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
-              <button className="flex-1 flex items-center justify-center gap-2 bg-mainwave-red text-white text-sm font-bold py-3 px-6 hover:bg-red-700 transition-colors">
+              <button
+                onClick={() => {
+                  if (!selectedVariant) return
+                  startTransition(async () => {
+                    const result = await addToCart(selectedVariant.sku, quantity)
+                    if (result.success) {
+                      setAdded(true)
+                      setTimeout(() => setAdded(false), 2000)
+                    }
+                  })
+                }}
+                disabled={pending || !selectedVariant}
+                className="flex-1 flex items-center justify-center gap-2 bg-mainwave-red text-white text-sm font-bold py-3 px-6 hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <CartIcon className="w-5 h-5" />
-                Add to Cart
+                {pending ? "Adding..." : added ? "Added!" : "Add to Cart"}
               </button>
-              <button className="flex-1 bg-mainwave-black text-white text-sm font-bold py-3 px-6 hover:bg-gray-800 transition-colors">
+              <button
+                onClick={() => {
+                  if (!selectedVariant) return
+                  startTransition(async () => {
+                    await addToCart(selectedVariant.sku, quantity)
+                    router.push("/shop/cart")
+                  })
+                }}
+                disabled={pending || !selectedVariant}
+                className="flex-1 bg-mainwave-black text-white text-sm font-bold py-3 px-6 hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 Buy Now
               </button>
             </div>

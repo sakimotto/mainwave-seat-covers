@@ -64,7 +64,7 @@ export function ShopPageClient({
     }
 
     return result
-  }, [selectedMakes, selectedCategory, priceRange, sort])
+  }, [initialProducts, selectedMakes, selectedCategory, priceRange, sort])
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
