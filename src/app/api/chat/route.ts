@@ -21,5 +21,5 @@ export async function POST(req: Request) {
     stopWhen: isStepCount(5),
   })
 
-  return result.toTextStreamResponse()
+  return result.toUIMessageStreamResponse()
 }
