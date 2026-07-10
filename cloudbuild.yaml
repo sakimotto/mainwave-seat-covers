@@ -36,7 +36,7 @@ steps:
       - "--set-secrets=DATABASE_URL=neon-db-url:latest"
       - "--set-secrets=LLM_API_KEY=deepseek-api-key:latest"
       - "--set-env-vars=LLM_BASE_URL=https://api.deepseek.com/v1"
-      - "--set-env-vars=LLM_MODEL=deepseek-chat"
+      - "--set-env-vars=LLM_MODEL=deepseek-v4-flash"
       - "--set-env-vars=DATABASE_DRIVER=neon"
       - "--set-env-vars=NODE_ENV=production"
 

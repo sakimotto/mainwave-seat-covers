@@ -89,3 +89,29 @@ scripts/            # Asset download scripts
 - Zod 4.4.3 — `.describe()` exists but `_def` lacks `description`
 - Prisma client at `src/generated/prisma/client` — all imports use `/client` suffix
 - Prisma v7 adapter pattern: `new PrismaClient({ adapter })` with `@prisma/adapter-pg`
+- shadcn/ui uses `@base-ui/react` primitives (NOT Radix) — components at `src/components/ui/`
+- Tailwind v4 with `@theme inline` — custom colors: `mainwave-black`, `mainwave-red`, `mainwave-grey`, etc.
+- Chat widget (`chat-widget.tsx`) renders `UIMessage.parts` directly — product card matching by keyword scan of assistant text parts
+- `DefaultChatTransport` is auto-created by `useChat` — do NOT import it from `ai` on client
+
+## Session 3 (10 Jul 2026) — Chat UI Redesign & Prompt V3
+
+### Changes
+- **System prompt V3** — softer consultant tone, conversational intelligence rules, 3 scenario trainings, factory pickup info
+- **SKU format migration** — old `TY7035N` etc → new `MW-*` format (`MW-HILUX-F`, `MW-LC200-FUL`, etc)
+- **LLM model upgrade** — `deepseek-chat` → `deepseek-v4-flash` (deprecation July 24, 2026)
+- **Chat API fix** — added `convertToModelMessages()` to fix `AI_InvalidPromptError` (UI format → model format)
+- **shadcn/ui Card component** — `src/components/ui/card.tsx` (Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription)
+- **shadcn/ui Select component** — `src/components/ui/select.tsx` (styled native select with chevron)
+- **Chat widget redesign** — rich product cards (`ProductCardChat`), 3-step vehicle selector (`VehicleSelectorWidget` with Make→Model→Year cascading dropdown), quick action buttons, featured products grid, persistent action bar
+- **Product matching** — assistant messages scanned for known product names → matching `ProductCardChat` rendered below
+
+### Files Modified
+- `src/lib/ai/system-prompt.ts` — V3 prompt with product/merch/fitment tables
+- `src/app/api/chat/route.ts` — added `convertToModelMessages()`, updated default model
+- `src/components/chat-widget.tsx` — full redesign with cards, selector, quick actions
+- `src/components/ui/card.tsx` — new shadcn Card component
+- `src/components/ui/select.tsx` — new shadcn Select component
+- `.env` — `deepseek-chat` → `deepseek-v4-flash`
+- `cloudbuild.yaml` — `deepseek-chat` → `deepseek-v4-flash`
+- `AGENTS.md` — this update
