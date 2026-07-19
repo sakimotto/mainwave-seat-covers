@@ -5,20 +5,11 @@ import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/prisma"
 import type { Cart, CartItem } from "@/types"
 
-function generateSessionId(): string {
-  const chars = "abcdefghijklmnopqrstuvwxyz0123456789"
-  let result = ""
-  for (let i = 0; i < 32; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return result
-}
-
 async function getOrCreateSessionId(): Promise<string> {
   const cookieStore = await cookies()
   let sessionId = cookieStore.get("cart_session")?.value
   if (!sessionId) {
-    sessionId = generateSessionId()
+    sessionId = crypto.randomUUID()
   }
   return sessionId
 }
@@ -76,10 +67,14 @@ export async function updateCartItemQuantity(
     if (quantity < 1) {
       return { success: false, error: "Quantity must be at least 1" }
     }
-    await prisma.cartItem.update({
-      where: { id: itemId },
+    const sessionId = await getOrCreateSessionId()
+    const result = await prisma.cartItem.updateMany({
+      where: { id: itemId, cart: { sessionId } },
       data: { quantity },
     })
+    if (result.count === 0) {
+      return { success: false, error: "Item not found" }
+    }
     return { success: true }
   } catch {
     return { success: false, error: "Failed to update item" }
@@ -90,7 +85,13 @@ export async function removeCartItem(
   itemId: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    await prisma.cartItem.delete({ where: { id: itemId } })
+    const sessionId = await getOrCreateSessionId()
+    const result = await prisma.cartItem.deleteMany({
+      where: { id: itemId, cart: { sessionId } },
+    })
+    if (result.count === 0) {
+      return { success: false, error: "Item not found" }
+    }
     return { success: true }
   } catch {
     return { success: false, error: "Failed to remove item" }
