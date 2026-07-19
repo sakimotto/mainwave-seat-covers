@@ -24,16 +24,17 @@ export default function ContactUsPage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
     setError("");
 
     try {
+      const raw = new FormData(e.currentTarget);
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, _gotcha: raw.get("_gotcha") ?? "" }),
       });
 
       if (!res.ok) throw new Error("Failed to send");
@@ -179,6 +180,11 @@ export default function ContactUsPage() {
                     onChange={handleChange}
                     className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-mainwave-red focus:border-transparent"
                   />
+                </div>
+                {/* Honeypot: hidden from humans, bots fill it */}
+                <div className="hidden" aria-hidden="true">
+                  <label htmlFor="_gotcha">Leave this field empty</label>
+                  <input type="text" id="_gotcha" name="_gotcha" tabIndex={-1} autoComplete="off" />
                 </div>
                 <div>
                   <label
