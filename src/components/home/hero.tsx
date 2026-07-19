@@ -1,11 +1,15 @@
 import Link from "next/link"
 import { Reveal } from "@/components/motion/reveal"
+import { HeroVideo } from "@/components/home/hero-video"
 
 export function Hero() {
   return (
     <section className="relative bg-ink overflow-hidden">
-      {/* Texture + glow */}
-      <div className="absolute inset-0 bg-grain opacity-60" aria-hidden="true" />
+      {/* Ambient video + overlays */}
+      <HeroVideo />
+      <div className="absolute inset-0 bg-ink/60" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-ink/10" aria-hidden="true" />
+      <div className="absolute inset-0 bg-grain opacity-40" aria-hidden="true" />
       <div className="absolute inset-x-0 bottom-0 h-[60vh] red-glow" aria-hidden="true" />
 
       <div className="container-wide relative z-10 flex min-h-[88vh] flex-col justify-center py-24 md:py-32">

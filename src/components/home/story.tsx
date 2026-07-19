@@ -33,6 +33,18 @@ export function Story() {
               no importers, no distributors, no retail theatre. Just gear made
               properly, sold honestly.
             </p>
+            <div className="mt-8 grid grid-cols-2 gap-3">
+              <img
+                src="/images/lifestyle/journey-hiker.jpg"
+                alt="Hiker overlooking a mountain valley at dawn"
+                className="w-full h-48 md:h-56 object-cover border border-white/10"
+              />
+              <img
+                src="/images/lifestyle/forest-path.jpg"
+                alt="Winding path through a dark forest"
+                className="w-full h-48 md:h-56 object-cover border border-white/10 mt-6"
+              />
+            </div>
           </Reveal>
         </div>
 

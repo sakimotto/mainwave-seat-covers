@@ -3,6 +3,7 @@ import { Ticker } from "@/components/home/ticker";
 import { Worlds } from "@/components/home/worlds";
 import { Story } from "@/components/home/story";
 import { Spotlight } from "@/components/home/spotlight";
+import { Band } from "@/components/home/band";
 import { Roadmap } from "@/components/home/roadmap";
 import { Testimonials } from "@/components/home/testimonials";
 import { Closer } from "@/components/home/closer";
@@ -18,6 +19,7 @@ export default async function HomePage() {
       <Worlds />
       <Story />
       <Spotlight products={popularProducts.slice(0, 8)} />
+      <Band />
       <Roadmap />
       <Testimonials />
       <Closer />

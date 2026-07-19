@@ -4,6 +4,13 @@ import { Reveal } from "@/components/motion/reveal"
 export function Closer() {
   return (
     <section className="relative bg-mainwave-red overflow-hidden">
+      <img
+        src="/images/lifestyle/coast-cliffs.jpg"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover opacity-25"
+      />
+      <div className="absolute inset-0 bg-mainwave-red/70" aria-hidden="true" />
       <div className="absolute inset-0 bg-grain opacity-40" aria-hidden="true" />
       <div className="container-wide relative z-10 py-24 md:py-32 text-center">
         <Reveal>

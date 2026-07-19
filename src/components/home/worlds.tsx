@@ -6,14 +6,14 @@ const worlds = [
     index: "01",
     name: "Drive",
     tagline: "Custom-fit seat covers & car gear",
-    image: "/images/products/toyota-hilux-front.jpg",
+    image: "/images/lifestyle/drive-canyon.jpg",
     href: "/shop",
   },
   {
     index: "02",
     name: "Camp",
     tagline: "Built-tough outdoor equipment",
-    image: "/images/products/merch-chair.jpg",
+    image: "/images/lifestyle/camp-canoe.jpg",
     href: "/shop?category=Lifestyle",
   },
   {
@@ -27,7 +27,7 @@ const worlds = [
     index: "04",
     name: "Live",
     tagline: "Merch & accessories for the daily",
-    image: "/images/products/merch-duffel.jpg",
+    image: "/images/lifestyle/live-kombi.jpg",
     href: "/shop?category=Car+Accessories",
   },
 ]
