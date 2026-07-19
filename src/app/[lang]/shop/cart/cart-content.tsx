@@ -53,6 +53,7 @@ export function CartContent({ dict, locale }: { dict: Dictionary; locale: Locale
     if (newQty < 1) return
     startTransition(async () => {
       await updateCartItemQuantity(itemId, newQty)
+      window.dispatchEvent(new CustomEvent("cart-updated"))
       const updated = await getCart()
       setCart(updated)
     })
@@ -61,6 +62,7 @@ export function CartContent({ dict, locale }: { dict: Dictionary; locale: Locale
   function handleRemove(itemId: string) {
     startTransition(async () => {
       await removeCartItem(itemId)
+      window.dispatchEvent(new CustomEvent("cart-updated"))
       const updated = await getCart()
       setCart(updated)
     })

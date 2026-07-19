@@ -124,7 +124,7 @@ export function Header({ vehicles, dict, locale }: { vehicles: Vehicle[]; dict: 
             >
               <SearchIcon className="w-5 h-5" />
             </button>
-            <CartBadge />
+            <CartBadge locale={locale} />
             <button
               className="lg:hidden text-bone/80"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

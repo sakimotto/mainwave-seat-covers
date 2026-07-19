@@ -223,6 +223,7 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
                   startTransition(async () => {
                     const result = await addToCart(selectedVariant.id, quantity)
                     if (result.success) {
+                      window.dispatchEvent(new CustomEvent("cart-updated"))
                       setAdded(true)
                       setTimeout(() => setAdded(false), 2000)
                     }
@@ -239,6 +240,7 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
                   if (!selectedVariant) return
                   startTransition(async () => {
                     await addToCart(selectedVariant.id, quantity)
+                    window.dispatchEvent(new CustomEvent("cart-updated"))
                     router.push(lp("/shop/cart"))
                   })
                 }}
