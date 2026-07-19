@@ -23,7 +23,8 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
       )
     } else if (part.startsWith("[")) {
       const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
-      if (match) {
+      // Only http(s) and root-relative URLs — block javascript:/data: vectors
+      if (match && (/^https?:\/\//.test(match[2]) || match[2].startsWith("/"))) {
         nodes.push(
           <a
             key={key}
