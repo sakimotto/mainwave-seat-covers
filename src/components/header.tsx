@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { PhoneIcon, MenuIcon, XIcon, ChevronDownIcon, SearchIcon, FacebookIcon, InstagramIcon } from "@/components/icons"
+import { PhoneIcon, MenuIcon, XIcon, ChevronDownIcon, SearchIcon, FacebookIcon, InstagramIcon, UserIcon } from "@/components/icons"
 import { CartBadge } from "@/components/cart-badge"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
@@ -122,6 +122,13 @@ export function Header({ vehicles, dict, locale }: { vehicles: Vehicle[]; dict: 
 
           <div className="flex items-center gap-3 md:gap-4">
             <LanguageSwitcher locale={locale} />
+            <Link
+              href={lp("/account")}
+              className="hidden md:flex items-center gap-1 text-bone/70 hover:text-brand-accent transition-colors"
+              aria-label={dict.nav.account}
+            >
+              <UserIcon className="w-5 h-5" />
+            </Link>
             <button
               onClick={() => window.dispatchEvent(new CustomEvent("open-search"))}
               className="hidden md:flex items-center gap-1 text-bone/70 hover:text-brand-accent transition-colors"
@@ -187,6 +194,7 @@ export function Header({ vehicles, dict, locale }: { vehicles: Vehicle[]; dict: 
             <Link href={lp("/about-us")} className="block py-2 text-sm font-medium text-bone/80 hover:text-brand-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>{dict.nav.brand}</Link>
             <Link href={lp("/installation")} className="block py-2 text-sm font-medium text-bone/80 hover:text-brand-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>{dict.nav.installation}</Link>
             <Link href={lp("/blog")} className="block py-2 text-sm font-medium text-bone/80 hover:text-brand-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>{dict.nav.blog}</Link>
+            <Link href={lp("/account")} className="block py-2 text-sm font-medium text-bone/80 hover:text-brand-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>{dict.nav.account}</Link>
             <Link href={lp("/form/contact-us")} className="block py-2 text-sm font-medium text-bone/80 hover:text-brand-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>{dict.nav.contact}</Link>
             <div className="pt-3 border-t border-white/10 flex items-center gap-3">
               <a href={brand.phone.href} className="flex items-center gap-1 text-sm text-bone/60 hover:text-brand-accent">

@@ -4,7 +4,7 @@ import { cookies, headers } from "next/headers"
 import { scrypt, randomBytes, timingSafeEqual } from "crypto"
 import { prisma } from "@/lib/prisma"
 import { rateLimit } from "@/lib/rate-limit"
-import type { Customer, CustomerVehicle, Vehicle } from "@/generated/prisma/client"
+import type { Customer, CustomerVehicle, CreditEntry, Vehicle } from "@/generated/prisma/client"
 
 const SESSION_COOKIE = "session_token"
 const SESSION_DAYS = 30
@@ -81,6 +81,7 @@ async function mergeGuestCart(customerId: string): Promise<void> {
 
 export type SessionCustomer = Customer & {
   garage: (CustomerVehicle & { vehicle: Vehicle })[]
+  creditEntries: CreditEntry[]
 }
 
 /** Current signed-in customer (with garage), or null. */
@@ -91,7 +92,14 @@ export async function getSessionCustomer(): Promise<SessionCustomer | null> {
 
   const session = await prisma.session.findUnique({
     where: { token },
-    include: { customer: { include: { garage: { include: { vehicle: true } } } } },
+    include: {
+      customer: {
+        include: {
+          garage: { include: { vehicle: true } },
+          creditEntries: { orderBy: { createdAt: "desc" } },
+        },
+      },
+    },
   })
   if (!session) return null
   if (session.expiresAt < new Date()) {
