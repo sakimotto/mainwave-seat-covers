@@ -213,7 +213,8 @@ export async function placeOrder(formData: {
     const cookieStore = await cookies()
     cookieStore.delete("cart_session")
 
-    revalidatePath("/checkout")
+    revalidatePath("/en/checkout")
+    revalidatePath("/th/checkout")
 
     return { success: true, orderId: order.id }
   } catch (err) {

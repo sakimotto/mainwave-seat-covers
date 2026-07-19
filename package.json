@@ -1,28 +1,10 @@
 {
-  "name": "mainwave-seat-covers",
+  "name": "zervi-storefront-template",
   "version": "1.0.0",
   "private": true,
-  "description": "Clone any website into a clean, modern Next.js codebase using AI coding agents",
-  "author": "JCodesMore",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/JCodesMore/ai-website-cloner-template.git"
-  },
-  "homepage": "https://github.com/JCodesMore/ai-website-cloner-template",
-  "bugs": {
-    "url": "https://github.com/JCodesMore/ai-website-cloner-template/issues"
-  },
-  "keywords": [
-    "claude-code",
-    "website-clone",
-    "reverse-engineering",
-    "nextjs",
-    "ai",
-    "template",
-    "tailwindcss",
-    "shadcn-ui"
-  ],
+  "description": "Adaptable e-commerce storefront template — multi-brand, multi-locale, multi-backend (Vercel sandbox, Shopify, Odoo)",
+  "author": "Zervi Group",
+  "license": "UNLICENSED",
   "engines": {
     "node": ">=24"
   },
