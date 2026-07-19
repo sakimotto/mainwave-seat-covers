@@ -22,10 +22,12 @@ export function ShopPageClient({
   initialProducts,
   initialVehicles,
   initialCategory,
+  initialQuery,
 }: {
   initialProducts: Product[]
   initialVehicles: Vehicle[]
   initialCategory?: string
+  initialQuery?: string
 }) {
   const [selectedMakes, setSelectedMakes] = useState<string[]>([])
   const [selectedCategory, setSelectedCategory] = useState(initialCategory ?? "All")
@@ -36,6 +38,15 @@ export function ShopPageClient({
 
   const filtered = useMemo(() => {
     let result = [...initialProducts]
+
+    if (initialQuery?.trim()) {
+      const q = initialQuery.toLowerCase()
+      result = result.filter((p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.vehicle.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q)
+      )
+    }
 
     if (selectedMakes.length > 0) {
       result = result.filter((p) =>
@@ -64,7 +75,7 @@ export function ShopPageClient({
     }
 
     return result
-  }, [initialProducts, selectedMakes, selectedCategory, priceRange, sort])
+  }, [initialProducts, initialQuery, selectedMakes, selectedCategory, priceRange, sort])
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
@@ -85,7 +96,9 @@ export function ShopPageClient({
             <ChevronRightIcon className="w-3 h-3" />
             <span className="text-mainwave-black">Shop</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-mainwave-black">All Products</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-mainwave-black">
+            {initialQuery ? `Results for "${initialQuery}"` : "All Products"}
+          </h1>
           <p className="text-sm text-gray-500 mt-1">{filtered.length} products found</p>
         </div>
       </div>

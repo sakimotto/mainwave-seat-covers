@@ -11,17 +11,36 @@ const provider = createOpenAI({
 const model = provider.chat(process.env.LLM_MODEL ?? "deepseek-v4-flash")
 
 export async function POST(req: Request) {
-  const { messages } = await req.json()
+  try {
+    const body = await req.json()
+    const messages = body.messages
 
-  const modelMessages = await convertToModelMessages(messages)
+    if (!messages || !Array.isArray(messages)) {
+      return new Response(JSON.stringify({ error: "Invalid messages format" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
 
-  const result = streamText({
-    model,
-    system: SYSTEM_PROMPT,
-    messages: modelMessages,
-    tools: aiTools,
-    stopWhen: isStepCount(5),
-  })
+    const modelMessages = await convertToModelMessages(messages)
 
-  return result.toUIMessageStreamResponse()
+    const result = streamText({
+      model,
+      system: SYSTEM_PROMPT,
+      messages: modelMessages,
+      tools: aiTools,
+      stopWhen: isStepCount(5),
+    })
+
+    return result.toUIMessageStreamResponse()
+  } catch (err) {
+    console.error("Chat API error:", err)
+    return new Response(
+      JSON.stringify({ error: err instanceof Error ? err.message : "Internal error" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    )
+  }
 }

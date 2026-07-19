@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { PhoneIcon, CartIcon, MenuIcon, XIcon, ChevronDownIcon, SearchIcon, FacebookIcon, InstagramIcon } from "@/components/icons";
+import { PhoneIcon, MenuIcon, XIcon, ChevronDownIcon, SearchIcon, FacebookIcon, InstagramIcon } from "@/components/icons"
+import { CartBadge } from "@/components/cart-badge"
 import type { Vehicle } from "@/types";
 
 export function Header({ vehicles }: { vehicles: Vehicle[] }) {
@@ -107,19 +108,19 @@ export function Header({ vehicles }: { vehicles: Vehicle[] }) {
             </div>
             <Link href="/about-us" className="hover:text-mainwave-red transition-colors uppercase tracking-wider text-xs">About Us</Link>
             <Link href="/installation" className="hover:text-mainwave-red transition-colors uppercase tracking-wider text-xs">Installation</Link>
-            <Link href="/blog/6-car-care-tips" className="hover:text-mainwave-red transition-colors uppercase tracking-wider text-xs">Blog</Link>
+            <Link href="/blog" className="hover:text-mainwave-red transition-colors uppercase tracking-wider text-xs">Blog</Link>
             <Link href="/form/contact-us" className="hover:text-mainwave-red transition-colors uppercase tracking-wider text-xs">Contact</Link>
           </div>
 
           <div className="flex items-center gap-3 md:gap-4">
-            <button className="hidden md:flex items-center gap-1 text-mainwave-text hover:text-mainwave-red transition-colors" aria-label="Search">
+            <button 
+              onClick={() => window.dispatchEvent(new CustomEvent("open-search"))}
+              className="hidden md:flex items-center gap-1 text-mainwave-text hover:text-mainwave-red transition-colors" 
+              aria-label="Search"
+            >
               <SearchIcon className="w-5 h-5" />
             </button>
-            <Link href="/shop/cart" className="flex items-center gap-1 text-mainwave-text hover:text-mainwave-red transition-colors relative">
-              <CartIcon className="w-5 h-5" />
-              <span className="hidden md:inline text-sm font-medium">$0.00</span>
-              <span className="absolute -top-1.5 -right-1.5 bg-mainwave-red text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
-            </Link>
+            <CartBadge />
             <button
               className="lg:hidden text-mainwave-text"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -176,7 +177,7 @@ export function Header({ vehicles }: { vehicles: Vehicle[] }) {
             <Link href="/shop?category=Lifestyle" className="block py-1.5 pl-4 text-xs text-mainwave-text hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Lifestyle</Link>
             <Link href="/about-us" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
             <Link href="/installation" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Installation</Link>
-            <Link href="/blog/6-car-care-tips" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+            <Link href="/blog" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
             <Link href="/form/contact-us" className="block py-2 text-sm font-medium hover:text-mainwave-red transition-colors" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
             <div className="pt-3 border-t border-mainwave-border flex items-center gap-3">
               <a href="tel:0392626977" className="flex items-center gap-1 text-sm text-mainwave-text hover:text-mainwave-red">

@@ -1,7 +1,7 @@
 import { getAllProducts, getVehicles } from "@/lib/db"
 import { ShopPageClient } from "./shop-page-client"
 
-export default async function ShopPage(props: { searchParams?: Promise<{ category?: string }> }) {
+export default async function ShopPage(props: { searchParams?: Promise<{ category?: string; q?: string }> }) {
   const searchParams = await props.searchParams
   const [products, vehicles] = await Promise.all([
     getAllProducts(),
@@ -13,6 +13,7 @@ export default async function ShopPage(props: { searchParams?: Promise<{ categor
       initialProducts={products}
       initialVehicles={vehicles}
       initialCategory={searchParams?.category}
+      initialQuery={searchParams?.q}
     />
   )
 }

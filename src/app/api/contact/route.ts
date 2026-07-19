@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
 
 export async function POST(request: Request) {
   try {
@@ -12,8 +13,9 @@ export async function POST(request: Request) {
       )
     }
 
-    // In production, send email via SendGrid, SES, or similar
-    // await sendEmail({ name, email, phone, subject, message })
+    await prisma.inquiry.create({
+      data: { name, email, phone: phone || null, subject, message },
+    })
 
     return NextResponse.json(
       { success: true, message: "Thank you for your message. We will get back to you shortly." },

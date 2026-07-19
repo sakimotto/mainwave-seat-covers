@@ -1,6 +1,7 @@
 "use server"
 
 import { cookies } from "next/headers"
+import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/prisma"
 import type { Cart, CartItem } from "@/types"
 
@@ -136,5 +137,86 @@ export async function getCart(): Promise<Cart | null> {
     return { id: cart.id, items, subtotal, itemCount }
   } catch {
     return null
+  }
+}
+
+export async function getCartSummary(): Promise<{ itemCount: number; subtotal: number }> {
+  try {
+    const cart = await getCart()
+    if (!cart) return { itemCount: 0, subtotal: 0 }
+    return { itemCount: cart.itemCount, subtotal: cart.subtotal }
+  } catch {
+    return { itemCount: 0, subtotal: 0 }
+  }
+}
+
+export async function placeOrder(formData: {
+  name: string
+  email: string
+  phone: string
+  address: string
+  suburb: string
+  state: string
+  postcode: string
+  notes?: string
+}): Promise<{ success: boolean; orderId?: string; error?: string }> {
+  try {
+    const cart = await getCart()
+    if (!cart || cart.items.length === 0) {
+      return { success: false, error: "Cart is empty" }
+    }
+
+    // Find or create customer
+    let customer = await prisma.customer.findUnique({ where: { email: formData.email } })
+    if (!customer) {
+      customer = await prisma.customer.create({
+        data: { email: formData.email, name: formData.name },
+      })
+    }
+
+    // Create the order
+    const order = await prisma.order.create({
+      data: {
+        customerId: customer.id,
+        status: "PENDING",
+        total: cart.subtotal,
+        items: {
+          create: cart.items.map((item) => ({
+            variantId: item.variantId,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+        },
+      },
+      include: { items: true },
+    })
+
+    // Create inquiry for the shipping details
+    await prisma.inquiry.create({
+      data: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        subject: `Order #${order.id.slice(-8)} — Shipping Details`,
+        message: `Order ID: ${order.id}\n\nShipping Address:\n${formData.address}\n${formData.suburb}, ${formData.state} ${formData.postcode}\n\nNotes: ${formData.notes || "None"}\n\nProducts:\n${cart.items.map((i) => `- ${i.productName} (${i.color}${i.size ? ` / ${i.size}` : ""}) x${i.quantity} @ $${i.price.toFixed(2)}`).join("\n")}`,
+      },
+    })
+
+    // Clear all cart items
+    await prisma.cartItem.deleteMany({ where: { cartId: cart.id } })
+
+    // Delete the cart record
+    await prisma.cart.delete({ where: { id: cart.id } })
+
+    // Clear the session cookie
+    const cookieStore = await cookies()
+    cookieStore.delete("cart_session")
+
+    revalidatePath("/checkout")
+
+    return { success: true, orderId: order.id }
+  } catch (err) {
+    console.error("placeOrder error:", err)
+    return { success: false, error: "Failed to place order. Please try again." }
   }
 }

@@ -3,13 +3,15 @@
 import { useState, useEffect, useTransition } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { getCart } from "@/lib/actions/cart"
+import { getCart, placeOrder } from "@/lib/actions/cart"
 import type { Cart } from "@/types"
 
 export default function CheckoutPage() {
   const [cart, setCart] = useState<Cart | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitted, setSubmitted] = useState(false)
+  const [orderId, setOrderId] = useState<string | null>(null)
+  const [orderError, setOrderError] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
 
   const [form, setForm] = useState({
@@ -36,9 +38,15 @@ export default function CheckoutPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setOrderError(null)
     startTransition(async () => {
-      await new Promise((r) => setTimeout(r, 1000))
-      setSubmitted(true)
+      const result = await placeOrder(form)
+      if (result.success) {
+        setOrderId(result.orderId ?? null)
+        setSubmitted(true)
+      } else {
+        setOrderError(result.error ?? "Something went wrong")
+      }
     })
   }
 
@@ -83,6 +91,11 @@ export default function CheckoutPage() {
             </svg>
           </div>
           <h2 className="text-xl font-bold text-mainwave-black mb-3">Order Placed!</h2>
+          {orderId && (
+            <p className="text-sm text-gray-500 mb-2">
+              Order reference: <span className="font-mono font-bold text-mainwave-black">{orderId.slice(-8).toUpperCase()}</span>
+            </p>
+          )}
           <p className="text-sm text-mainwave-text mb-6">
             Thank you for your order. We&apos;ll send you a confirmation email shortly with your order details and tracking information.
           </p>
@@ -212,6 +225,9 @@ export default function CheckoutPage() {
             >
               {pending ? "Processing..." : "Place Order"}
             </button>
+            {orderError && (
+              <p className="text-red-600 text-xs text-center mt-2">{orderError}</p>
+            )}
             <p className="text-[10px] text-gray-400 text-center mt-3">
               By placing this order you agree to our Terms &amp; Conditions and Privacy Policy.
             </p>

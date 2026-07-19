@@ -38,20 +38,24 @@ interface FeaturedProduct {
 }
 
 const featuredProducts: FeaturedProduct[] = [
-  { name: "Toyota Hilux 8th Gen Front Set", slug: "front-seat-covers-suit-toyota-hilux-8th-gen", image: "/images/products/toyota-hilux-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.8, reviewCount: 247, variantId: "TY7035N" },
-  { name: "Ford Ranger PX Front Set", slug: "front-seat-covers-suit-ford-ranger-px", image: "/images/products/ford-ranger-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.7, reviewCount: 189, variantId: "FD1045N" },
-  { name: "Full Set - Landcruiser 200", slug: "full-set-of-seat-covers-suit-toyota-landcruiser-200", image: "/images/products/toyota-lc200-full.jpg", price: 349.95, originalPrice: 579.95, rating: 4.9, reviewCount: 312, variantId: "TY7035N-FS" },
+  { name: "Toyota Hilux 8th Gen Front Set", slug: "front-seat-covers-suit-toyota-hilux-8th-gen", image: "/images/products/toyota-hilux-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.8, reviewCount: 247, variantId: "MW-HILUX-F" },
+  { name: "Ford Ranger PX Front Set", slug: "front-seat-covers-suit-ford-ranger-px", image: "/images/products/ford-ranger-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.7, reviewCount: 189, variantId: "MW-RANGER-F" },
+  { name: "Ford Ranger Raptor Full Set", slug: "full-set-of-seat-covers-ford-ranger-raptor", image: "/images/products/ford-ranger-raptor-full.jpg", price: 379.95, originalPrice: 629.95, rating: 4.9, reviewCount: 156, variantId: "MW-RAPTOR-FUL" },
 ]
 
 const knownProducts: FeaturedProduct[] = [
-  { name: "Toyota Hilux 8th Gen Front Set", slug: "front-seat-covers-suit-toyota-hilux-8th-gen", image: "/images/products/toyota-hilux-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.8, reviewCount: 247, variantId: "TY7035N" },
-  { name: "Ford Ranger PX Front Set", slug: "front-seat-covers-suit-ford-ranger-px", image: "/images/products/ford-ranger-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.7, reviewCount: 189, variantId: "FD1045N" },
-  { name: "Full Set - Landcruiser 200", slug: "full-set-of-seat-covers-suit-toyota-landcruiser-200", image: "/images/products/toyota-lc200-full.jpg", price: 349.95, originalPrice: 579.95, rating: 4.9, reviewCount: 312, variantId: "TY7035N-FS" },
-  { name: "Mitsubishi Triton Front Set", slug: "front-seat-covers-suit-mitsubishi-triton", image: "/images/products/mitsubishi-triton-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.6, reviewCount: 134, variantId: "MN3025N" },
-  { name: "Nissan Navara Front Set", slug: "front-seat-covers-suit-nissan-navara", image: "/images/products/nissan-navara-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.7, reviewCount: 167, variantId: "NU3025N" },
-  { name: "Mazda BT-50 Front Set", slug: "front-seat-covers-suit-mazda-bt50", image: "/images/products/mazda-bt50-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.6, reviewCount: 112, variantId: "MZ1025N" },
-  { name: "Holden Colorado Front Set", slug: "front-seat-covers-holden-colorado", image: "/images/products/holden-colorado-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.6, reviewCount: 108, variantId: "HO1025N" },
-  { name: "BYD Shark 6 Front Set", slug: "front-set-of-seat-covers-byd-shark-6", image: "/images/products/byd-shark6-front.jpg", price: 189.95, originalPrice: 319.95, rating: 4.5, reviewCount: 42, variantId: "BYD17000N" },
+  { name: "Toyota Hilux 8th Gen Front Set", slug: "front-seat-covers-suit-toyota-hilux-8th-gen", image: "/images/products/toyota-hilux-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.8, reviewCount: 247, variantId: "MW-HILUX-F" },
+  { name: "Ford Ranger PX Front Set", slug: "front-seat-covers-suit-ford-ranger-px", image: "/images/products/ford-ranger-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.7, reviewCount: 189, variantId: "MW-RANGER-F" },
+  { name: "Ford Ranger Raptor Full Set", slug: "full-set-of-seat-covers-ford-ranger-raptor", image: "/images/products/ford-ranger-raptor-full.jpg", price: 379.95, originalPrice: 629.95, rating: 4.9, reviewCount: 156, variantId: "MW-RAPTOR-FUL" },
+  { name: "Full Set - Landcruiser 200", slug: "full-set-of-seat-covers-suit-toyota-landcruiser-200", image: "/images/products/toyota-lc200-full.jpg", price: 349.95, originalPrice: 579.95, rating: 4.9, reviewCount: 312, variantId: "MW-LC200-FUL" },
+  { name: "Mitsubishi Triton Front Set", slug: "front-seat-covers-suit-mitsubishi-triton", image: "/images/products/mitsubishi-triton-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.6, reviewCount: 134, variantId: "MW-TRITON-F" },
+  { name: "Nissan Navara Front Set", slug: "front-seat-covers-suit-nissan-navara", image: "/images/products/nissan-navara-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.7, reviewCount: 167, variantId: "MW-NAVARA-F" },
+  { name: "Mazda BT-50 Front Set", slug: "front-seat-covers-suit-mazda-bt50", image: "/images/products/mazda-bt50-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.6, reviewCount: 112, variantId: "MW-BT50-F" },
+  { name: "Holden Colorado Front Set", slug: "front-seat-covers-holden-colorado", image: "/images/products/holden-colorado-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.6, reviewCount: 108, variantId: "MW-COLORADO-F" },
+  { name: "BYD Shark 6 Front Set", slug: "front-set-of-seat-covers-byd-shark-6", image: "/images/products/byd-shark6-front.jpg", price: 189.95, originalPrice: 319.95, rating: 4.5, reviewCount: 42, variantId: "MW-BYD-F" },
+  { name: "Isuzu D-Max Front Set", slug: "front-seat-covers-suit-isuzu-dmax", image: "/images/products/isuzu-dmax-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.6, reviewCount: 98, variantId: "MW-DMAX-F" },
+  { name: "Landcruiser 300 Rear Set", slug: "rear-seat-covers-toyota-landcruiser-300", image: "/images/products/toyota-lc300-rear.jpg", price: 169.95, originalPrice: 279.95, rating: 4.7, reviewCount: 89, variantId: "MW-LC300-R" },
+  { name: "Subaru Forester Front Set", slug: "front-seat-covers-subaru-forester", image: "/images/products/subaru-forester-front.jpg", price: 179.95, originalPrice: 299.95, rating: 4.5, reviewCount: 76, variantId: "MW-FORESTER-F" },
 ]
 
 function StarRating({ rating, count }: { rating: number; count: number }) {
@@ -265,10 +269,15 @@ export function ChatWidget() {
   }
 
   function matchProducts(text: string): FeaturedProduct[] {
+    const lower = text.toLowerCase()
     return knownProducts.filter((p) => {
+      // Require at least 2 significant words to match, not just one common word
       const name = p.name.toLowerCase()
-      const words = name.split(" ")
-      return words.some((w) => w.length > 3 && text.toLowerCase().includes(w))
+      const words = name.split(" ").filter(
+        (w) => w.length > 3 && !["front", "rear", "full", "seat", "covers", "cover", "suit"].includes(w)
+      )
+      const matchCount = words.filter((w) => lower.includes(w)).length
+      return matchCount >= 2
     })
   }
 

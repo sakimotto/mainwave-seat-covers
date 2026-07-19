@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ChatWidget } from "@/components/chat-widget";
+import { SearchWrapper } from "@/components/search-wrapper";
 import { getVehicles } from "@/lib/db";
 
 export const metadata: Metadata = {
@@ -56,6 +57,7 @@ export default async function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <ChatWidget />
+        <SearchWrapper vehicles={vehicles} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

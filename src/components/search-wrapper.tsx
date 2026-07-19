@@ -1,0 +1,34 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { SearchModal } from "@/components/search-modal"
+import type { Product, Vehicle } from "@/types"
+
+export function SearchWrapper({ vehicles }: { vehicles: Vehicle[] }) {
+  const [open, setOpen] = useState(false)
+  const [products, setProducts] = useState<Product[]>([])
+
+  useEffect(() => {
+    // Fetch products on mount
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch(() => {})
+  }, [])
+
+  // Listen for search trigger from header
+  useEffect(() => {
+    const handleSearchTrigger = () => setOpen(true)
+    window.addEventListener("open-search", handleSearchTrigger)
+    return () => window.removeEventListener("open-search", handleSearchTrigger)
+  }, [])
+
+  return (
+    <SearchModal
+      open={open}
+      onClose={() => setOpen(false)}
+      products={products}
+      vehicles={vehicles}
+    />
+  )
+}

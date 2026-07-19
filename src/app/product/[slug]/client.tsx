@@ -108,32 +108,8 @@ export function ProductDetailClient({ product, related }: { product: Product; re
       <div className="container-site py-6 md:py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
           <div>
-            <div className="bg-mainwave-grey aspect-square mb-3 relative overflow-hidden">
+            <div className="bg-mainwave-grey aspect-square mb-3 relative overflow-hidden rounded-lg">
               <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-              {product.isSale && (
-                <div className="absolute top-3 left-3 bg-mainwave-red text-white text-xs font-bold px-3 py-1.5 uppercase tracking-wider">
-                  SALE {salePercentage}% OFF
-                </div>
-              )}
-            </div>
-            <div className="flex gap-2">
-              {[
-                { label: "Front View", file: "front" },
-                { label: "Side View", file: "side" },
-                { label: "Detail", file: "detail" },
-                { label: "Fitment", file: "fitment" },
-              ].map((view, i) => (
-                <button
-                  key={view.label}
-                  onClick={() => setSelectedImage(i)}
-                  className={cn(
-                    "w-16 h-16 bg-mainwave-grey border-2 transition-colors overflow-hidden",
-                    selectedImage === i ? "border-mainwave-red" : "border-transparent"
-                  )}
-                >
-                  <img src={product.image} alt={`${product.name} - ${view.label}`} className="w-full h-full object-cover" />
-                </button>
-              ))}
             </div>
           </div>
 
@@ -243,7 +219,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
                 onClick={() => {
                   if (!selectedVariant) return
                   startTransition(async () => {
-                    const result = await addToCart(selectedVariant.sku, quantity)
+                    const result = await addToCart(selectedVariant.id, quantity)
                     if (result.success) {
                       setAdded(true)
                       setTimeout(() => setAdded(false), 2000)
@@ -260,7 +236,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
                 onClick={() => {
                   if (!selectedVariant) return
                   startTransition(async () => {
-                    await addToCart(selectedVariant.sku, quantity)
+                    await addToCart(selectedVariant.id, quantity)
                     router.push("/shop/cart")
                   })
                 }}
@@ -373,17 +349,29 @@ export function ProductDetailClient({ product, related }: { product: Product; re
             )}
 
             {activeTab === "Reviews" && (
-              <div className="max-w-2xl space-y-4">
-                {sampleReviews.map((review, i) => (
-                  <div key={i} className="border border-mainwave-border p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-mainwave-black">{review.name}</span>
-                      <span className="text-xs text-gray-400">{review.date}</span>
-                    </div>
-                    <StarDisplay rating={review.rating} />
-                    <p className="text-sm text-mainwave-text mt-2">{review.text}</p>
+              <div className="max-w-2xl">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-mainwave-black">{product.rating.toFixed(1)}</p>
+                    <StarDisplay rating={product.rating} />
+                    <p className="text-xs text-gray-500 mt-1">{product.reviewCount} reviews</p>
                   </div>
-                ))}
+                </div>
+                <div className="space-y-4">
+                  {sampleReviews.map((review, i) => (
+                    <div key={i} className="border border-mainwave-border p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-mainwave-black">{review.name}</span>
+                        <span className="text-xs text-gray-400">{review.date}</span>
+                      </div>
+                      <StarDisplay rating={review.rating} />
+                      <p className="text-sm text-mainwave-text mt-2">{review.text}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-400 mt-4 text-center">
+                  Sample reviews shown. Real customer reviews coming soon.
+                </p>
               </div>
             )}
           </div>

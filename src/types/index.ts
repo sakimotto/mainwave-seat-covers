@@ -7,6 +7,7 @@ export interface Vehicle {
 }
 
 export interface ProductVariant {
+  id: string;
   color: string;
   colorHex?: string;
   size?: string;

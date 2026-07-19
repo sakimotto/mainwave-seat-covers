@@ -18,7 +18,7 @@ function mapProduct(p: {
   category: string | null; vehicleLabel: string | null;
   isSale: boolean; description: string | null; features: string[];
   material: string | null;
-  variants: { price: unknown; originalPrice: unknown; color: string; colorHex: string | null; size: string | null; sku: string; stock: number }[];
+  variants: { id: string; price: unknown; originalPrice: unknown; color: string; colorHex: string | null; size: string | null; sku: string; stock: number }[];
   reviews: { rating: number }[];
 }): Product {
   const v = p.variants[0]
@@ -45,6 +45,7 @@ function mapProduct(p: {
       colorHex: v.colorHex ?? undefined,
       size: v.size ?? undefined,
       sku: v.sku,
+      id: v.id,
       price: Number(v.price),
       originalPrice: v.originalPrice ? Number(v.originalPrice) : undefined,
       stock: v.stock,
@@ -85,12 +86,12 @@ export const getVehicleBySlug = cache(async (slug: string): Promise<Vehicle | nu
 })
 
 const productInclude = {
-  variants: { select: { price: true, originalPrice: true, color: true, colorHex: true, size: true, sku: true, stock: true }, take: 1 },
+  variants: { select: { id: true, price: true, originalPrice: true, color: true, colorHex: true, size: true, sku: true, stock: true }, take: 1 },
   reviews: { select: { rating: true } },
 } as const
 
 const productDetailInclude = {
-  variants: { select: { price: true, originalPrice: true, color: true, colorHex: true, size: true, sku: true, stock: true } },
+  variants: { select: { id: true, price: true, originalPrice: true, color: true, colorHex: true, size: true, sku: true, stock: true } },
   reviews: { select: { rating: true } },
 } as const
 
