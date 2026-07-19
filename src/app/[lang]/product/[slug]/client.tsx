@@ -8,8 +8,7 @@ import { StarIcon, TruckIcon, ShieldIcon, PhoneIcon, ChevronRightIcon, CartIcon 
 import { cn } from "@/lib/utils"
 import { ProductCard } from "@/components/product-card"
 import { addToCart } from "@/lib/actions/cart"
-
-const tabs = ["Description", "Specifications", "Warranty", "Reviews"]
+import { localePath, type Dictionary, type Locale } from "@/i18n"
 
 const sampleReviews = [
   { name: "Michael T.", rating: 5, text: "Absolutely fantastic quality. Fit perfectly on my Hilux and looks amazing.", date: "2 weeks ago" },
@@ -31,7 +30,7 @@ function StarDisplay({ rating }: { rating: number }) {
   )
 }
 
-export function ProductDetailClient({ product, related }: { product: Product; related: Product[] }) {
+export function ProductDetailClient({ product, related, dict, locale }: { product: Product; related: Product[]; dict: Dictionary; locale: Locale }) {
   const [activeTab, setActiveTab] = useState("Description")
   const [quantity, setQuantity] = useState(1)
   const [selectedColor, setSelectedColor] = useState("")
@@ -40,6 +39,8 @@ export function ProductDetailClient({ product, related }: { product: Product; re
   const [pending, startTransition] = useTransition()
   const [added, setAdded] = useState(false)
   const router = useRouter()
+  const P = dict.product
+  const lp = (href: string) => localePath(locale, href)
 
   const colors = useMemo(() => {
     if (!product.variants?.length) return []
@@ -96,9 +97,9 @@ export function ProductDetailClient({ product, related }: { product: Product; re
       <div className="border-b border-mainwave-border">
         <div className="container-site py-3">
           <div className="flex items-center gap-1 text-xs text-gray-500">
-            <Link href="/" className="hover:text-mainwave-red transition-colors">Home</Link>
+            <Link href={lp("/")} className="hover:text-mainwave-red transition-colors">{P.breadcrumbHome}</Link>
             <ChevronRightIcon className="w-3 h-3" />
-            <Link href="/shop" className="hover:text-mainwave-red transition-colors">{breadcrumbVehicle}</Link>
+            <Link href={lp("/shop")} className="hover:text-mainwave-red transition-colors">{breadcrumbVehicle}</Link>
             <ChevronRightIcon className="w-3 h-3" />
             <span className="text-mainwave-black">{product.name}</span>
           </div>
@@ -120,7 +121,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
 
             <div className="flex items-center gap-2 mb-3">
               <StarDisplay rating={product.rating} />
-              <span className="text-sm text-gray-500">({product.reviewCount} reviews)</span>
+              <span className="text-sm text-gray-500">({product.reviewCount} {P.reviews})</span>
             </div>
 
             <div className="flex items-center gap-3 mb-4">
@@ -130,7 +131,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
               )}
               {product.isSale && (
                 <span className="bg-mainwave-red text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider">
-                  SALE {salePercentage}% OFF
+                  {P.saleOff} {salePercentage}%
                 </span>
               )}
             </div>
@@ -142,7 +143,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
             {hasVariants && colors.length > 0 && (
               <div className="mb-4">
                 <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">
-                  Colour / Style
+                  {P.colourStyle}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {colors.map((opt) => (
@@ -168,7 +169,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
 
             {hasSizes && (
               <div className="mb-4">
-                <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">Size</h3>
+                <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">{P.size}</h3>
                 <div className="flex flex-wrap gap-2">
                   {sizes.map((size) => (
                     <button
@@ -210,7 +211,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
                 </button>
               </div>
               <div className="text-xs text-gray-500">
-                Usually ships in 1-2 business days
+                {P.shipsIn}
               </div>
             </div>
 
@@ -230,35 +231,35 @@ export function ProductDetailClient({ product, related }: { product: Product; re
                 className="flex-1 flex items-center justify-center gap-2 bg-mainwave-red text-white text-sm font-bold py-3 px-6 hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <CartIcon className="w-5 h-5" />
-                {pending ? "Adding..." : added ? "Added!" : "Add to Cart"}
+                {pending ? P.adding : added ? P.added : P.addToCart}
               </button>
               <button
                 onClick={() => {
                   if (!selectedVariant) return
                   startTransition(async () => {
                     await addToCart(selectedVariant.id, quantity)
-                    router.push("/shop/cart")
+                    router.push(lp("/shop/cart"))
                   })
                 }}
                 disabled={pending || !selectedVariant}
                 className="flex-1 bg-mainwave-black text-white text-sm font-bold py-3 px-6 hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Buy Now
+                {P.buyNow}
               </button>
             </div>
 
             <div className="space-y-2 text-xs text-mainwave-text">
               <div className="flex items-center gap-2">
                 <TruckIcon className="w-4 h-4 text-mainwave-red" />
-                <span>Free shipping over $150</span>
+                <span>{P.freeShipping}</span>
               </div>
               <div className="flex items-center gap-2">
                 <ShieldIcon className="w-4 h-4 text-mainwave-red" />
-                <span>3 Year Warranty</span>
+                <span>{P.warrantyBadge}</span>
               </div>
               <div className="flex items-center gap-2">
                 <PhoneIcon className="w-4 h-4 text-mainwave-red" />
-                <span>Call us: (03) 9262 6977</span>
+                <span>{P.callUs}</span>
               </div>
             </div>
           </div>
@@ -267,18 +268,18 @@ export function ProductDetailClient({ product, related }: { product: Product; re
         <div className="mt-10 md:mt-14">
           <div className="border-b border-mainwave-border">
             <div className="flex overflow-x-auto">
-              {tabs.map((tab) => (
+              {P.tabs.map((tab) => (
                 <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
                   className={cn(
                     "px-4 md:px-6 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors whitespace-nowrap",
-                    activeTab === tab
+                    activeTab === tab.key
                       ? "border-mainwave-red text-mainwave-red"
                       : "border-transparent text-gray-500 hover:text-mainwave-red"
                   )}
                 >
-                  {tab}
+                  {tab.label}
                 </button>
               ))}
             </div>
@@ -305,28 +306,28 @@ export function ProductDetailClient({ product, related }: { product: Product; re
                 <table className="w-full text-sm">
                   <tbody>
                     <tr className="border-b border-mainwave-border">
-                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Material</td>
-                      <td className="py-3 text-mainwave-text">{product.material ?? "Premium 4mm Neoprene"}</td>
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">{P.specs.material}</td>
+                      <td className="py-3 text-mainwave-text">{product.material ?? P.specs.defaultMaterial}</td>
                     </tr>
                     <tr className="border-b border-mainwave-border">
-                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Category</td>
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">{P.specs.category}</td>
                       <td className="py-3 text-mainwave-text">{product.category}</td>
                     </tr>
                     <tr className="border-b border-mainwave-border">
-                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Vehicle</td>
-                      <td className="py-3 text-mainwave-text">{product.vehicle || "Universal"}</td>
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">{P.specs.vehicle}</td>
+                      <td className="py-3 text-mainwave-text">{product.vehicle || P.specs.universal}</td>
                     </tr>
                     <tr className="border-b border-mainwave-border">
-                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Warranty</td>
-                      <td className="py-3 text-mainwave-text">3 Years</td>
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">{P.specs.warranty}</td>
+                      <td className="py-3 text-mainwave-text">{P.specs.warrantyValue}</td>
                     </tr>
                     <tr className="border-b border-mainwave-border">
-                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Installation</td>
-                      <td className="py-3 text-mainwave-text">DIY - no tools required</td>
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">{P.specs.installation}</td>
+                      <td className="py-3 text-mainwave-text">{P.specs.installationValue}</td>
                     </tr>
                     <tr className="border-b border-mainwave-border">
-                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">Cleaning</td>
-                      <td className="py-3 text-mainwave-text">Machine washable</td>
+                      <td className="py-3 pr-4 font-medium text-mainwave-black w-1/3">{P.specs.cleaning}</td>
+                      <td className="py-3 text-mainwave-text">{P.specs.cleaningValue}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -335,15 +336,15 @@ export function ProductDetailClient({ product, related }: { product: Product; re
 
             {activeTab === "Warranty" && (
               <div className="max-w-3xl">
-                <h3 className="text-base font-bold text-mainwave-black mb-3">3 Year Manufacturer&apos;s Warranty</h3>
+                <h3 className="text-base font-bold text-mainwave-black mb-3">{P.warrantyTab.title}</h3>
                 <p className="text-sm text-mainwave-text leading-relaxed mb-4">
-                  All Mainwave products are backed by a comprehensive 3-year manufacturer&apos;s warranty against defects in materials and workmanship. We stand by the quality of our Australian-made products.
+                  {P.warrantyTab.p1}
                 </p>
                 <p className="text-sm text-mainwave-text leading-relaxed mb-4">
-                  The warranty covers stitching separation, material degradation, and fastener failure under normal use. It does not cover damage caused by improper installation, accidents, or intentional misuse.
+                  {P.warrantyTab.p2}
                 </p>
                 <p className="text-sm text-mainwave-text leading-relaxed">
-                  For warranty claims, please contact our customer service team with your order number and photographs of the issue.
+                  {P.warrantyTab.p3}
                 </p>
               </div>
             )}
@@ -354,7 +355,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
                   <div className="text-center">
                     <p className="text-3xl font-bold text-mainwave-black">{product.rating.toFixed(1)}</p>
                     <StarDisplay rating={product.rating} />
-                    <p className="text-xs text-gray-500 mt-1">{product.reviewCount} reviews</p>
+                    <p className="text-xs text-gray-500 mt-1">{product.reviewCount} {P.reviews}</p>
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -370,7 +371,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
                   ))}
                 </div>
                 <p className="text-xs text-gray-400 mt-4 text-center">
-                  Sample reviews shown. Real customer reviews coming soon.
+                  {P.sampleReviewsNote}
                 </p>
               </div>
             )}
@@ -379,7 +380,7 @@ export function ProductDetailClient({ product, related }: { product: Product; re
 
         {related.length > 0 && (
           <div className="mt-10 md:mt-14 pt-8 md:pt-10 border-t border-mainwave-border">
-            <h2 className="text-lg md:text-xl font-bold text-mainwave-black mb-6">More From This Category</h2>
+            <h2 className="text-lg md:text-xl font-bold text-mainwave-black mb-6">{P.moreFromCategory}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               {related.map((p) => (
                 <ProductCard key={p.id} product={p} />

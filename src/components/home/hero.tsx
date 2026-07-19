@@ -1,8 +1,9 @@
 import Link from "next/link"
 import { Reveal } from "@/components/motion/reveal"
 import { HeroVideo } from "@/components/home/hero-video"
+import { localePath, type Dictionary, type Locale } from "@/i18n"
 
-export function Hero() {
+export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   return (
     <section className="relative bg-ink overflow-hidden">
       {/* Ambient video + overlays */}
@@ -15,46 +16,45 @@ export function Hero() {
       <div className="container-wide relative z-10 flex min-h-[88vh] flex-col justify-center py-24 md:py-32">
         <Reveal>
           <p className="text-mainwave-red text-xs md:text-sm font-bold tracking-[0.4em] uppercase mb-6">
-            Mainwave — Est. on 30+ years of craft
+            {dict.hero.kicker}
           </p>
         </Reveal>
 
         <h1 className="text-display text-[clamp(3.2rem,10.5vw,9rem)] text-bone">
           <Reveal delay={100}>
-            <span className="block">Built for</span>
+            <span className="block">{dict.hero.line1}</span>
           </Reveal>
           <Reveal delay={220}>
-            <span className="block text-mainwave-red">the journey<span className="text-bone">.</span></span>
+            <span className="block text-mainwave-red">{dict.hero.line2}</span>
           </Reveal>
         </h1>
 
         <Reveal delay={340}>
           <p className="mt-8 max-w-xl text-bone/60 text-base md:text-lg leading-relaxed">
-            Seat covers. Camping. Apparel. Merch. Factory-direct gear made in
-            Thailand — honest quality, priced for everyone.
+            {dict.hero.sub}
           </p>
         </Reveal>
 
         <Reveal delay={460}>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
-              href="/shop"
+              href={localePath(locale, "/shop")}
               className="bg-mainwave-red text-white text-sm font-bold uppercase tracking-[0.2em] px-8 py-4 hover:bg-red-700 transition-colors"
             >
-              Shop the range
+              {dict.hero.ctaPrimary}
             </Link>
             <Link
               href="#story"
               className="border border-bone/25 text-bone text-sm font-bold uppercase tracking-[0.2em] px-8 py-4 hover:border-mainwave-red hover:text-mainwave-red transition-colors"
             >
-              Our story
+              {dict.hero.ctaSecondary}
             </Link>
           </div>
         </Reveal>
 
         <Reveal delay={600}>
           <div className="mt-16 flex items-center gap-3 text-bone/30" aria-hidden="true">
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Scroll</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em]">{dict.hero.scroll}</span>
             <span className="block w-16 h-px bg-bone/20 overflow-hidden relative">
               <span className="absolute inset-y-0 left-0 w-6 bg-mainwave-red animate-pulse" />
             </span>

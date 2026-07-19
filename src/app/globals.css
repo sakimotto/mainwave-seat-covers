@@ -112,6 +112,13 @@
   html {
     @apply font-sans;
   }
+  /* Thai: Noto Sans Thai + neutral letter-spacing (wide tracking breaks Thai glyphs) */
+  html[lang="th"] {
+    font-family: var(--font-noto-thai), "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  }
+  html[lang="th"] * {
+    letter-spacing: normal;
+  }
 }
 
 @layer utilities {

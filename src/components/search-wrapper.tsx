@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { SearchModal } from "@/components/search-modal"
+import type { Dictionary, Locale } from "@/i18n"
 import type { Product, Vehicle } from "@/types"
 
-export function SearchWrapper({ vehicles }: { vehicles: Vehicle[] }) {
+export function SearchWrapper({ vehicles, dict, locale }: { vehicles: Vehicle[]; dict: Dictionary; locale: Locale }) {
   const [open, setOpen] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
 
@@ -29,6 +30,8 @@ export function SearchWrapper({ vehicles }: { vehicles: Vehicle[] }) {
       onClose={() => setOpen(false)}
       products={products}
       vehicles={vehicles}
+      dict={dict}
+      locale={locale}
     />
   )
 }

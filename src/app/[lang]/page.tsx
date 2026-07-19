@@ -8,21 +8,28 @@ import { Roadmap } from "@/components/home/roadmap";
 import { Testimonials } from "@/components/home/testimonials";
 import { Closer } from "@/components/home/closer";
 import { getPopularProducts } from "@/lib/db";
+import { getDictionary } from "@/i18n";
 
-export default async function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const { locale, dict } = getDictionary(lang);
   const popularProducts = await getPopularProducts();
 
   return (
     <>
-      <Hero />
-      <Ticker />
-      <Worlds />
-      <Story />
-      <Spotlight products={popularProducts.slice(0, 8)} />
-      <Band />
-      <Roadmap />
-      <Testimonials />
-      <Closer />
+      <Hero dict={dict} locale={locale} />
+      <Ticker items={dict.ticker} />
+      <Worlds dict={dict} locale={locale} />
+      <Story dict={dict} />
+      <Spotlight products={popularProducts.slice(0, 8)} dict={dict} locale={locale} />
+      <Band dict={dict} />
+      <Roadmap dict={dict} />
+      <Testimonials dict={dict} />
+      <Closer dict={dict} locale={locale} />
     </>
   );
 }

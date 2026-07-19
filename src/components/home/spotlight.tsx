@@ -1,20 +1,21 @@
 import Link from "next/link"
 import { Reveal } from "@/components/motion/reveal"
+import { localePath, type Dictionary, type Locale } from "@/i18n"
 import type { Product } from "@/types"
 
-export function Spotlight({ products }: { products: Product[] }) {
+export function Spotlight({ products, dict, locale }: { products: Product[]; dict: Dictionary; locale: Locale }) {
   return (
     <section className="bg-ink py-20 md:py-28 overflow-hidden">
       <div className="container-wide">
         <Reveal>
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-mainwave-red text-xs font-bold tracking-[0.4em] uppercase mb-4">03 — The Range</p>
+              <p className="text-mainwave-red text-xs font-bold tracking-[0.4em] uppercase mb-4">{dict.spotlight.kicker}</p>
               <h2 className="text-display text-[clamp(2.2rem,5.5vw,4.5rem)] text-bone">
-                Gear in the wild.
+                {dict.spotlight.title}
               </h2>
             </div>
-            <p className="hidden md:block text-bone/30 text-xs font-bold uppercase tracking-[0.3em]">Scroll →</p>
+            <p className="hidden md:block text-bone/30 text-xs font-bold uppercase tracking-[0.3em]">{dict.spotlight.scrollHint}</p>
           </div>
         </Reveal>
       </div>
@@ -24,7 +25,7 @@ export function Spotlight({ products }: { products: Product[] }) {
           {products.map((product) => (
             <Link
               key={product.id}
-              href={`/product/${product.slug}`}
+              href={localePath(locale, `/product/${product.slug}`)}
               className="group snap-start shrink-0 w-[260px] md:w-[320px] border border-white/10 hover:border-mainwave-red/60 transition-colors duration-500"
             >
               <div className="aspect-square bg-ink-soft overflow-hidden">
@@ -51,11 +52,11 @@ export function Spotlight({ products }: { products: Product[] }) {
             </Link>
           ))}
           <Link
-            href="/shop"
+            href={localePath(locale, "/shop")}
             className="group snap-start shrink-0 w-[260px] md:w-[320px] border border-white/10 hover:border-mainwave-red flex items-center justify-center bg-ink-soft transition-colors duration-500"
           >
             <span className="text-display text-2xl text-bone/40 group-hover:text-mainwave-red transition-colors text-center px-8">
-              View<br />all →
+              {dict.spotlight.viewAll}
             </span>
           </Link>
         </div>

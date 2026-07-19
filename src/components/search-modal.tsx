@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { localePath, type Dictionary, type Locale } from "@/i18n"
 import type { Product, Vehicle } from "@/types"
 
 interface SearchModalProps {
@@ -10,12 +11,15 @@ interface SearchModalProps {
   onClose: () => void
   products: Product[]
   vehicles: Vehicle[]
+  dict: Dictionary
+  locale: Locale
 }
 
-export function SearchModal({ open, onClose, products, vehicles }: SearchModalProps) {
+export function SearchModal({ open, onClose, products, vehicles, dict, locale }: SearchModalProps) {
   const [query, setQuery] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const lp = (href: string) => localePath(locale, href)
 
   useEffect(() => {
     if (open && inputRef.current) {
@@ -44,29 +48,29 @@ export function SearchModal({ open, onClose, products, vehicles }: SearchModalPr
   const results = useMemo(() => {
     if (!query.trim()) return { products: [], vehicles: [] }
     const q = query.toLowerCase()
-    
+
     const matchedProducts = products
-      .filter((p) => 
+      .filter((p) =>
         p.name.toLowerCase().includes(q) ||
         p.vehicle.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q)
       )
       .slice(0, 6)
-    
+
     const matchedVehicles = vehicles
-      .filter((v) => 
+      .filter((v) =>
         v.make.toLowerCase().includes(q) ||
         v.models.some((m) => m.toLowerCase().includes(q))
       )
       .slice(0, 4)
-    
+
     return { products: matchedProducts, vehicles: matchedVehicles }
   }, [query, products, vehicles])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (query.trim()) {
-      router.push(`/shop?q=${encodeURIComponent(query.trim())}`)
+      router.push(lp(`/shop?q=${encodeURIComponent(query.trim())}`))
       handleClose()
     }
   }
@@ -76,11 +80,11 @@ export function SearchModal({ open, onClose, products, vehicles }: SearchModalPr
   return (
     <div className="fixed inset-0 z-[100]">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={handleClose}
       />
-      
+
       {/* Modal */}
       <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden">
         {/* Search input */}
@@ -90,14 +94,14 @@ export function SearchModal({ open, onClose, products, vehicles }: SearchModalPr
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search seat covers, vehicles, merchandise..."
+            placeholder={dict.search.placeholder}
             className="w-full px-6 py-4 text-lg border-0 focus:outline-none focus:ring-0"
           />
           <button
             type="submit"
             className="absolute right-4 top-1/2 -translate-y-1/2 bg-mainwave-red text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
           >
-            Search
+            {dict.search.button}
           </button>
         </form>
 
@@ -107,12 +111,12 @@ export function SearchModal({ open, onClose, products, vehicles }: SearchModalPr
             {/* Vehicles */}
             {results.vehicles.length > 0 && (
               <div className="p-4">
-                <p className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-3">Vehicles</p>
+                <p className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-3">{dict.search.vehicles}</p>
                 <div className="space-y-2">
                   {results.vehicles.map((v) => (
                     <Link
                       key={v.id}
-                      href={`/vehicle/${v.slug}`}
+                      href={lp(`/vehicle/${v.slug}`)}
                       onClick={handleClose}
                       className="flex items-center gap-3 p-2 rounded-lg hover:bg-mainwave-grey transition-colors"
                     >
@@ -121,7 +125,7 @@ export function SearchModal({ open, onClose, products, vehicles }: SearchModalPr
                       </div>
                       <div>
                         <p className="text-sm font-medium text-mainwave-black">{v.make}</p>
-                        <p className="text-xs text-gray-500">{v.models.length} models available</p>
+                        <p className="text-xs text-gray-500">{v.models.length} {dict.search.modelsAvailable}</p>
                       </div>
                     </Link>
                   ))}
@@ -132,12 +136,12 @@ export function SearchModal({ open, onClose, products, vehicles }: SearchModalPr
             {/* Products */}
             {results.products.length > 0 && (
               <div className="p-4">
-                <p className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-3">Products</p>
+                <p className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-3">{dict.search.products}</p>
                 <div className="space-y-2">
                   {results.products.map((p) => (
                     <Link
                       key={p.id}
-                      href={`/product/${p.slug}`}
+                      href={lp(`/product/${p.slug}`)}
                       onClick={handleClose}
                       className="flex items-center gap-3 p-2 rounded-lg hover:bg-mainwave-grey transition-colors"
                     >
@@ -160,17 +164,17 @@ export function SearchModal({ open, onClose, products, vehicles }: SearchModalPr
         {/* No results */}
         {query.trim() && results.products.length === 0 && results.vehicles.length === 0 && (
           <div className="border-t border-mainwave-border p-6 text-center">
-            <p className="text-sm text-gray-500">No results found for &quot;{query}&quot;</p>
-            <p className="text-xs text-gray-400 mt-1">Try searching for a vehicle make or product name</p>
+            <p className="text-sm text-gray-500">{dict.search.noResults} &quot;{query}&quot;</p>
+            <p className="text-xs text-gray-400 mt-1">{dict.search.trySearch}</p>
           </div>
         )}
 
         {/* Quick links */}
         {!query.trim() && (
           <div className="border-t border-mainwave-border p-4">
-            <p className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-3">Popular Searches</p>
+            <p className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-3">{dict.search.popular}</p>
             <div className="flex flex-wrap gap-2">
-              {["Toyota Hilux", "Ford Ranger", "Neoprene", "Front Set", "Full Set"].map((term) => (
+              {dict.search.popularTerms.map((term) => (
                 <button
                   key={term}
                   onClick={() => setQuery(term)}

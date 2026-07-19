@@ -6,15 +6,7 @@ import type { Product, Vehicle } from "@/types"
 import { ChevronRightIcon } from "@/components/icons"
 import { cn } from "@/lib/utils"
 import { ProductCard } from "@/components/product-card"
-
-const categories = ["All", "Front Set", "Rear Set", "Full Set", "Apparel", "Car Accessories", "Lifestyle"]
-
-const sortOptions = [
-  { label: "Popularity", value: "popularity" },
-  { label: "Price: Low to High", value: "price-asc" },
-  { label: "Price: High to Low", value: "price-desc" },
-  { label: "Newest", value: "newest" },
-]
+import { localePath, type Dictionary, type Locale } from "@/i18n"
 
 const ITEMS_PER_PAGE = 9
 
@@ -23,11 +15,15 @@ export function ShopPageClient({
   initialVehicles,
   initialCategory,
   initialQuery,
+  dict,
+  locale,
 }: {
   initialProducts: Product[]
   initialVehicles: Vehicle[]
   initialCategory?: string
   initialQuery?: string
+  dict: Dictionary
+  locale: Locale
 }) {
   const [selectedMakes, setSelectedMakes] = useState<string[]>([])
   const [selectedCategory, setSelectedCategory] = useState(initialCategory ?? "All")
@@ -35,6 +31,7 @@ export function ShopPageClient({
   const [sort, setSort] = useState("popularity")
   const [page, setPage] = useState(1)
   const [showFilters, setShowFilters] = useState(false)
+  const S = dict.shop
 
   const filtered = useMemo(() => {
     let result = [...initialProducts]
@@ -92,14 +89,14 @@ export function ShopPageClient({
       <div className="bg-white border-b border-mainwave-border">
         <div className="container-site py-4 md:py-6">
           <div className="flex items-center gap-1 text-xs text-gray-500 mb-2">
-            <Link href="/" className="hover:text-mainwave-red transition-colors">Home</Link>
+            <Link href={localePath(locale, "/")} className="hover:text-mainwave-red transition-colors">{S.breadcrumbHome}</Link>
             <ChevronRightIcon className="w-3 h-3" />
-            <span className="text-mainwave-black">Shop</span>
+            <span className="text-mainwave-black">{S.breadcrumbShop}</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-mainwave-black">
-            {initialQuery ? `Results for "${initialQuery}"` : "All Products"}
+            {initialQuery ? `${S.resultsFor} "${initialQuery}"` : S.title}
           </h1>
-          <p className="text-sm text-gray-500 mt-1">{filtered.length} products found</p>
+          <p className="text-sm text-gray-500 mt-1">{filtered.length} {S.productsFound}</p>
         </div>
       </div>
 
@@ -108,7 +105,7 @@ export function ShopPageClient({
           <aside className="hidden md:block w-64 flex-shrink-0">
             <div className="bg-white border border-mainwave-border p-5 space-y-6">
               <div>
-                <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-3">Vehicle Make</h3>
+                <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-3">{S.vehicleMake}</h3>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {initialVehicles.map((v) => (
                     <label key={v.id} className="flex items-center gap-2 cursor-pointer group">
@@ -127,27 +124,27 @@ export function ShopPageClient({
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-3">Category</h3>
+                <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-3">{S.category}</h3>
                 <div className="space-y-2">
-                  {categories.map((cat) => (
+                  {S.categories.map((cat) => (
                     <button
-                      key={cat}
-                      onClick={() => { setSelectedCategory(cat); setPage(1) }}
+                      key={cat.key}
+                      onClick={() => { setSelectedCategory(cat.key); setPage(1) }}
                       className={cn(
                         "block w-full text-left text-xs py-1.5 px-2 transition-colors",
-                        selectedCategory === cat
+                        selectedCategory === cat.key
                           ? "bg-mainwave-red text-white font-medium"
                           : "text-mainwave-text hover:text-mainwave-red"
                       )}
                     >
-                      {cat}
+                      {cat.label}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-3">Price Range</h3>
+                <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-3">{S.priceRange}</h3>
                 <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
                   <span>${priceRange[0]}</span>
                   <span>-</span>
@@ -172,16 +169,16 @@ export function ShopPageClient({
                 onClick={() => setShowFilters(!showFilters)}
                 className="md:hidden text-xs font-medium text-mainwave-red uppercase tracking-wider"
               >
-                {showFilters ? "Hide Filters" : "Show Filters"}
+                {showFilters ? S.hideFilters : S.showFilters}
               </button>
               <div className="flex items-center gap-2 ml-auto">
-                <span className="text-xs text-gray-500">Sort by:</span>
+                <span className="text-xs text-gray-500">{S.sortBy}</span>
                 <select
                   value={sort}
                   onChange={(e) => setSort(e.target.value)}
                   className="text-xs border border-mainwave-border bg-white px-2 py-1.5 text-mainwave-text focus:outline-none focus:border-mainwave-red"
                 >
-                  {sortOptions.map((opt) => (
+                  {S.sortOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
@@ -191,7 +188,7 @@ export function ShopPageClient({
             {showFilters && (
               <div className="md:hidden bg-white border border-mainwave-border p-4 mb-4 space-y-4">
                 <div>
-                  <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">Vehicle Make</h3>
+                  <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">{S.vehicleMake}</h3>
                   <div className="grid grid-cols-2 gap-1">
                     {initialVehicles.map((v) => (
                       <label key={v.id} className="flex items-center gap-1.5 cursor-pointer">
@@ -202,11 +199,11 @@ export function ShopPageClient({
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">Category</h3>
+                  <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">{S.category}</h3>
                   <div className="flex flex-wrap gap-1">
-                    {categories.map((cat) => (
-                      <button key={cat} onClick={() => { setSelectedCategory(cat); setPage(1) }} className={cn("text-xs px-2 py-1 border transition-colors", selectedCategory === cat ? "bg-mainwave-red text-white border-mainwave-red" : "border-mainwave-border text-mainwave-text hover:text-mainwave-red")}>
-                        {cat}
+                    {S.categories.map((cat) => (
+                      <button key={cat.key} onClick={() => { setSelectedCategory(cat.key); setPage(1) }} className={cn("text-xs px-2 py-1 border transition-colors", selectedCategory === cat.key ? "bg-mainwave-red text-white border-mainwave-red" : "border-mainwave-border text-mainwave-text hover:text-mainwave-red")}>
+                        {cat.label}
                       </button>
                     ))}
                   </div>
@@ -216,7 +213,7 @@ export function ShopPageClient({
 
             {paginated.length === 0 ? (
               <div className="bg-white border border-mainwave-border p-8 text-center">
-                <p className="text-gray-500 text-sm">No products match your filters.</p>
+                <p className="text-gray-500 text-sm">{S.noMatch}</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">

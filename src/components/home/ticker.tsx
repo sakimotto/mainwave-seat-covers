@@ -1,13 +1,4 @@
-const items = [
-  "Seat Covers",
-  "Camping",
-  "Apparel",
-  "Merch",
-  "Factory Direct",
-  "Made in Thailand",
-]
-
-export function Ticker() {
+export function Ticker({ items }: { items: string[] }) {
   const row = [...items, ...items]
   return (
     <div className="bg-mainwave-red overflow-hidden border-y border-ink/20 py-3" aria-hidden="true">
