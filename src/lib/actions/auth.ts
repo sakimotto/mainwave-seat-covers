@@ -39,6 +39,8 @@ function generateReferralCode(): string {
 async function createSession(customerId: string): Promise<void> {
   const token = randomBytes(32).toString("hex")
   const expiresAt = new Date(Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000)
+  // Opportunistic sweep: clear expired sessions on every new login
+  await prisma.session.deleteMany({ where: { expiresAt: { lt: new Date() } } })
   await prisma.session.create({ data: { token, customerId, expiresAt } })
   const cookieStore = await cookies()
   cookieStore.set(SESSION_COOKIE, token, {
