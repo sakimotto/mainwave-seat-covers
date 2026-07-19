@@ -3,7 +3,17 @@ import Image from "next/image";
 import { formatMoney } from "@/lib/format";
 import type { Product } from "@/types";
 
-export function ProductCard({ product, showRating }: { product: Product; showRating?: boolean }) {
+export function ProductCard({
+  product,
+  showRating,
+  matchesGarage,
+  fitsLabel,
+}: {
+  product: Product;
+  showRating?: boolean;
+  matchesGarage?: boolean;
+  fitsLabel?: string;
+}) {
   return (
     <Link href={`/product/${product.slug}`} className="group block">
       <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 aspect-[4/3] mb-3 overflow-hidden rounded-lg">
@@ -15,6 +25,11 @@ export function ProductCard({ product, showRating }: { product: Product; showRat
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+        {matchesGarage && fitsLabel && (
+          <span className="absolute top-2 left-2 bg-brand-accent text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1">
+            {fitsLabel}
+          </span>
+        )}
       </div>
       {showRating && (
         <div className="flex items-center gap-1 mb-1.5">

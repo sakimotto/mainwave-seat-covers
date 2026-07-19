@@ -6,8 +6,10 @@ import { Spotlight } from "@/components/home/spotlight";
 import { Band } from "@/components/home/band";
 import { Roadmap } from "@/components/home/roadmap";
 import { Closer } from "@/components/home/closer";
+import { GarageStrip } from "@/components/home/garage-strip";
 import { getCommerce } from "@/commerce";
 import { getDictionary } from "@/i18n";
+import { getSessionCustomer } from "@/lib/actions/auth";
 
 export default async function HomePage({
   params,
@@ -16,11 +18,19 @@ export default async function HomePage({
 }) {
   const { lang } = await params;
   const { locale, dict } = getDictionary(lang);
-  const popularProducts = await getCommerce().catalog.getPopularProducts(locale);
+  const [popularProducts, customer] = await Promise.all([
+    getCommerce().catalog.getPopularProducts(locale),
+    getSessionCustomer(),
+  ]);
+
+  const garageMakes = customer ? [...new Set(customer.garage.map((g) => g.vehicle.make))] : [];
 
   return (
     <>
       <Hero dict={dict} locale={locale} />
+      {garageMakes.length > 0 && (
+        <GarageStrip makes={garageMakes} dict={dict} locale={locale} />
+      )}
       <Ticker items={dict.ticker} />
       <Worlds dict={dict} locale={locale} />
       <Story dict={dict} />

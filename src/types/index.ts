@@ -27,6 +27,7 @@ export interface Product {
   rating: number;
   reviewCount: number;
   vehicle: string;
+  vehicleId?: string;
   category: string;
   isSale?: boolean;
   description?: string;

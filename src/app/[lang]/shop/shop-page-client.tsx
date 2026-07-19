@@ -7,6 +7,7 @@ import { ChevronRightIcon } from "@/components/icons"
 import { cn } from "@/lib/utils"
 import { ProductCard } from "@/components/product-card"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
+import { matchesGarage } from "@/lib/fitment"
 
 const ITEMS_PER_PAGE = 9
 
@@ -17,6 +18,8 @@ export function ShopPageClient({
   initialQuery,
   dict,
   locale,
+  garageVehicleIds,
+  initialMyVehicles,
 }: {
   initialProducts: Product[]
   initialVehicles: Vehicle[]
@@ -24,6 +27,8 @@ export function ShopPageClient({
   initialQuery?: string
   dict: Dictionary
   locale: Locale
+  garageVehicleIds: string[]
+  initialMyVehicles?: boolean
 }) {
   const [selectedMakes, setSelectedMakes] = useState<string[]>([])
   const [selectedCategory, setSelectedCategory] = useState(initialCategory ?? "All")
@@ -31,10 +36,16 @@ export function ShopPageClient({
   const [sort, setSort] = useState("popularity")
   const [page, setPage] = useState(1)
   const [showFilters, setShowFilters] = useState(false)
+  const [myVehiclesOnly, setMyVehiclesOnly] = useState(initialMyVehicles ?? false)
   const S = dict.shop
+  const hasGarage = garageVehicleIds.length > 0
 
   const filtered = useMemo(() => {
     let result = [...initialProducts]
+
+    if (myVehiclesOnly && hasGarage) {
+      result = result.filter((p) => matchesGarage(p, garageVehicleIds))
+    }
 
     if (initialQuery?.trim()) {
       const q = initialQuery.toLowerCase()
@@ -72,7 +83,7 @@ export function ShopPageClient({
     }
 
     return result
-  }, [initialProducts, initialQuery, selectedMakes, selectedCategory, priceRange, sort])
+  }, [initialProducts, initialQuery, myVehiclesOnly, hasGarage, garageVehicleIds, selectedMakes, selectedCategory, priceRange, sort])
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
@@ -171,6 +182,19 @@ export function ShopPageClient({
               >
                 {showFilters ? S.hideFilters : S.showFilters}
               </button>
+              {hasGarage && (
+                <button
+                  onClick={() => { setMyVehiclesOnly(!myVehiclesOnly); setPage(1) }}
+                  className={cn(
+                    "text-xs font-bold uppercase tracking-wider px-3 py-1.5 border transition-colors",
+                    myVehiclesOnly
+                      ? "bg-brand-accent text-white border-brand-accent"
+                      : "border-mainwave-border text-mainwave-text hover:border-brand-accent"
+                  )}
+                >
+                  {dict.garage.myVehicles}
+                </button>
+              )}
               <div className="flex items-center gap-2 ml-auto">
                 <span className="text-xs text-gray-500">{S.sortBy}</span>
                 <select
@@ -218,7 +242,12 @@ export function ShopPageClient({
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 {paginated.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    matchesGarage={hasGarage && matchesGarage(product, garageVehicleIds)}
+                    fitsLabel={dict.garage.fitsYourVehicle}
+                  />
                 ))}
               </div>
             )}

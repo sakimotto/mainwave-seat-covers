@@ -25,7 +25,7 @@ function StarDisplay({ rating }: { rating: number }) {
   )
 }
 
-export function ProductDetailClient({ product, related, dict, locale }: { product: Product; related: Product[]; dict: Dictionary; locale: Locale }) {
+export function ProductDetailClient({ product, related, dict, locale, fitsYourVehicle }: { product: Product; related: Product[]; dict: Dictionary; locale: Locale; fitsYourVehicle?: boolean }) {
   const [activeTab, setActiveTab] = useState("Description")
   const [quantity, setQuantity] = useState(1)
   const [selectedColor, setSelectedColor] = useState("")
@@ -120,6 +120,12 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
             <h1 className="text-xl md:text-2xl font-bold text-mainwave-black leading-tight mb-3">
               {product.name}
             </h1>
+
+            {fitsYourVehicle && (
+              <p className="inline-block bg-brand-accent text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 mb-3">
+                {dict.garage.fitsYourVehicle}
+              </p>
+            )}
 
             <div className="flex items-center gap-2 mb-3">
               <StarDisplay rating={product.rating} />

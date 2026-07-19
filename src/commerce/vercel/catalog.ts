@@ -16,7 +16,7 @@ const mapVehicle = (v: {
 
 function mapProduct(p: {
   id: string; name: string; slug: string; image: string;
-  category: string | null; vehicleLabel: string | null;
+  category: string | null; vehicleLabel: string | null; vehicleId: string | null;
   isSale: boolean; description: string | null; features: string[];
   material: string | null;
   nameTh: string | null; descriptionTh: string | null;
@@ -38,6 +38,7 @@ function mapProduct(p: {
     rating: Math.round(avgRating * 10) / 10 || 4.5,
     reviewCount: p.reviews.length || 0,
     vehicle: p.vehicleLabel ?? "",
+    vehicleId: p.vehicleId ?? undefined,
     category: p.category ?? "",
     isSale: p.isSale || undefined,
     description: (th && p.descriptionTh) || p.description || undefined,
