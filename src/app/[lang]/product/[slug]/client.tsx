@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useTransition } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import type { Product } from "@/types"
 import { StarIcon, TruckIcon, ShieldIcon, PhoneIcon, ChevronRightIcon, CartIcon } from "@/components/icons"
@@ -103,7 +104,14 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
           <div>
             <div className="bg-mainwave-grey aspect-square mb-3 relative overflow-hidden rounded-lg">
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                priority
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover"
+              />
             </div>
           </div>
 

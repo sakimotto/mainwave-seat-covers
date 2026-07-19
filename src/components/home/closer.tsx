@@ -1,15 +1,18 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Reveal } from "@/components/motion/reveal"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
 
 export function Closer({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   return (
     <section className="relative bg-mainwave-red overflow-hidden">
-      <img
+      <Image
         src="/images/lifestyle/coast-cliffs.jpg"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover opacity-25"
+        fill
+        sizes="100vw"
+        className="object-cover opacity-25"
       />
       <div className="absolute inset-0 bg-mainwave-red/70" aria-hidden="true" />
       <div className="absolute inset-0 bg-grain opacity-40" aria-hidden="true" />

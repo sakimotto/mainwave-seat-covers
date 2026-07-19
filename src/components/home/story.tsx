@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Reveal } from "@/components/motion/reveal"
 import type { Dictionary } from "@/i18n"
 
@@ -22,16 +23,24 @@ export function Story({ dict }: { dict: Dictionary }) {
               {dict.story.p2}
             </p>
             <div className="mt-8 grid grid-cols-2 gap-3">
-              <img
-                src="/images/lifestyle/journey-hiker.jpg"
-                alt="Hiker overlooking a mountain valley at dawn"
-                className="w-full h-48 md:h-56 object-cover border border-white/10"
-              />
-              <img
-                src="/images/lifestyle/forest-path.jpg"
-                alt="Winding path through a dark forest"
-                className="w-full h-48 md:h-56 object-cover border border-white/10 mt-6"
-              />
+              <div className="relative h-48 md:h-56 border border-white/10">
+                <Image
+                  src="/images/lifestyle/journey-hiker.jpg"
+                  alt="Hiker overlooking a mountain valley at dawn"
+                  fill
+                  sizes="(min-width: 1024px) 25vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-48 md:h-56 border border-white/10 mt-6">
+                <Image
+                  src="/images/lifestyle/forest-path.jpg"
+                  alt="Winding path through a dark forest"
+                  fill
+                  sizes="(min-width: 1024px) 25vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </Reveal>
         </div>

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Reveal } from "@/components/motion/reveal"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
 import type { Product } from "@/types"
@@ -28,11 +29,13 @@ export function Spotlight({ products, dict, locale }: { products: Product[]; dic
               href={localePath(locale, `/product/${product.slug}`)}
               className="group snap-start shrink-0 w-[260px] md:w-[320px] border border-white/10 hover:border-mainwave-red/60 transition-colors duration-500"
             >
-              <div className="aspect-square bg-ink-soft overflow-hidden">
-                <img
+              <div className="relative aspect-square bg-ink-soft overflow-hidden">
+                <Image
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  sizes="(min-width: 768px) 320px, 260px"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="p-4 border-t border-white/10">

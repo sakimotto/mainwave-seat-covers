@@ -1,13 +1,16 @@
+import Image from "next/image"
 import { Reveal } from "@/components/motion/reveal"
 import type { Dictionary } from "@/i18n"
 
 export function Band({ dict }: { dict: Dictionary }) {
   return (
     <section className="relative h-[55vh] min-h-[400px] overflow-hidden">
-      <img
+      <Image
         src="/images/lifestyle/band-blacksand.jpg"
         alt="Waves breaking against black rock on a dark shoreline"
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        sizes="100vw"
+        className="object-cover"
       />
       <div className="absolute inset-0 bg-ink/55" aria-hidden="true" />
       <div className="absolute inset-0 bg-gradient-to-b from-ink via-transparent to-ink" aria-hidden="true" />

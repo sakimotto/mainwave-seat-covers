@@ -1,15 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/types";
 
 export function ProductCard({ product, showRating }: { product: Product; showRating?: boolean }) {
   return (
     <Link href={`/product/${product.slug}`} className="group block">
       <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 aspect-[4/3] mb-3 overflow-hidden rounded-lg">
-        <img
+        <Image
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
+          fill
+          sizes="(min-width: 768px) 25vw, 50vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
       </div>
