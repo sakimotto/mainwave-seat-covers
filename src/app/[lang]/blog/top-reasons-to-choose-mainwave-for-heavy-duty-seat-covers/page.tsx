@@ -41,7 +41,7 @@ export default function TopReasonsPage() {
             When it comes to protecting your vehicle&apos;s interior, not all seat covers are created equal. Mainwave Seat Covers has established itself as Australia&apos;s premier choice for heavy-duty neoprene seat covers. Here are the top reasons why Mainwave stands out from the competition.
           </p>
 
-          <h2 className="text-lg font-bold text-mainwave-black mt-8 mb-3">1. Australian Made Quality</h2>
+          <h2 className="text-lg font-bold text-mainwave-black mt-8 mb-3">1. Factory-Direct Quality</h2>
           <p className="leading-relaxed mb-4">
             Every Mainwave seat cover is designed and manufactured right here in Australia. Our Melbourne-based facility has over 30 years of experience in textile engineering, ensuring each set meets the highest standards of quality and durability. By choosing Mainwave, you are supporting local manufacturing and Australian jobs.
           </p>
@@ -73,7 +73,7 @@ export default function TopReasonsPage() {
 
           <h2 className="text-lg font-bold text-mainwave-black mt-8 mb-3">Why Mainwave Stands Out</h2>
           <p className="leading-relaxed mb-4">
-            In a market flooded with cheap imported seat covers, Mainwave differentiates itself through genuine Australian manufacturing, premium materials, and a commitment to customer satisfaction. Our covers are not just accessories - they are investments in protecting your vehicle.
+            In a market flooded with cheap imported seat covers, Mainwave differentiates itself through factory-direct manufacturing in our own Thailand facility, premium materials, and a commitment to customer satisfaction. Our covers are not just accessories - they are investments in protecting your vehicle.
           </p>
 
           <h2 className="text-lg font-bold text-mainwave-black mt-8 mb-3">Conclusion</h2>

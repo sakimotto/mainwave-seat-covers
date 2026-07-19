@@ -4,7 +4,7 @@ import { ShieldIcon, TruckIcon, StarIcon, ClockIcon } from "@/components/icons";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Learn about Mainwave Seat Covers - 30+ years of textile engineering experience in Melbourne, Australia. Premium custom neoprene seat covers.",
+    "Learn about Mainwave Seat Covers - an Australian brand with 30+ years of textile engineering experience, made in our own Thailand factory. Premium custom neoprene seat covers.",
 };
 
 const features = [
@@ -16,9 +16,9 @@ const features = [
   },
   {
     icon: ShieldIcon,
-    title: "Australian Made",
+    title: "Factory Direct",
     description:
-      "Proudly designed and manufactured in Melbourne, Australia. Supporting local jobs and Australian quality standards.",
+      "An Australian brand made in our own Thailand factory. No middlemen — honest quality at honest prices.",
   },
   {
     icon: TruckIcon,
@@ -44,8 +44,8 @@ export default function AboutUsPage() {
             About Mainwave Seat Covers
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            Australian made premium neoprene seat covers backed by over three
-            decades of textile engineering excellence.
+            Premium neoprene seat covers made in our own Thailand factory,
+            backed by over three decades of textile engineering excellence.
           </p>
         </div>
       </section>

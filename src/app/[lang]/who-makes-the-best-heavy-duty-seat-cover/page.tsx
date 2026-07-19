@@ -59,17 +59,17 @@ export default function HeavyDutyPage() {
                 The Australian market offers several options for heavy-duty seat covers. Imported polyester and canvas brands come in at lower price points but typically lack the durability and fit of premium alternatives. Universal-fit covers from overseas manufacturers often shift around, bunch up, and wear out within months. Some local competitors offer canvas or PVC covers, but these materials lack the comfort and water resistance that neoprene provides.
               </p>
               <p className="leading-relaxed mb-4">
-                Mainwave Seat Covers sits at the premium end of the market, and for good reason. Our 4mm neoprene material, custom vehicle-specific patterns, and Australian manufacturing set us apart from every competitor. When you compare the long-term value, Mainwave covers often outlast cheaper alternatives by several years.
+                Mainwave Seat Covers sits at the premium end of the market, and for good reason. Our 4mm neoprene material, custom vehicle-specific patterns, and factory-direct manufacturing set us apart from every competitor. When you compare the long-term value, Mainwave covers often outlast cheaper alternatives by several years.
               </p>
 
               <h2 className="text-lg font-bold text-mainwave-black mt-8 mb-3">Why Mainwave Wins</h2>
               <p className="leading-relaxed mb-4">
-                Mainwave&apos;s heavy-duty seat covers are Australian made, designed and manufactured in our Melbourne facility. Every set is cut and sewn to custom patterns specific to your vehicle&apos;s make and model — no universal-fit compromises. Our 4mm neoprene material provides superior impact absorption, thermal insulation, and waterproof protection. With reinforced double-stitched seams, UV-stabilised fabric, and a comprehensive warranty, Mainwave covers are engineered to outlast the competition.
+                Mainwave&apos;s heavy-duty seat covers are factory direct — an Australian brand with 30+ years of textile craft, manufactured in our own Thailand facility. Every set is cut and sewn to custom patterns specific to your vehicle&apos;s make and model — no universal-fit compromises. Our 4mm neoprene material provides superior impact absorption, thermal insulation, and waterproof protection. With reinforced double-stitched seams, UV-stabilised fabric, and a comprehensive warranty, Mainwave covers are engineered to outlast the competition.
               </p>
 
               <h2 className="text-lg font-bold text-mainwave-black mt-8 mb-3">Conclusion</h2>
               <p className="leading-relaxed mb-4">
-                When it comes to heavy-duty seat covers in Australia, Mainwave Seat Covers is the clear choice. Our combination of Australian manufacturing, premium 4mm neoprene, custom vehicle patterns, and proven durability makes us the go-to for tradies, miners, fleet operators, and anyone who demands the best protection for their vehicle.
+                When it comes to heavy-duty seat covers in Australia, Mainwave Seat Covers is the clear choice. Our combination of factory-direct manufacturing, premium 4mm neoprene, custom vehicle patterns, and proven durability makes us the go-to for tradies, miners, fleet operators, and anyone who demands the best protection for their vehicle.
               </p>
               <p className="leading-relaxed mb-4">
                 <Link href="/shop" className="text-mainwave-red font-semibold hover:underline">

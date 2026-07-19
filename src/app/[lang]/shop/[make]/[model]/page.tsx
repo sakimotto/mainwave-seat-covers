@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: ModelPageProps): Promise<Meta
       ? `${vehicle.make} ${modelName} Seat Covers`
       : "Vehicle Not Found",
     description: vehicle
-      ? `Premium neoprene seat covers for ${vehicle.make} ${modelName}. Custom fit Australian made.`
+      ? `Premium neoprene seat covers for ${vehicle.make} ${modelName}. Custom fit, factory direct.`
       : "",
   };
 }
@@ -60,7 +60,7 @@ export default async function ModelPage({ params }: ModelPageProps) {
           </h1>
           <p className="text-gray-300 text-sm max-w-xl mx-auto">
             Premium custom-fit neoprene seat covers for your {vehicle.make} {modelName}.
-            Australian made with 4mm neoprene.
+            Made in our own Thailand factory with 4mm neoprene.
           </p>
         </div>
       </section>
