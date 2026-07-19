@@ -230,7 +230,7 @@ export const en = {
     orderPlaced: "Order Placed!",
     orderReference: "Order reference:",
     thankYou:
-      "Thank you for your order. We'll send you a confirmation email shortly with your order details and tracking information.",
+      "Thank you for your order. Our team will review it and contact you shortly to confirm the details and arrange payment and delivery.",
     continueShopping: "Continue Shopping",
     contact: "Contact",
     fullName: "Full Name *",
