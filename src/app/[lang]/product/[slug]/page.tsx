@@ -57,9 +57,6 @@ export default async function ProductDetailPage({ params }: Props) {
         (firstVariant?.stock ?? 1) > 0
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
-      ...(product.originalPrice && product.originalPrice > product.price
-        ? { priceValidUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10) }
-        : {}),
     },
   }
 

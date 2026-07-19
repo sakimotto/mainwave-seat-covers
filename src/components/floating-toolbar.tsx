@@ -16,18 +16,20 @@ function applyA11y(size: TextSize, contrast: boolean) {
 
 export function FloatingToolbar({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const [panel, setPanel] = useState<Panel>("none")
-  const [textSize, setTextSize] = useState<TextSize>("normal")
-  const [contrast, setContrast] = useState(false)
+  const [textSize, setTextSize] = useState<TextSize>(() =>
+    typeof window !== "undefined"
+      ? ((localStorage.getItem("a11y-text-size") as TextSize) || "normal")
+      : "normal"
+  )
+  const [contrast, setContrast] = useState<boolean>(() =>
+    typeof window !== "undefined" && localStorage.getItem("a11y-contrast") === "1"
+  )
   const T = dict.toolbar
 
-  // Restore persisted preferences
+  // Apply persisted preferences to <html>
   useEffect(() => {
-    const savedSize = (localStorage.getItem("a11y-text-size") as TextSize) ?? "normal"
-    const savedContrast = localStorage.getItem("a11y-contrast") === "1"
-    setTextSize(savedSize)
-    setContrast(savedContrast)
-    applyA11y(savedSize, savedContrast)
-  }, [])
+    applyA11y(textSize, contrast)
+  }, [textSize, contrast])
 
   const updateSize = (size: TextSize) => {
     setTextSize(size)

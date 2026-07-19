@@ -6,6 +6,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select } from "@/components/ui/select"
+import { Markdown } from "@/components/markdown"
 import { addToCart } from "@/commerce/vercel/cart"
 import { formatMoney } from "@/lib/format"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
@@ -257,12 +258,16 @@ export function ChatWidget({ vehicles, dict, locale }: { vehicles: Vehicle[]; di
 
       <div
         className={cn(
-          "fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] bg-white rounded-xl shadow-2xl border border-mainwave-border flex flex-col transition-all duration-300 origin-bottom-right",
-          open ? "opacity-100 scale-100 h-[620px]" : "opacity-0 scale-0 h-0 pointer-events-none"
+          "fixed z-50 bg-white border border-mainwave-border flex flex-col transition-all duration-300",
+          "md:bottom-6 md:right-6 md:w-[440px] md:rounded-xl md:shadow-2xl md:origin-bottom-right",
+          "inset-0 md:inset-auto",
+          open
+            ? "opacity-100 scale-100 h-dvh md:h-[min(720px,calc(100dvh-5rem))]"
+            : "opacity-0 scale-0 h-0 pointer-events-none"
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-mainwave-border bg-mainwave-black text-white rounded-t-xl shrink-0">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-mainwave-border bg-mainwave-black text-white md:rounded-t-xl shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="size-8 rounded-full bg-brand-accent flex items-center justify-center text-xs font-bold ring-2 ring-white/20">
               S
@@ -291,14 +296,20 @@ export function ChatWidget({ vehicles, dict, locale }: { vehicles: Vehicle[]; di
               <div className={cn("flex", (msg.role as string) === "user" ? "justify-end" : "justify-start")}>
                 <div
                   className={cn(
-                    "max-w-[85%] rounded-lg px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
+                    "max-w-[88%] rounded-lg px-3.5 py-2.5 text-sm leading-relaxed",
                     (msg.role as string) === "user"
-                      ? "bg-brand-accent text-white rounded-br-sm"
+                      ? "bg-brand-accent text-white rounded-br-sm whitespace-pre-wrap"
                       : "bg-mainwave-grey text-mainwave-text rounded-bl-sm"
                   )}
                 >
                   {msg.parts.map((part, i) =>
-                    part.type === "text" ? <span key={i}>{part.text}</span> : null
+                    part.type === "text" ? (
+                      (msg.role as string) === "assistant" ? (
+                        <Markdown key={i} text={part.text} />
+                      ) : (
+                        <span key={i}>{part.text}</span>
+                      )
+                    ) : null
                   )}
                 </div>
               </div>
