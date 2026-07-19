@@ -207,12 +207,19 @@ export async function placeOrder(formData: {
       }
     }
 
-    // Create the order
+    // Create the order (with a snapshot of the shipping details)
     const order = await prisma.order.create({
       data: {
         customerId: customer.id,
         status: "PENDING",
         total: cart.subtotal,
+        shippingName: formData.name,
+        shippingPhone: formData.phone || null,
+        shippingAddress: formData.address,
+        shippingSuburb: formData.suburb,
+        shippingState: formData.state,
+        shippingPostcode: formData.postcode,
+        shippingNotes: formData.notes || null,
         items: {
           create: cart.items.map((item) => ({
             variantId: item.variantId,
