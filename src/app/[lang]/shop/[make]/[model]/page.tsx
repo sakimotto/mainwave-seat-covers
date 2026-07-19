@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getVehicleBySlug, getProductsByMakeModel, getProductsByVehicle } from "@/lib/db";
+import { getCommerce } from "@/commerce";
 import { ProductCard } from "@/components/product-card";
 import { ChevronRightIcon } from "@/components/icons";
 
@@ -11,7 +11,7 @@ interface ModelPageProps {
 
 export async function generateMetadata({ params }: ModelPageProps): Promise<Metadata> {
   const { make, model } = await params;
-  const vehicle = await getVehicleBySlug(make);
+  const vehicle = await getCommerce().catalog.getVehicleBySlug(make);
   const modelName = model.replace(/-/g, " ");
   return {
     title: vehicle
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: ModelPageProps): Promise<Meta
 
 export default async function ModelPage({ params }: ModelPageProps) {
   const { make, model } = await params;
-  const vehicle = await getVehicleBySlug(make);
+  const vehicle = await getCommerce().catalog.getVehicleBySlug(make);
   const modelName = model.replace(/-/g, " ");
 
   if (!vehicle) {
@@ -33,8 +33,8 @@ export default async function ModelPage({ params }: ModelPageProps) {
   }
 
   const [matchingProducts, allVehicleProducts] = await Promise.all([
-    getProductsByMakeModel(make, modelName),
-    getProductsByVehicle(make),
+    getCommerce().catalog.getProductsByMakeModel(make, modelName),
+    getCommerce().catalog.getProductsByVehicle(make),
   ]);
 
   return (

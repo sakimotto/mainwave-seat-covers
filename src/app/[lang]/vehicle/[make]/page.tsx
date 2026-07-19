@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getVehicleBySlug, getProductsByVehicle } from "@/lib/db";
+import { getCommerce } from "@/commerce";
 import { ProductCard } from "@/components/product-card";
 import { ChevronRightIcon } from "@/components/icons";
 
@@ -13,7 +13,7 @@ export async function generateMetadata({
   params,
 }: VehicleMakePageProps): Promise<Metadata> {
   const { make } = await params;
-  const vehicle = await getVehicleBySlug(make);
+  const vehicle = await getCommerce().catalog.getVehicleBySlug(make);
   return {
     title: vehicle ? `${vehicle.make} Seat Covers` : "Vehicle Not Found",
     description: vehicle
@@ -24,13 +24,13 @@ export async function generateMetadata({
 
 export default async function VehicleMakePage({ params }: VehicleMakePageProps) {
   const { make } = await params;
-  const vehicle = await getVehicleBySlug(make);
+  const vehicle = await getCommerce().catalog.getVehicleBySlug(make);
 
   if (!vehicle) {
     notFound();
   }
 
-  const matchingProducts = (await getProductsByVehicle(make)).slice(0, 4);
+  const matchingProducts = (await getCommerce().catalog.getProductsByVehicle(make)).slice(0, 4);
 
   return (
     <main>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getBlogPosts } from "@/lib/db"
+import { getCommerce } from "@/commerce"
 import { BlogListingClient } from "./blog-listing-client"
 
 export const metadata: Metadata = {
@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 }
 
 export default async function BlogPage() {
-  const posts = await getBlogPosts()
+  const posts = await getCommerce().catalog.getBlogPosts()
   return <BlogListingClient initialPosts={posts} />
 }

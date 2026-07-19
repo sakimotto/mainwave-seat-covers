@@ -6,7 +6,7 @@ import { Spotlight } from "@/components/home/spotlight";
 import { Band } from "@/components/home/band";
 import { Roadmap } from "@/components/home/roadmap";
 import { Closer } from "@/components/home/closer";
-import { getPopularProducts } from "@/lib/db";
+import { getCommerce } from "@/commerce";
 import { getDictionary } from "@/i18n";
 
 export default async function HomePage({
@@ -16,7 +16,7 @@ export default async function HomePage({
 }) {
   const { lang } = await params;
   const { locale, dict } = getDictionary(lang);
-  const popularProducts = await getPopularProducts();
+  const popularProducts = await getCommerce().catalog.getPopularProducts();
 
   return (
     <>

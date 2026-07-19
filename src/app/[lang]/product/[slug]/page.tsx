@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getProductBySlug, getAllProducts } from "@/lib/db"
+import { getCommerce } from "@/commerce"
 import { getDictionary } from "@/i18n"
 import { ProductDetailClient } from "./client"
 
@@ -10,7 +10,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const product = await getProductBySlug(slug)
+  const product = await getCommerce().catalog.getProductBySlug(slug)
   return {
     title: product ? `${product.name} - Mainwave` : "Product Not Found",
     description: product
@@ -23,8 +23,8 @@ export default async function ProductDetailPage({ params }: Props) {
   const { lang, slug } = await params
   const { locale, dict } = getDictionary(lang)
   const [product, all] = await Promise.all([
-    getProductBySlug(slug),
-    getAllProducts(),
+    getCommerce().catalog.getProductBySlug(slug),
+    getCommerce().catalog.getProducts(),
   ])
 
   if (!product) notFound()

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
-import { getAllProducts } from "@/lib/db"
+import { getCommerce } from "@/commerce"
 
 export async function GET() {
-  const products = await getAllProducts()
+  const products = await getCommerce().catalog.getProducts()
   return NextResponse.json(products)
 }

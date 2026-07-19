@@ -1,4 +1,4 @@
-import { getAllProducts, getVehicles } from "@/lib/db"
+import { getCommerce } from "@/commerce"
 import { getDictionary } from "@/i18n"
 import { ShopPageClient } from "./shop-page-client"
 
@@ -9,8 +9,8 @@ export default async function ShopPage(props: {
   const [params, searchParams] = await Promise.all([props.params, props.searchParams])
   const { locale, dict } = getDictionary(params.lang)
   const [products, vehicles] = await Promise.all([
-    getAllProducts(),
-    getVehicles(),
+    getCommerce().catalog.getProducts(),
+    getCommerce().catalog.getVehicles(),
   ])
 
   return (

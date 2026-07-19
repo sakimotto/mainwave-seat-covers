@@ -5,7 +5,8 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ChatWidget } from "@/components/chat-widget";
 import { SearchWrapper } from "@/components/search-wrapper";
-import { getVehicles } from "@/lib/db";
+import { getCommerce } from "@/commerce";
+import { brand } from "@/brands";
 import { getDictionary } from "@/i18n";
 import { locales } from "@/i18n/config";
 
@@ -55,24 +56,14 @@ export async function generateMetadata({
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Store",
-  name: "Mainwave Seat Covers",
-  url: "https://www.mainwaveseatcovers.com.au",
-  telephone: "(03) 9262 6977",
-  email: "sales@mainwaveseatcovers.com.au",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "8 Jersey Road",
-    addressLocality: "Bayswater",
-    addressRegion: "VIC",
-    postalCode: "3153",
-    addressCountry: "AU",
-  },
+  name: brand.legalName,
+  url: brand.url,
+  telephone: brand.phone.display,
+  email: brand.email,
+  address: brand.address,
   description: "Affordable lifestyle brand. Custom-fit seat covers, camping gear, apparel and merchandise, made in our own Thailand factory.",
-  image: "https://www.mainwaveseatcovers.com.au/favicon.svg",
-  sameAs: [
-    "https://facebook.com/mainwaveseatcovers",
-    "https://instagram.com/mainwaveseatcovers",
-  ],
+  image: `${brand.url}/favicon.svg`,
+  sameAs: [brand.socials.facebook, brand.socials.instagram].filter(Boolean),
 };
 
 export default async function RootLayout({
@@ -84,10 +75,14 @@ export default async function RootLayout({
 }>) {
   const { lang } = await params;
   const { locale, dict } = getDictionary(lang);
-  const vehicles = await getVehicles();
+  const vehicles = await getCommerce().catalog.getVehicles();
 
   return (
-    <html lang={locale} className={`h-full antialiased ${montserrat.variable} ${notoThai.variable}`}>
+    <html
+      lang={locale}
+      className={`h-full antialiased ${montserrat.variable} ${notoThai.variable}`}
+      style={{ "--color-brand-accent": brand.theme.accent } as React.CSSProperties}
+    >
       <body className="min-h-full flex flex-col">
         <a
           href="#main-content"
@@ -98,7 +93,7 @@ export default async function RootLayout({
         <Header vehicles={vehicles} dict={dict} locale={locale} />
         <main id="main-content" className="flex-1">{children}</main>
         <Footer dict={dict} locale={locale} />
-        <ChatWidget />
+        {brand.features.chat && <ChatWidget />}
         <SearchWrapper vehicles={vehicles} dict={dict} locale={locale} />
         <script
           type="application/ld+json"
