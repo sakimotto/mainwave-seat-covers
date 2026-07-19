@@ -25,6 +25,7 @@ export const brand: BrandConfig = {
   currencyLocale: process.env.NEXT_PUBLIC_CURRENCY_LOCALE ?? base.currencyLocale,
   addressRegion:
     process.env.NEXT_PUBLIC_ADDRESS_REGION === "th" ? "th" : base.addressRegion,
+  homeMarket: process.env.NEXT_PUBLIC_HOME_MARKET ?? base.homeMarket,
 }
 
 export type { BrandConfig }

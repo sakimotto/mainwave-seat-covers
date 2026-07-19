@@ -256,3 +256,14 @@ model ProductEmbedding {
 
   @@index([productId])
 }
+
+model Subscriber {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  preferences String[]
+  locale      String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@index([email])
+}

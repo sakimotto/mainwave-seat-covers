@@ -20,6 +20,17 @@ function isAdminLoginPath(pathname: string): boolean {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Forward Vercel's geo country to the app (region switcher)
+  const requestHeaders = new Headers(request.headers)
+  const detectedCountry = request.headers.get("x-vercel-ip-country")
+  if (detectedCountry) {
+    requestHeaders.set("x-detected-country", detectedCountry)
+  }
+  const withHeaders = (init?: { request?: { headers: Headers } }) => ({
+    request: { headers: requestHeaders },
+    ...init,
+  })
+
   // Admin guard: everything under /admin requires the session cookie,
   // except the login page itself. Fails closed if ADMIN_TOKEN is unset.
   if (isAdminPath(pathname) && !isAdminLoginPath(pathname)) {
@@ -46,7 +57,7 @@ export function middleware(request: NextRequest) {
     (locale) => locale !== defaultLocale && (pathname === `/${locale}` || pathname.startsWith(`/${locale}/`))
   )
   if (hasLocalePrefix) {
-    return NextResponse.next()
+    return NextResponse.next(withHeaders())
   }
 
   // Root: sniff Accept-Language for Thai visitors
@@ -62,7 +73,7 @@ export function middleware(request: NextRequest) {
   // Everything else: rewrite internally to the default locale
   const url = request.nextUrl.clone()
   url.pathname = `/${defaultLocale}${pathname}`
-  return NextResponse.rewrite(url)
+  return NextResponse.rewrite(url, withHeaders())
 }
 
 export const config = {

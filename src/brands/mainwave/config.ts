@@ -17,6 +17,23 @@ export const mainwave: BrandConfig = {
   currency: "AUD",
   currencyLocale: "en-AU",
   addressRegion: "au",
+  markets: [
+    {
+      id: "au",
+      country: { en: "Australia", th: "ออสเตรเลีย" },
+      countryCode: "AU",
+      currency: "AUD",
+      url: "https://www.mainwaveseatcovers.com.au",
+    },
+    {
+      id: "th",
+      country: { en: "Thailand", th: "ประเทศไทย" },
+      countryCode: "TH",
+      currency: "THB",
+      url: "/th",
+    },
+  ],
+  homeMarket: "au",
   locales: ["en", "th"],
   theme: {
     accent: "#cc0000",

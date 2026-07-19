@@ -7,6 +7,7 @@ import { Band } from "@/components/home/band";
 import { Roadmap } from "@/components/home/roadmap";
 import { Closer } from "@/components/home/closer";
 import { GarageStrip } from "@/components/home/garage-strip";
+import { Newsletter } from "@/components/home/newsletter";
 import { getCommerce } from "@/commerce";
 import { getDictionary } from "@/i18n";
 import { getSessionCustomer } from "@/lib/actions/auth";
@@ -37,6 +38,7 @@ export default async function HomePage({
       <Spotlight products={popularProducts.slice(0, 8)} dict={dict} locale={locale} />
       <Band dict={dict} />
       <Roadmap dict={dict} />
+      <Newsletter dict={dict} locale={locale} />
       <Closer dict={dict} locale={locale} />
     </>
   );

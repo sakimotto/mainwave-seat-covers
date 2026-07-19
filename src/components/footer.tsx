@@ -76,6 +76,7 @@ export function Footer({ dict, locale }: { dict: Dictionary; locale: Locale }) {
               <Link href={lp("/installation")} className="text-sm text-bone/50 hover:text-brand-accent transition-colors">{L.installation}</Link>
               <Link href={lp("/warranty")} className="text-sm text-bone/50 hover:text-brand-accent transition-colors">{L.warranty}</Link>
               <Link href={lp("/returns")} className="text-sm text-bone/50 hover:text-brand-accent transition-colors">{L.returns}</Link>
+              <Link href={lp("/track-order")} className="text-sm text-bone/50 hover:text-brand-accent transition-colors">{L.trackOrder}</Link>
               <Link href={lp("/blog")} className="text-sm text-bone/50 hover:text-brand-accent transition-colors">{L.blog}</Link>
               <Link href={lp("/form/contact-us")} className="text-sm text-bone/50 hover:text-brand-accent transition-colors">{L.contactUs}</Link>
               <Link href={lp("/privacy-policy")} className="text-sm text-bone/50 hover:text-brand-accent transition-colors">{L.privacyPolicy}</Link>

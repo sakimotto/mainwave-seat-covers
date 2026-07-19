@@ -119,6 +119,21 @@
   html[lang="th"] * {
     letter-spacing: normal;
   }
+
+  /* Accessibility preferences (floating toolbar) */
+  html.a11y-text-lg {
+    font-size: 112.5%;
+  }
+  html.a11y-text-xl {
+    font-size: 125%;
+  }
+  html.a11y-contrast {
+    --color-bone: #ffffff;
+    --color-ink: #000000;
+    --color-ink-soft: #000000;
+    --color-mainwave-grey: #ffffff;
+    --color-mainwave-border: #666666;
+  }
 }
 
 @layer utilities {

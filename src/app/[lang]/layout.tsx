@@ -9,6 +9,9 @@ import { getCommerce } from "@/commerce";
 import { brand } from "@/brands";
 import { getDictionary } from "@/i18n";
 import { locales } from "@/i18n/config";
+import { headers, cookies } from "next/headers";
+import { RegionPopup } from "@/components/region-popup";
+import { FloatingToolbar } from "@/components/floating-toolbar";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -77,6 +80,20 @@ export default async function RootLayout({
   const { locale, dict } = getDictionary(lang);
   const vehicles = await getCommerce().catalog.getVehicles();
 
+  // Region switcher: show when the visitor's detected country differs from
+  // this deployment's home market and they haven't chosen before.
+  const headerStore = await headers();
+  const cookieStore = await cookies();
+  const detectedCountry = headerStore.get("x-detected-country");
+  const regionChoice = cookieStore.get("region_choice")?.value;
+  const currentMarket =
+    brand.markets.find((m) => m.id === brand.homeMarket) ?? brand.markets[0];
+  const showRegionPopup =
+    !!detectedCountry &&
+    !!currentMarket &&
+    detectedCountry !== currentMarket.countryCode &&
+    !regionChoice;
+
   return (
     <html
       lang={locale}
@@ -95,6 +112,16 @@ export default async function RootLayout({
         <Footer dict={dict} locale={locale} />
         {brand.features.chat && <ChatWidget />}
         <SearchWrapper vehicles={vehicles} dict={dict} locale={locale} />
+        {showRegionPopup && (
+          <RegionPopup
+            detectedCountry={detectedCountry}
+            currentMarket={currentMarket}
+            markets={brand.markets}
+            dict={dict}
+            locale={locale}
+          />
+        )}
+        <FloatingToolbar dict={dict} locale={locale} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
