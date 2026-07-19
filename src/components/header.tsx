@@ -73,7 +73,7 @@ export function Header({ vehicles, dict, locale }: { vehicles: Vehicle[]; dict: 
                         </span>
                       </Link>
                       {v.models.length > 0 && (
-                        <div className="absolute left-full top-0 pl-1 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200">
+                        <div className="absolute left-full top-0 pl-1 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible group-focus-within/sub:opacity-100 group-focus-within/sub:visible transition-all duration-200">
                           <div className="bg-ink-soft border border-white/10 shadow-2xl shadow-black/60 min-w-[180px]">
                             {v.models.map((model) => (
                               <Link

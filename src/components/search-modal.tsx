@@ -89,8 +89,12 @@ export function SearchModal({ open, onClose, products, vehicles, dict, locale }:
       <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden">
         {/* Search input */}
         <form onSubmit={handleSubmit} className="relative">
+          <label htmlFor="site-search" className="sr-only">
+            {dict.search.placeholder}
+          </label>
           <input
             ref={inputRef}
+            id="site-search"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
