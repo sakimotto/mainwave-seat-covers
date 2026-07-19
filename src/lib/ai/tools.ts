@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { specsForProduct } from "./specs"
 import { addToCart as addToCartAction } from "@/commerce/vercel/cart"
 import { trackOrder as trackOrderAction } from "@/lib/actions/track-order"
+import { getSessionCustomer } from "@/lib/actions/auth"
 
 /** Build the AI toolset. Locale selects localized product names (en|th). */
 export function makeAiTools(locale: string) {
@@ -140,13 +141,43 @@ export function makeAiTools(locale: string) {
     }),
 
     trackOrder: tool({
-      description: "Look up an order's status. Requires the order number AND the email address on the order — ask for both before calling.",
+      description: "Look up an order's status for a GUEST. Requires the order number AND the email address on the order — ask for both before calling. If the customer is signed in, use getMyOrders instead.",
       inputSchema: z.object({
         orderNumber: z.string().describe("Order number (e.g. the 8-character reference)"),
         email: z.string().describe("Email address on the order"),
       }),
       execute: async ({ orderNumber, email }: { orderNumber: string; email: string }) => {
         return trackOrderAction({ orderNumber, email })
+      },
+    }),
+
+    getMyOrders: tool({
+      description: "List the signed-in customer's recent orders with status. Use for any order/tracking question from a signed-in customer — never ask them for an order number first.",
+      inputSchema: z.object({}),
+      execute: async () => {
+        const customer = await getSessionCustomer()
+        if (!customer) return { signedIn: false }
+
+        const orders = await prisma.order.findMany({
+          where: { customerId: customer.id },
+          include: { items: { include: { variant: { include: { product: true } } } } },
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        })
+
+        return {
+          signedIn: true,
+          orders: orders.map((o) => ({
+            reference: o.id.slice(-8).toUpperCase(),
+            status: o.status,
+            date: o.createdAt.toISOString().slice(0, 10),
+            total: Number(o.total),
+            items: o.items.map((i) => ({
+              name: i.variant.product.name,
+              quantity: i.quantity,
+            })),
+          })),
+        }
       },
     }),
 

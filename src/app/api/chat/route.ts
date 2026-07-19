@@ -42,9 +42,32 @@ export async function POST(req: Request) {
     const modelMessages = await convertToModelMessages(messages)
     const locale = typeof body.locale === "string" ? body.locale : "en"
 
+    // Signed-in customer context — garage + identity, so Saki never asks
+    // for what the account already knows
+    const customer = await getSessionCustomer()
+    const garageLines = customer
+      ? customer.garage
+          .map(
+            (g) =>
+              `- ${g.year ? `${g.year} ` : ""}${g.vehicle.make}${g.model ? ` ${g.model}` : ""}${g.nickname ? ` ("${g.nickname}")` : ""}`
+          )
+          .join("\n")
+      : ""
+    const customerContext = customer
+      ? `\n\n## Signed-in Customer (context — use naturally, never re-ask for it)
+Name: ${customer.name ?? "unknown"}
+Garage (${customer.garage.length} vehicle${customer.garage.length === 1 ? "" : "s"}):
+${garageLines || "(empty)"}
+
+Rules for signed-in customers:
+- NEVER ask what vehicle they drive or what car they need parts for — you already know their garage. Reference it ("your 2023 Hilux") when relevant.
+- For order tracking/status: use getMyOrders. NEVER ask a signed-in customer for an order number or email.
+- Greet by name when natural.`
+      : ""
+
     const result = streamText({
       model,
-      system: SYSTEM_PROMPT,
+      system: SYSTEM_PROMPT + customerContext,
       messages: modelMessages,
       tools: makeAiTools(locale),
       stopWhen: isStepCount(5),
