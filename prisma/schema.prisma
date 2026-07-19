@@ -70,6 +70,7 @@ model Vehicle {
   models VehicleModel[]
   products Product[]
   fitments Fitment[]
+  garage   CustomerVehicle[]
 
   @@index([slug])
 }
@@ -102,17 +103,59 @@ model Fitment {
 }
 
 model Customer {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  name      String?
-  password  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  cart      Cart?
-  orders    Order[]
-  reviews   Review[]
+  id            String            @id @default(cuid())
+  email         String            @unique
+  name          String?
+  password      String?
+  referralCode  String?           @unique
+  referredById  String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  cart          Cart?
+  orders        Order[]
+  reviews       Review[]
+  sessions      Session[]
+  garage        CustomerVehicle[]
+  creditEntries CreditEntry[]
 
   @@index([email])
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  token      String   @unique
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([customerId])
+}
+
+model CustomerVehicle {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  vehicleId  String
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  model      String?
+  year       Int?
+  nickname   String?
+  createdAt  DateTime @default(now())
+
+  @@index([customerId])
+}
+
+model CreditEntry {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  amount     Decimal  @db.Decimal(10, 2)
+  reason     String
+  orderId    String?
+  createdAt  DateTime @default(now())
+
+  @@index([customerId])
 }
 
 model Cart {

@@ -3,9 +3,12 @@
 import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/prisma"
+import { getSessionCustomer } from "@/lib/actions/auth"
 import type { Cart, CartItem } from "@/types"
 
-async function getOrCreateSessionId(): Promise<string> {
+type CartContext = { customerId: string } | { sessionId: string }
+
+async function getOrCreateGuestSessionId(): Promise<string> {
   const cookieStore = await cookies()
   let sessionId = cookieStore.get("cart_session")?.value
   if (!sessionId) {
@@ -14,12 +17,41 @@ async function getOrCreateSessionId(): Promise<string> {
   return sessionId
 }
 
-async function getOrCreateCart(sessionId: string) {
-  let cart = await prisma.cart.findUnique({ where: { sessionId } })
+async function getCartContext(): Promise<CartContext> {
+  const customer = await getSessionCustomer()
+  if (customer) return { customerId: customer.id }
+  return { sessionId: await getOrCreateGuestSessionId() }
+}
+
+async function getOrCreateCart(ctx: CartContext) {
+  if ("customerId" in ctx) {
+    let cart = await prisma.cart.findUnique({ where: { customerId: ctx.customerId } })
+    if (!cart) {
+      cart = await prisma.cart.create({ data: { customerId: ctx.customerId } })
+    }
+    return cart
+  }
+  let cart = await prisma.cart.findUnique({ where: { sessionId: ctx.sessionId } })
   if (!cart) {
-    cart = await prisma.cart.create({ data: { sessionId } })
+    cart = await prisma.cart.create({ data: { sessionId: ctx.sessionId } })
   }
   return cart
+}
+
+function scopeWhere(ctx: CartContext) {
+  return "customerId" in ctx ? { customerId: ctx.customerId } : { sessionId: ctx.sessionId }
+}
+
+async function persistGuestCookie(ctx: CartContext) {
+  if ("sessionId" in ctx) {
+    const cookieStore = await cookies()
+    cookieStore.set("cart_session", ctx.sessionId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30,
+    })
+  }
 }
 
 export async function addToCart(
@@ -27,8 +59,8 @@ export async function addToCart(
   quantity: number
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const sessionId = await getOrCreateSessionId()
-    const cart = await getOrCreateCart(sessionId)
+    const ctx = await getCartContext()
+    const cart = await getOrCreateCart(ctx)
 
     const existing = await prisma.cartItem.findUnique({
       where: { cartId_variantId: { cartId: cart.id, variantId } },
@@ -45,13 +77,7 @@ export async function addToCart(
       })
     }
 
-    const cookieStore = await cookies()
-    cookieStore.set("cart_session", sessionId, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 30,
-    })
+    await persistGuestCookie(ctx)
 
     return { success: true }
   } catch {
@@ -67,9 +93,9 @@ export async function updateCartItemQuantity(
     if (quantity < 1) {
       return { success: false, error: "Quantity must be at least 1" }
     }
-    const sessionId = await getOrCreateSessionId()
+    const ctx = await getCartContext()
     const result = await prisma.cartItem.updateMany({
-      where: { id: itemId, cart: { sessionId } },
+      where: { id: itemId, cart: scopeWhere(ctx) },
       data: { quantity },
     })
     if (result.count === 0) {
@@ -85,9 +111,9 @@ export async function removeCartItem(
   itemId: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const sessionId = await getOrCreateSessionId()
+    const ctx = await getCartContext()
     const result = await prisma.cartItem.deleteMany({
-      where: { id: itemId, cart: { sessionId } },
+      where: { id: itemId, cart: scopeWhere(ctx) },
     })
     if (result.count === 0) {
       return { success: false, error: "Item not found" }
@@ -100,9 +126,9 @@ export async function removeCartItem(
 
 export async function getCart(): Promise<Cart | null> {
   try {
-    const sessionId = await getOrCreateSessionId()
-    const cart = await prisma.cart.findUnique({
-      where: { sessionId },
+    const ctx = await getCartContext()
+    const cart = await prisma.cart.findFirst({
+      where: scopeWhere(ctx),
       include: {
         items: {
           include: {
@@ -167,12 +193,17 @@ export async function placeOrder(formData: {
       return { success: false, error: "Cart is empty" }
     }
 
-    // Find or create customer
-    let customer = await prisma.customer.findUnique({ where: { email: formData.email } })
+    // Signed-in customers order as themselves; guests find-or-create by email
+    const sessionCustomer = await getSessionCustomer()
+    let customer = sessionCustomer
     if (!customer) {
-      customer = await prisma.customer.create({
-        data: { email: formData.email, name: formData.name },
-      })
+      const email = formData.email.trim().toLowerCase()
+      customer = await prisma.customer.findUnique({ where: { email } })
+      if (!customer) {
+        customer = await prisma.customer.create({
+          data: { email, name: formData.name },
+        })
+      }
     }
 
     // Create the order
@@ -203,13 +234,9 @@ export async function placeOrder(formData: {
       },
     })
 
-    // Clear all cart items
-    await prisma.cartItem.deleteMany({ where: { cartId: cart.id } })
-
-    // Delete the cart record
-    await prisma.cart.delete({ where: { id: cart.id } })
-
-    // Clear the session cookie
+    // Clear the cart
+    const ctx = await getCartContext()
+    await prisma.cart.deleteMany({ where: scopeWhere(ctx) })
     const cookieStore = await cookies()
     cookieStore.delete("cart_session")
 
