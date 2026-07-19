@@ -4,6 +4,8 @@ import { cookies, headers } from "next/headers"
 import { scrypt, randomBytes, timingSafeEqual } from "crypto"
 import { prisma } from "@/lib/prisma"
 import { rateLimit } from "@/lib/rate-limit"
+import { sendEmail, verifyEmailTemplate, welcomeEmailTemplate } from "@/lib/email"
+import { brand } from "@/brands"
 import type { Customer, CustomerVehicle, CreditEntry, Vehicle } from "@/generated/prisma/client"
 
 const SESSION_COOKIE = "session_token"
@@ -142,8 +144,55 @@ export async function signUp(input: {
     },
   })
 
+  // Email verification (soft gate — account works, marked unverified until confirmed)
+  const verifyToken = randomBytes(32).toString("hex")
+  await prisma.verificationToken.create({
+    data: {
+      token: verifyToken,
+      email,
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    },
+  })
+  await sendEmail({
+    to: email,
+    subject: `Confirm your ${brand.name} account`,
+    html: verifyEmailTemplate(`${brand.url}/account/verify?token=${verifyToken}`),
+  })
+  await sendEmail({ to: email, subject: `Welcome to ${brand.name}`, html: welcomeEmailTemplate(name) })
+
   await mergeGuestCart(customer.id)
   await createSession(customer.id)
+  return { success: true }
+}
+
+export async function verifyEmail(token: string): Promise<{ success: boolean; error?: string }> {
+  if (!token) return { success: false, error: "Invalid verification link" }
+  const record = await prisma.verificationToken.findUnique({ where: { token } })
+  if (!record || record.expiresAt < new Date()) {
+    return { success: false, error: "That verification link is invalid or has expired." }
+  }
+  await prisma.customer.updateMany({
+    where: { email: record.email },
+    data: { emailVerifiedAt: new Date() },
+  })
+  await prisma.verificationToken.delete({ where: { id: record.id } })
+  return { success: true }
+}
+
+export async function resendVerification(): Promise<{ success: boolean; error?: string }> {
+  const customer = await getSessionCustomer()
+  if (!customer) return { success: false, error: "Not signed in" }
+  if (customer.emailVerifiedAt) return { success: true }
+
+  const token = randomBytes(32).toString("hex")
+  await prisma.verificationToken.create({
+    data: { token, email: customer.email, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) },
+  })
+  await sendEmail({
+    to: customer.email,
+    subject: `Confirm your ${brand.name} account`,
+    html: verifyEmailTemplate(`${brand.url}/account/verify?token=${token}`),
+  })
   return { success: true }
 }
 

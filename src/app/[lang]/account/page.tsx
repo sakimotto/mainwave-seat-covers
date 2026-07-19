@@ -5,6 +5,7 @@ import { getSessionCustomer } from "@/lib/actions/auth"
 import { formatMoney } from "@/lib/format"
 import { ReferralCodeCard } from "./referral-code-card"
 import { SignOutButton } from "./sign-out-button"
+import { UnverifiedBanner } from "./unverified-banner"
 
 export default async function AccountPage({
   params,
@@ -22,6 +23,7 @@ export default async function AccountPage({
 
   return (
     <div className="container-site py-12 md:py-16">
+      {!customer.emailVerifiedAt && <UnverifiedBanner dict={dict} />}
       <div className="flex items-start justify-between mb-10">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-mainwave-black">

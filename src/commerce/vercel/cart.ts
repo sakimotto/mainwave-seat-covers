@@ -4,6 +4,8 @@ import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/prisma"
 import { getSessionCustomer } from "@/lib/actions/auth"
+import { sendEmail, orderConfirmTemplate } from "@/lib/email"
+import { formatMoney } from "@/lib/format"
 import type { Customer } from "@/generated/prisma/client"
 import type { Cart, CartItem } from "@/types"
 
@@ -240,6 +242,13 @@ export async function placeOrder(formData: {
         subject: `Order #${order.id.slice(-8)} — Shipping Details`,
         message: `Order ID: ${order.id}\n\nShipping Address:\n${formData.address}\n${formData.suburb}, ${formData.state} ${formData.postcode}\n\nNotes: ${formData.notes || "None"}\n\nProducts:\n${cart.items.map((i) => `- ${i.productName} (${i.color}${i.size ? ` / ${i.size}` : ""}) x${i.quantity} @ $${i.price.toFixed(2)}`).join("\n")}`,
       },
+    })
+
+    // Order confirmation email (provider-independent; logs in dev)
+    await sendEmail({
+      to: formData.email.trim().toLowerCase(),
+      subject: `Order received — #${order.id.slice(-8).toUpperCase()}`,
+      html: orderConfirmTemplate(order.id.slice(-8).toUpperCase(), formatMoney(cart.subtotal)),
     })
 
     // Clear the cart

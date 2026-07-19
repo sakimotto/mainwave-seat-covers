@@ -3,6 +3,8 @@
 import { headers } from "next/headers"
 import { prisma } from "@/lib/prisma"
 import { rateLimit } from "@/lib/rate-limit"
+import { sendEmail, newsletterWelcomeTemplate } from "@/lib/email"
+import { brand } from "@/brands"
 
 export async function subscribe(input: {
   email: string
@@ -27,6 +29,12 @@ export async function subscribe(input: {
     where: { email },
     update: { preferences: input.preferences, locale: input.locale, active: true },
     create: { email, preferences: input.preferences, locale: input.locale },
+  })
+
+  await sendEmail({
+    to: email,
+    subject: `You're on the ${brand.name} list`,
+    html: newsletterWelcomeTemplate(),
   })
 
   return { success: true }

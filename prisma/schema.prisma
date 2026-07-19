@@ -109,6 +109,7 @@ model Customer {
   password      String?
   referralCode  String?           @unique
   referredById  String?
+  emailVerifiedAt DateTime?
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   cart          Cart?
@@ -271,6 +272,16 @@ model Subscriber {
   locale      String?
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
+
+  @@index([email])
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  token      String   @unique
+  email      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
 
   @@index([email])
 }

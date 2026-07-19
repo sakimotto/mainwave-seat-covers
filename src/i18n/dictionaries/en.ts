@@ -299,6 +299,17 @@ export const en = {
     copy: "Copy",
     copied: "Copied!",
     memberSince: "Member since",
+    unverified: "Email not verified — check your inbox.",
+    resend: "Resend email",
+    resent: "Sent!",
+  },
+  verify: {
+    title: "Email Verification",
+    success: "Email confirmed!",
+    successBody: "Your account is fully active — garage, order tracking, and member offers are all yours.",
+    failed: "Verification failed",
+    failedBody: "That link is invalid or has expired. Sign in and request a new one from your account page.",
+    continue: "Continue to your account",
   },
   garage: {
     title: "My Vehicles",
