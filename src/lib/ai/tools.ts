@@ -1,137 +1,173 @@
 import { tool } from "ai"
 import { z } from "zod"
 import { prisma } from "@/lib/prisma"
+import { specsForProduct } from "./specs"
+import { addToCart as addToCartAction } from "@/commerce/vercel/cart"
+import { trackOrder as trackOrderAction } from "@/lib/actions/track-order"
 
-export const aiTools = {
-  searchProducts: tool({
-    description: "Search for seat covers by keyword. Searches product names, descriptions, and vehicle compatibility.",
-    inputSchema: z.object({
-      query: z.string().describe("Search term (e.g. 'Toyota Hilux', 'neoprene front set', 'waterproof')"),
-    }),
-    execute: async ({ query }: { query: string }) => {
-      const products = await prisma.product.findMany({
-        where: {
-          OR: [
-            { name: { contains: query, mode: "insensitive" } },
-            { vehicleLabel: { contains: query, mode: "insensitive" } },
-            { description: { contains: query, mode: "insensitive" } },
-          ],
-        },
-        include: {
-          variants: { select: { price: true, originalPrice: true }, take: 1 },
-          vehicle: { select: { make: true } },
-        },
-        take: 10,
-      })
-      return products.map((p) => ({
-        name: p.name,
-        slug: p.slug,
-        vehicle: p.vehicleLabel ?? p.vehicle?.make ?? "",
-        category: p.category ?? "",
-        price: p.variants[0] ? Number(p.variants[0].price) : 0,
-        originalPrice: p.variants[0]?.originalPrice ? Number(p.variants[0].originalPrice) : undefined,
-        isSale: p.isSale,
-      }))
-    },
-  }),
+/** Build the AI toolset. Locale selects localized product names (en|th). */
+export function makeAiTools(locale: string) {
+  const th = locale === "th"
 
-  getVehicleFitments: tool({
-    description: "Get seat covers available for a specific vehicle make and optional model.",
-    inputSchema: z.object({
-      make: z.string().describe("Vehicle make (e.g. 'Toyota', 'Ford', 'Mazda')"),
-      model: z.string().optional().describe("Vehicle model (e.g. 'Hilux', 'Ranger', 'BT-50')"),
-    }),
-    execute: async ({ make, model }: { make: string; model?: string }) => {
-      const vehicle = await prisma.vehicle.findFirst({
-        where: { make: { equals: make, mode: "insensitive" } },
-        include: { models: { select: { name: true } } },
-      })
-      if (!vehicle) return { error: `We don't have products for ${make} yet.`, models: [] }
-
-      const productFilter: Record<string, unknown> = { vehicleId: vehicle.id }
-      if (model) {
-        productFilter.vehicleLabel = { contains: model, mode: "insensitive" }
-      }
-
-      const products = await prisma.product.findMany({
-        where: productFilter,
-        include: {
-          variants: { select: { price: true, originalPrice: true }, take: 1 },
-        },
-        take: 20,
-      })
-
-      return {
-        make: vehicle.make,
-        models: vehicle.models.map((m) => m.name),
-        products: products.map((p) => ({
-          name: p.name,
+  return {
+    searchProducts: tool({
+      description: "Search the catalog by keyword — product names, descriptions, vehicle compatibility. Use for ANY product, price, or stock question; never answer from memory.",
+      inputSchema: z.object({
+        query: z.string().describe("Search term (e.g. 'Toyota Hilux', 'neoprene front set', 'duffel bag')"),
+      }),
+      execute: async ({ query }: { query: string }) => {
+        const products = await prisma.product.findMany({
+          where: {
+            OR: [
+              { name: { contains: query, mode: "insensitive" } },
+              { vehicleLabel: { contains: query, mode: "insensitive" } },
+              { description: { contains: query, mode: "insensitive" } },
+              ...(th ? [{ nameTh: { contains: query } }] : []),
+            ],
+          },
+          include: {
+            variants: { select: { id: true, price: true, originalPrice: true, stock: true, sku: true }, take: 1 },
+            vehicle: { select: { make: true } },
+          },
+          take: 8,
+        })
+        return products.map((p) => ({
+          name: (th && p.nameTh) || p.name,
           slug: p.slug,
+          image: p.image,
+          vehicle: p.vehicleLabel ?? p.vehicle?.make ?? "",
           category: p.category ?? "",
           price: p.variants[0] ? Number(p.variants[0].price) : 0,
           originalPrice: p.variants[0]?.originalPrice ? Number(p.variants[0].originalPrice) : undefined,
-          isSale: p.isSale,
-        })),
-      }
-    },
-  }),
-
-  getProductDetails: tool({
-    description: "Get full details about a specific product by its URL slug.",
-    inputSchema: z.object({
-      slug: z.string().describe("Product slug (e.g. 'front-seat-covers-suit-toyota-hilux-8th-gen')"),
+          inStock: (p.variants[0]?.stock ?? 0) > 0,
+          variantId: p.variants[0]?.id,
+        }))
+      },
     }),
-    execute: async ({ slug }: { slug: string }) => {
-      const product = await prisma.product.findUnique({
-        where: { slug },
-        include: {
-          variants: true,
-          vehicle: { select: { make: true } },
-          reviews: { select: { rating: true, text: true, name: true, createdAt: true } },
-        },
-      })
-      if (!product) return { error: "Product not found." }
-      return {
-        name: product.name,
-        description: product.description,
-        features: product.features,
-        material: product.material,
-        vehicle: product.vehicleLabel ?? product.vehicle?.make ?? "",
-        category: product.category,
-        isSale: product.isSale,
-        variants: product.variants.map((v) => ({
-          color: v.color,
-          sku: v.sku,
-          price: Number(v.price),
-          originalPrice: v.originalPrice ? Number(v.originalPrice) : undefined,
-          stock: v.stock,
-        })),
-        reviews: product.reviews.map((r) => ({
-          name: r.name,
-          rating: r.rating,
-          text: r.text,
-        })),
-      }
-    },
-  }),
 
-  createInquiry: tool({
-    description: "Log a customer inquiry for human follow-up. Use when a customer wants to talk to a person or you can't answer their question.",
-    inputSchema: z.object({
-      name: z.string().describe("Customer's full name"),
-      email: z.string().describe("Customer's email address"),
-      phone: z.string().optional().describe("Customer's phone number"),
-      message: z.string().describe("Customer's question or request"),
-      subject: z.string().describe("Brief subject line for the inquiry"),
+    getVehicleFitments: tool({
+      description: "Get seat covers that fit a specific vehicle make/model, including year ranges from the fitment table. Use whenever the customer names a vehicle.",
+      inputSchema: z.object({
+        make: z.string().describe("Vehicle make (e.g. 'Toyota', 'Ford', 'Mazda')"),
+        model: z.string().optional().describe("Vehicle model (e.g. 'Hilux', 'Ranger', 'BT-50')"),
+      }),
+      execute: async ({ make, model }: { make: string; model?: string }) => {
+        const vehicle = await prisma.vehicle.findFirst({
+          where: { make: { equals: make, mode: "insensitive" } },
+          include: { models: { select: { name: true } } },
+        })
+        if (!vehicle) return { error: `We don't pattern for ${make} yet. Log an inquiry for custom fitment.`, models: [] }
+
+        const fitments = await prisma.fitment.findMany({
+          where: {
+            vehicleId: vehicle.id,
+            ...(model ? { product: { vehicleLabel: { contains: model, mode: "insensitive" } } } : {}),
+          },
+          include: {
+            product: {
+              include: {
+                variants: { select: { id: true, price: true, originalPrice: true, stock: true }, take: 1 },
+              },
+            },
+          },
+          take: 20,
+        })
+
+        return {
+          make: vehicle.make,
+          availableModels: vehicle.models.map((m) => m.name),
+          fitments: fitments.map((f) => ({
+            name: (th && f.product.nameTh) || f.product.name,
+            slug: f.product.slug,
+            image: f.product.image,
+            category: f.product.category ?? "",
+            price: f.product.variants[0] ? Number(f.product.variants[0].price) : 0,
+            originalPrice: f.product.variants[0]?.originalPrice ? Number(f.product.variants[0].originalPrice) : undefined,
+            inStock: (f.product.variants[0]?.stock ?? 0) > 0,
+            variantId: f.product.variants[0]?.id,
+            yearStart: f.yearStart ?? undefined,
+            yearEnd: f.yearEnd ?? undefined,
+            trim: f.trim ?? undefined,
+            fitmentNotes: f.notes ?? undefined,
+          })),
+        }
+      },
     }),
-    execute: async ({ name, email, phone, message, subject }: { name: string; email: string; phone?: string; message: string; subject: string }) => {
-      await prisma.inquiry.create({
-        data: { name, email, phone, subject, message },
-      })
-      return {
-        success: true,
-        message: "Thanks! Your inquiry has been logged. Our team will get back to you within 1 business day.",
-      }
-    },
-  }),
+
+    getProductDetails: tool({
+      description: "Get full technical details for a product by slug — description, construction specs, variants, stock.",
+      inputSchema: z.object({
+        slug: z.string().describe("Product slug"),
+      }),
+      execute: async ({ slug }: { slug: string }) => {
+        const product = await prisma.product.findUnique({
+          where: { slug },
+          include: { variants: true, vehicle: { select: { make: true } } },
+        })
+        if (!product) return { error: "Product not found." }
+        return {
+          name: (th && product.nameTh) || product.name,
+          description: (th && product.descriptionTh) || product.description,
+          features: product.features,
+          specs: specsForProduct(product.category),
+          vehicle: product.vehicleLabel ?? product.vehicle?.make ?? "",
+          category: product.category,
+          variants: product.variants.map((v) => ({
+            variantId: v.id,
+            color: v.color,
+            size: v.size,
+            sku: v.sku,
+            price: Number(v.price),
+            originalPrice: v.originalPrice ? Number(v.originalPrice) : undefined,
+            stock: v.stock,
+          })),
+        }
+      },
+    }),
+
+    addToCart: tool({
+      description: "Add a product variant to the customer's cart. Only use with a variantId returned by searchProducts, getVehicleFitments, or getProductDetails — never invent one.",
+      inputSchema: z.object({
+        variantId: z.string().describe("The variantId from a tool result"),
+        quantity: z.number().int().min(1).default(1),
+      }),
+      execute: async ({ variantId, quantity }: { variantId: string; quantity: number }) => {
+        const result = await addToCartAction(variantId, quantity)
+        return result.success
+          ? { success: true, message: "Added to cart. The cart badge is updated." }
+          : { success: false, message: result.error ?? "Could not add to cart." }
+      },
+    }),
+
+    trackOrder: tool({
+      description: "Look up an order's status. Requires the order number AND the email address on the order — ask for both before calling.",
+      inputSchema: z.object({
+        orderNumber: z.string().describe("Order number (e.g. the 8-character reference)"),
+        email: z.string().describe("Email address on the order"),
+      }),
+      execute: async ({ orderNumber, email }: { orderNumber: string; email: string }) => {
+        return trackOrderAction({ orderNumber, email })
+      },
+    }),
+
+    createInquiry: tool({
+      description: "Log a customer inquiry for human follow-up. Use when the customer asks for a human, needs a vehicle we don't pattern for, or you can't answer confidently.",
+      inputSchema: z.object({
+        name: z.string().describe("Customer's full name"),
+        email: z.string().describe("Customer's email address"),
+        phone: z.string().optional().describe("Customer's phone number"),
+        message: z.string().describe("Customer's question or request"),
+        subject: z.string().describe("Brief subject line"),
+      }),
+      execute: async ({ name, email, phone, message, subject }: { name: string; email: string; phone?: string; message: string; subject: string }) => {
+        await prisma.inquiry.create({
+          data: { name, email, phone, subject, message },
+        })
+        return {
+          success: true,
+          message: "Inquiry logged. The team gets back to the customer within one business day.",
+        }
+      },
+    }),
+  }
 }

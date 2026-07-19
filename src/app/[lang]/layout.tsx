@@ -110,7 +110,7 @@ export default async function RootLayout({
         <Header vehicles={vehicles} dict={dict} locale={locale} />
         <main id="main-content" className="flex-1">{children}</main>
         <Footer dict={dict} locale={locale} />
-        {brand.features.chat && <ChatWidget />}
+        {brand.features.chat && <ChatWidget vehicles={vehicles} dict={dict} locale={locale} />}
         <SearchWrapper vehicles={vehicles} dict={dict} locale={locale} />
         {showRegionPopup && (
           <RegionPopup

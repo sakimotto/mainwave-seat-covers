@@ -1,7 +1,7 @@
 import { streamText, isStepCount, convertToModelMessages } from "ai"
 import { createOpenAI } from "@ai-sdk/openai"
 import { SYSTEM_PROMPT } from "@/lib/ai/system-prompt"
-import { aiTools } from "@/lib/ai/tools"
+import { makeAiTools } from "@/lib/ai/tools"
 import { rateLimit, clientIp, tooManyRequests } from "@/lib/rate-limit"
 
 const provider = createOpenAI({
@@ -40,12 +40,13 @@ export async function POST(req: Request) {
     }
 
     const modelMessages = await convertToModelMessages(messages)
+    const locale = typeof body.locale === "string" ? body.locale : "en"
 
     const result = streamText({
       model,
       system: SYSTEM_PROMPT,
       messages: modelMessages,
-      tools: aiTools,
+      tools: makeAiTools(locale),
       stopWhen: isStepCount(5),
     })
 
