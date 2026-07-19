@@ -15,7 +15,7 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
 
       <div className="container-wide relative z-10 flex min-h-[88vh] flex-col justify-center py-24 md:py-32">
         <Reveal>
-          <p className="text-mainwave-red text-xs md:text-sm font-bold tracking-[0.4em] uppercase mb-6">
+          <p className="text-brand-accent text-xs md:text-sm font-bold tracking-[0.4em] uppercase mb-6">
             {dict.hero.kicker}
           </p>
         </Reveal>
@@ -25,7 +25,7 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
             <span className="block">{dict.hero.line1}</span>
           </Reveal>
           <Reveal delay={220}>
-            <span className="block text-mainwave-red">{dict.hero.line2}</span>
+            <span className="block text-brand-accent">{dict.hero.line2}</span>
           </Reveal>
         </h1>
 
@@ -39,13 +39,13 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
               href={localePath(locale, "/shop")}
-              className="bg-mainwave-red text-white text-sm font-bold uppercase tracking-[0.2em] px-8 py-4 hover:bg-red-700 transition-colors"
+              className="bg-brand-accent text-white text-sm font-bold uppercase tracking-[0.2em] px-8 py-4 hover:bg-red-700 transition-colors"
             >
               {dict.hero.ctaPrimary}
             </Link>
             <Link
               href="#story"
-              className="border border-bone/25 text-bone text-sm font-bold uppercase tracking-[0.2em] px-8 py-4 hover:border-mainwave-red hover:text-mainwave-red transition-colors"
+              className="border border-bone/25 text-bone text-sm font-bold uppercase tracking-[0.2em] px-8 py-4 hover:border-brand-accent hover:text-brand-accent transition-colors"
             >
               {dict.hero.ctaSecondary}
             </Link>
@@ -56,7 +56,7 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           <div className="mt-16 flex items-center gap-3 text-bone/30" aria-hidden="true">
             <span className="text-[10px] font-bold uppercase tracking-[0.3em]">{dict.hero.scroll}</span>
             <span className="block w-16 h-px bg-bone/20 overflow-hidden relative">
-              <span className="absolute inset-y-0 left-0 w-6 bg-mainwave-red animate-pulse" />
+              <span className="absolute inset-y-0 left-0 w-6 bg-brand-accent animate-pulse" />
             </span>
           </div>
         </Reveal>

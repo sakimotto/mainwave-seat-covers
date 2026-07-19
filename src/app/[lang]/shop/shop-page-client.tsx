@@ -89,7 +89,7 @@ export function ShopPageClient({
       <div className="bg-white border-b border-mainwave-border">
         <div className="container-site py-4 md:py-6">
           <div className="flex items-center gap-1 text-xs text-gray-500 mb-2">
-            <Link href={localePath(locale, "/")} className="hover:text-mainwave-red transition-colors">{S.breadcrumbHome}</Link>
+            <Link href={localePath(locale, "/")} className="hover:text-brand-accent transition-colors">{S.breadcrumbHome}</Link>
             <ChevronRightIcon className="w-3 h-3" />
             <span className="text-mainwave-black">{S.breadcrumbShop}</span>
           </div>
@@ -113,9 +113,9 @@ export function ShopPageClient({
                         type="checkbox"
                         checked={selectedMakes.includes(v.make)}
                         onChange={() => toggleMake(v.make)}
-                        className="accent-mainwave-red w-4 h-4"
+                        className="accent-brand-accent w-4 h-4"
                       />
-                      <span className="text-xs text-mainwave-text group-hover:text-mainwave-red transition-colors">
+                      <span className="text-xs text-mainwave-text group-hover:text-brand-accent transition-colors">
                         {v.make}
                       </span>
                     </label>
@@ -133,8 +133,8 @@ export function ShopPageClient({
                       className={cn(
                         "block w-full text-left text-xs py-1.5 px-2 transition-colors",
                         selectedCategory === cat.key
-                          ? "bg-mainwave-red text-white font-medium"
-                          : "text-mainwave-text hover:text-mainwave-red"
+                          ? "bg-brand-accent text-white font-medium"
+                          : "text-mainwave-text hover:text-brand-accent"
                       )}
                     >
                       {cat.label}
@@ -157,7 +157,7 @@ export function ShopPageClient({
                   step={50}
                   value={priceRange[1]}
                   onChange={(e) => { setPriceRange([0, Number(e.target.value)]); setPage(1) }}
-                  className="w-full accent-mainwave-red"
+                  className="w-full accent-brand-accent"
                 />
               </div>
             </div>
@@ -167,7 +167,7 @@ export function ShopPageClient({
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="md:hidden text-xs font-medium text-mainwave-red uppercase tracking-wider"
+                className="md:hidden text-xs font-medium text-brand-accent uppercase tracking-wider"
               >
                 {showFilters ? S.hideFilters : S.showFilters}
               </button>
@@ -176,7 +176,7 @@ export function ShopPageClient({
                 <select
                   value={sort}
                   onChange={(e) => setSort(e.target.value)}
-                  className="text-xs border border-mainwave-border bg-white px-2 py-1.5 text-mainwave-text focus:outline-none focus:border-mainwave-red"
+                  className="text-xs border border-mainwave-border bg-white px-2 py-1.5 text-mainwave-text focus:outline-none focus:border-brand-accent"
                 >
                   {S.sortOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -192,7 +192,7 @@ export function ShopPageClient({
                   <div className="grid grid-cols-2 gap-1">
                     {initialVehicles.map((v) => (
                       <label key={v.id} className="flex items-center gap-1.5 cursor-pointer">
-                        <input type="checkbox" checked={selectedMakes.includes(v.make)} onChange={() => toggleMake(v.make)} className="accent-mainwave-red w-3.5 h-3.5" />
+                        <input type="checkbox" checked={selectedMakes.includes(v.make)} onChange={() => toggleMake(v.make)} className="accent-brand-accent w-3.5 h-3.5" />
                         <span className="text-xs text-mainwave-text">{v.make}</span>
                       </label>
                     ))}
@@ -202,7 +202,7 @@ export function ShopPageClient({
                   <h3 className="text-xs font-bold text-mainwave-black uppercase tracking-wider mb-2">{S.category}</h3>
                   <div className="flex flex-wrap gap-1">
                     {S.categories.map((cat) => (
-                      <button key={cat.key} onClick={() => { setSelectedCategory(cat.key); setPage(1) }} className={cn("text-xs px-2 py-1 border transition-colors", selectedCategory === cat.key ? "bg-mainwave-red text-white border-mainwave-red" : "border-mainwave-border text-mainwave-text hover:text-mainwave-red")}>
+                      <button key={cat.key} onClick={() => { setSelectedCategory(cat.key); setPage(1) }} className={cn("text-xs px-2 py-1 border transition-colors", selectedCategory === cat.key ? "bg-brand-accent text-white border-brand-accent" : "border-mainwave-border text-mainwave-text hover:text-brand-accent")}>
                         {cat.label}
                       </button>
                     ))}
@@ -232,8 +232,8 @@ export function ShopPageClient({
                     className={cn(
                       "w-8 h-8 text-xs font-medium border transition-colors",
                       p === page
-                        ? "bg-mainwave-red text-white border-mainwave-red"
-                        : "border-mainwave-border text-mainwave-text hover:text-mainwave-red"
+                        ? "bg-brand-accent text-white border-brand-accent"
+                        : "border-mainwave-border text-mainwave-text hover:text-brand-accent"
                     )}
                   >
                     {p}

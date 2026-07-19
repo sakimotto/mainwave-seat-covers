@@ -198,9 +198,9 @@ export default function BuyingGuidePage() {
       <div className="bg-white border-b border-mainwave-border">
         <div className="container-site py-4">
           <div className="flex items-center gap-1 text-xs text-gray-500">
-            <Link href="/" className="hover:text-mainwave-red transition-colors">Home</Link>
+            <Link href="/" className="hover:text-brand-accent transition-colors">Home</Link>
             <ChevronRightIcon className="w-3 h-3" />
-            <Link href="/blog" className="hover:text-mainwave-red transition-colors">Blog</Link>
+            <Link href="/blog" className="hover:text-brand-accent transition-colors">Blog</Link>
             <ChevronRightIcon className="w-3 h-3" />
             <span className="text-mainwave-black">Buying Guide</span>
           </div>
@@ -208,7 +208,7 @@ export default function BuyingGuidePage() {
       </div>
 
       {/* Hero */}
-      <section className="bg-mainwave-red py-16 md:py-20">
+      <section className="bg-brand-accent py-16 md:py-20">
         <div className="container-site text-center">
           <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight mb-4">
             Ultimate Car Seat Cover Buying Guide
@@ -238,7 +238,7 @@ export default function BuyingGuidePage() {
                   <ul className="space-y-1">
                     {material.pros.map((pro) => (
                       <li key={pro} className="text-xs text-mainwave-text flex items-start gap-2">
-                        <span className="text-mainwave-red flex-shrink-0 mt-0.5">+</span> {pro}
+                        <span className="text-brand-accent flex-shrink-0 mt-0.5">+</span> {pro}
                       </li>
                     ))}
                   </ul>
@@ -253,7 +253,7 @@ export default function BuyingGuidePage() {
                     ))}
                   </ul>
                 </div>
-                <p className="text-xs text-mainwave-red font-semibold">
+                <p className="text-xs text-brand-accent font-semibold">
                   Best for: {material.bestFor}
                 </p>
               </div>
@@ -278,7 +278,7 @@ export default function BuyingGuidePage() {
                 <ul className="space-y-1">
                   {(type.benefits || type.drawbacks || []).map((item) => (
                     <li key={item} className="text-xs text-mainwave-text flex items-start gap-2">
-                      <span className="text-mainwave-red flex-shrink-0">{type.drawbacks ? "−" : "+"}</span> {item}
+                      <span className="text-brand-accent flex-shrink-0">{type.drawbacks ? "−" : "+"}</span> {item}
                     </li>
                   ))}
                 </ul>
@@ -312,7 +312,7 @@ export default function BuyingGuidePage() {
           <div className="space-y-4">
             {installationSteps.map((step) => (
               <div key={step.step} className="bg-white border border-mainwave-border p-5 flex gap-4">
-                <div className="w-8 h-8 bg-mainwave-red text-white font-bold flex items-center justify-center flex-shrink-0 text-sm">
+                <div className="w-8 h-8 bg-brand-accent text-white font-bold flex items-center justify-center flex-shrink-0 text-sm">
                   {step.step}
                 </div>
                 <div>
@@ -334,7 +334,7 @@ export default function BuyingGuidePage() {
             {budgetTiers.map((tier) => (
               <div key={tier.tier} className="bg-white border border-mainwave-border p-6 flex flex-col">
                 <h3 className="text-lg font-bold text-mainwave-black mb-1">{tier.tier}</h3>
-                <p className="text-xl font-bold text-mainwave-red mb-4">{tier.price}</p>
+                <p className="text-xl font-bold text-brand-accent mb-4">{tier.price}</p>
                 <p className="text-xs text-mainwave-text mb-3">
                   <span className="font-semibold">Materials:</span> {tier.materials}
                 </p>
@@ -360,7 +360,7 @@ export default function BuyingGuidePage() {
               <details key={i} className="bg-white border border-mainwave-border group">
                 <summary className="p-5 text-sm font-semibold text-mainwave-black cursor-pointer list-none flex items-center justify-between group-open:bg-mainwave-grey transition-colors">
                   {faq.q}
-                  <ChevronRightIcon className="w-4 h-4 text-mainwave-red flex-shrink-0 group-open:rotate-90 transition-transform" />
+                  <ChevronRightIcon className="w-4 h-4 text-brand-accent flex-shrink-0 group-open:rotate-90 transition-transform" />
                 </summary>
                 <div className="px-5 pb-5 border-t border-mainwave-border">
                   <p className="text-xs text-mainwave-text leading-relaxed mt-3">{faq.a}</p>

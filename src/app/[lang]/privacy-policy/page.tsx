@@ -138,7 +138,7 @@ export default function PrivacyPolicyPage() {
                   href="https://www.oaic.gov.au"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-mainwave-red hover:underline"
+                  className="text-brand-accent hover:underline"
                 >
                   www.oaic.gov.au
                 </a>

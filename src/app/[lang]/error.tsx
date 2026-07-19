@@ -13,7 +13,7 @@ export default function Error({
     <main className="flex-1 flex items-center justify-center">
       <div className="container-site py-20 text-center">
         <div className="max-w-md mx-auto">
-          <span className="text-8xl font-bold text-mainwave-red block mb-2">!</span>
+          <span className="text-8xl font-bold text-brand-accent block mb-2">!</span>
           <h1 className="text-2xl font-bold text-mainwave-black mb-3">Something Went Wrong</h1>
           <p className="text-sm text-gray-500 mb-8 leading-relaxed">
             An unexpected error occurred. Please try again or contact us if the problem persists.
@@ -21,7 +21,7 @@ export default function Error({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={reset}
-              className="bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
+              className="bg-brand-accent text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
             >
               Try Again
             </button>

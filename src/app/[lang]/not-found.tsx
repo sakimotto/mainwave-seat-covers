@@ -5,7 +5,7 @@ export default function NotFound() {
     <main className="flex-1 flex items-center justify-center">
       <div className="container-site py-20 text-center">
         <div className="max-w-md mx-auto">
-          <span className="text-8xl font-bold text-mainwave-red block mb-2">404</span>
+          <span className="text-8xl font-bold text-brand-accent block mb-2">404</span>
           <h1 className="text-2xl font-bold text-mainwave-black mb-3">Page Not Found</h1>
           <p className="text-sm text-gray-500 mb-8 leading-relaxed">
             The page you are looking for does not exist or has been moved.
@@ -14,7 +14,7 @@ export default function NotFound() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/shop"
-              className="bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
+              className="bg-brand-accent text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
             >
               Browse Shop
             </Link>

@@ -119,7 +119,7 @@ export const th: Dictionary = {
       privacyPolicy: "นโยบายความเป็นส่วนตัว",
     },
     madeIn: "ผลิตในประเทศไทย · เปิดตัว 2026",
-    rights: "Mainwave Seat Covers Pty Ltd. สงวนลิขสิทธิ์",
+    rights: "สงวนลิขสิทธิ์",
   },
   search: {
     placeholder: "ค้นหาคลุมเบาะ รุ่นรถ สินค้า...",

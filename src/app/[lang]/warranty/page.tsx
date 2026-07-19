@@ -33,7 +33,7 @@ export default function WarrantyPage() {
       {/* Hero */}
       <section className="bg-mainwave-black text-white py-16 md:py-24">
         <div className="container-site text-center">
-          <ShieldIcon className="w-12 h-12 mx-auto mb-4 text-mainwave-red" />
+          <ShieldIcon className="w-12 h-12 mx-auto mb-4 text-brand-accent" />
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             Warranty Information
           </h1>
@@ -128,7 +128,7 @@ export default function WarrantyPage() {
             </h2>
             <ol className="space-y-4">
               <li className="flex gap-4">
-                <span className="flex-shrink-0 w-8 h-8 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                <span className="flex-shrink-0 w-8 h-8 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                   1
                 </span>
                 <div>
@@ -142,7 +142,7 @@ export default function WarrantyPage() {
                 </div>
               </li>
               <li className="flex gap-4">
-                <span className="flex-shrink-0 w-8 h-8 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                <span className="flex-shrink-0 w-8 h-8 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                   2
                 </span>
                 <div>
@@ -156,7 +156,7 @@ export default function WarrantyPage() {
                 </div>
               </li>
               <li className="flex gap-4">
-                <span className="flex-shrink-0 w-8 h-8 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                <span className="flex-shrink-0 w-8 h-8 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                   3
                 </span>
                 <div>
@@ -171,7 +171,7 @@ export default function WarrantyPage() {
                 </div>
               </li>
               <li className="flex gap-4">
-                <span className="flex-shrink-0 w-8 h-8 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                <span className="flex-shrink-0 w-8 h-8 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                   4
                 </span>
                 <div>
@@ -203,7 +203,7 @@ export default function WarrantyPage() {
                 </h3>
                 <a
                   href="tel:0392626977"
-                  className="text-mainwave-red font-medium hover:underline"
+                  className="text-brand-accent font-medium hover:underline"
                 >
                   (03) 9262 6977
                 </a>
@@ -214,7 +214,7 @@ export default function WarrantyPage() {
                 </h3>
                 <a
                   href="mailto:sales@mainwaveseatcovers.com.au"
-                  className="text-mainwave-red font-medium hover:underline text-sm"
+                  className="text-brand-accent font-medium hover:underline text-sm"
                 >
                   sales@mainwaveseatcovers.com.au
                 </a>
@@ -225,7 +225,7 @@ export default function WarrantyPage() {
               For more ways to get in touch, visit our{" "}
               <Link
                 href="/form/contact-us"
-                className="text-mainwave-red font-medium hover:underline"
+                className="text-brand-accent font-medium hover:underline"
               >
                 contact page
               </Link>

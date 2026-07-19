@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select } from "@/components/ui/select"
-import { addToCart } from "@/lib/actions/cart"
+import { addToCart } from "@/commerce/vercel/cart"
 
 const years = Array.from({ length: 26 }, (_, i) => (2010 + i).toString())
 
@@ -106,13 +106,13 @@ function ProductCardChat({ product }: { product: FeaturedProduct }) {
               onClick={() => router.push(`/product/${product.slug}`)}
               className="text-left"
             >
-              <p className="text-xs font-medium text-mainwave-text leading-tight line-clamp-2 hover:text-mainwave-red transition-colors">
+              <p className="text-xs font-medium text-mainwave-text leading-tight line-clamp-2 hover:text-brand-accent transition-colors">
                 {product.name}
               </p>
             </button>
             <StarRating rating={product.rating} count={product.reviewCount} />
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-sm font-bold text-mainwave-red">${product.price.toFixed(2)}</span>
+              <span className="text-sm font-bold text-brand-accent">${product.price.toFixed(2)}</span>
               {product.originalPrice && (
                 <span className="text-[10px] text-gray-400 line-through">${product.originalPrice.toFixed(2)}</span>
               )}
@@ -134,7 +134,7 @@ function ProductCardChat({ product }: { product: FeaturedProduct }) {
                   "text-[11px] px-2.5 py-1 rounded-md font-medium transition-colors",
                   added
                     ? "bg-green-600 text-white"
-                    : "bg-mainwave-red text-white hover:bg-red-700"
+                    : "bg-brand-accent text-white hover:bg-red-700"
                 )}
               >
                 {isPending ? "..." : added ? "Added!" : "Add to Cart"}
@@ -209,7 +209,7 @@ function VehicleSelectorWidget({
       {make && model && (
         <button
           onClick={handleCheckFitment}
-          className="w-full bg-mainwave-red text-white text-xs font-medium py-1.5 rounded-md hover:bg-red-700 transition-colors"
+          className="w-full bg-brand-accent text-white text-xs font-medium py-1.5 rounded-md hover:bg-red-700 transition-colors"
         >
           Check Fitment
         </button>
@@ -287,7 +287,7 @@ export function ChatWidget() {
         onClick={() => setOpen(!open)}
         className={cn(
           "fixed bottom-6 right-6 z-50 size-14 rounded-full flex items-center justify-center shadow-xl transition-all duration-300",
-          open ? "bg-mainwave-black scale-0" : "bg-mainwave-red hover:bg-red-700 scale-100 hover:scale-110"
+          open ? "bg-mainwave-black scale-0" : "bg-brand-accent hover:bg-red-700 scale-100 hover:scale-110"
         )}
         aria-label="Chat with Saki AI"
       >
@@ -304,7 +304,7 @@ export function ChatWidget() {
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-mainwave-border bg-mainwave-black text-white rounded-t-xl shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="size-8 rounded-full bg-mainwave-red flex items-center justify-center text-xs font-bold ring-2 ring-white/20">
+            <div className="size-8 rounded-full bg-brand-accent flex items-center justify-center text-xs font-bold ring-2 ring-white/20">
               S
             </div>
             <div>
@@ -337,7 +337,7 @@ export function ChatWidget() {
                     className={cn(
                       "max-w-[85%] rounded-lg px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
                       (msg.role as string) === "user"
-                        ? "bg-mainwave-red text-white rounded-br-sm"
+                        ? "bg-brand-accent text-white rounded-br-sm"
                         : "bg-mainwave-grey text-mainwave-text rounded-bl-sm"
                     )}
                   >
@@ -360,7 +360,7 @@ export function ChatWidget() {
                     <div className="flex flex-wrap gap-1.5">
                       <button
                         onClick={() => handleQuickAction("Can you help me find seat covers for my vehicle?")}
-                        className="inline-flex items-center gap-1.5 bg-white border border-mainwave-border text-mainwave-text text-xs px-3 py-2 rounded-full hover:border-mainwave-red hover:text-mainwave-red transition-colors"
+                        className="inline-flex items-center gap-1.5 bg-white border border-mainwave-border text-mainwave-text text-xs px-3 py-2 rounded-full hover:border-brand-accent hover:text-brand-accent transition-colors"
                       >
                         <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -369,7 +369,7 @@ export function ChatWidget() {
                       </button>
                       <button
                         onClick={() => handleQuickAction("I want to track my order")}
-                        className="inline-flex items-center gap-1.5 bg-white border border-mainwave-border text-mainwave-text text-xs px-3 py-2 rounded-full hover:border-mainwave-red hover:text-mainwave-red transition-colors"
+                        className="inline-flex items-center gap-1.5 bg-white border border-mainwave-border text-mainwave-text text-xs px-3 py-2 rounded-full hover:border-brand-accent hover:text-brand-accent transition-colors"
                       >
                         <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -378,7 +378,7 @@ export function ChatWidget() {
                       </button>
                       <button
                         onClick={() => handleQuickAction("I need to speak to a human please")}
-                        className="inline-flex items-center gap-1.5 bg-white border border-mainwave-border text-mainwave-text text-xs px-3 py-2 rounded-full hover:border-mainwave-red hover:text-mainwave-red transition-colors"
+                        className="inline-flex items-center gap-1.5 bg-white border border-mainwave-border text-mainwave-text text-xs px-3 py-2 rounded-full hover:border-brand-accent hover:text-brand-accent transition-colors"
                       >
                         <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
@@ -426,13 +426,13 @@ export function ChatWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about seat covers..."
-              className="flex-1 px-3 py-2 text-sm border border-mainwave-border rounded-md focus:outline-none focus:border-mainwave-red transition-colors"
+              className="flex-1 px-3 py-2 text-sm border border-mainwave-border rounded-md focus:outline-none focus:border-brand-accent transition-colors"
               disabled={isLoading}
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="bg-mainwave-red text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-brand-accent text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" />

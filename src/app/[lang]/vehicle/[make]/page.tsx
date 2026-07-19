@@ -38,13 +38,13 @@ export default async function VehicleMakePage({ params }: VehicleMakePageProps) 
       <div className="bg-mainwave-grey border-b border-mainwave-border">
         <div className="container-site py-3">
           <nav className="flex items-center gap-1.5 text-xs text-gray-500">
-            <Link href="/" className="hover:text-mainwave-red transition-colors">
+            <Link href="/" className="hover:text-brand-accent transition-colors">
               Home
             </Link>
             <ChevronRightIcon className="w-3 h-3" />
             <span className="text-mainwave-text font-medium">Vehicle</span>
             <ChevronRightIcon className="w-3 h-3" />
-            <span className="text-mainwave-red font-medium">
+            <span className="text-brand-accent font-medium">
               {vehicle.make}
             </span>
           </nav>
@@ -76,14 +76,14 @@ export default async function VehicleMakePage({ params }: VehicleMakePageProps) 
                 <Link
                   key={model}
                   href={`/shop/${vehicle.slug}/${model.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="bg-mainwave-grey border border-mainwave-border p-4 md:p-6 text-center hover:border-mainwave-red hover:shadow-sm transition-all group"
+                  className="bg-mainwave-grey border border-mainwave-border p-4 md:p-6 text-center hover:border-brand-accent hover:shadow-sm transition-all group"
                 >
                   <img
                     src={vehicle.image}
                     alt={vehicle.make}
                     className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-2 object-contain"
                   />
-                  <h3 className="text-sm md:text-base font-semibold text-mainwave-text group-hover:text-mainwave-red transition-colors">
+                  <h3 className="text-sm md:text-base font-semibold text-mainwave-text group-hover:text-brand-accent transition-colors">
                     {model}
                   </h3>
                 </Link>
@@ -142,7 +142,7 @@ export default async function VehicleMakePage({ params }: VehicleMakePageProps) 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href="/form/contact-us"
-                className="bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
+                className="bg-brand-accent text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
               >
                 Contact Us
               </Link>

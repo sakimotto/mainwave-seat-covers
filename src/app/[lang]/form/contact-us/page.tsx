@@ -67,31 +67,31 @@ export default function ContactUsPage() {
         <div className="container-site">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
             <div className="bg-mainwave-grey p-6 border border-mainwave-border text-center">
-              <PhoneIcon className="w-6 h-6 text-mainwave-red mx-auto mb-3" />
+              <PhoneIcon className="w-6 h-6 text-brand-accent mx-auto mb-3" />
               <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-1">
                 Phone
               </h3>
               <a
                 href="tel:0392626977"
-                className="text-sm text-mainwave-text hover:text-mainwave-red transition-colors"
+                className="text-sm text-mainwave-text hover:text-brand-accent transition-colors"
               >
                 (03) 9262 6977
               </a>
             </div>
             <div className="bg-mainwave-grey p-6 border border-mainwave-border text-center">
-              <MailIcon className="w-6 h-6 text-mainwave-red mx-auto mb-3" />
+              <MailIcon className="w-6 h-6 text-brand-accent mx-auto mb-3" />
               <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-1">
                 Email
               </h3>
               <a
                 href="mailto:sales@mainwaveseatcovers.com.au"
-                className="text-sm text-mainwave-text hover:text-mainwave-red transition-colors"
+                className="text-sm text-mainwave-text hover:text-brand-accent transition-colors"
               >
                 sales@mainwaveseatcovers.com.au
               </a>
             </div>
             <div className="bg-mainwave-grey p-6 border border-mainwave-border text-center">
-              <MapPinIcon className="w-6 h-6 text-mainwave-red mx-auto mb-3" />
+              <MapPinIcon className="w-6 h-6 text-brand-accent mx-auto mb-3" />
               <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-1">
                 Address
               </h3>
@@ -101,7 +101,7 @@ export default function ContactUsPage() {
               </p>
             </div>
             <div className="bg-mainwave-grey p-6 border border-mainwave-border text-center">
-              <ClockIcon className="w-6 h-6 text-mainwave-red mx-auto mb-3" />
+              <ClockIcon className="w-6 h-6 text-brand-accent mx-auto mb-3" />
               <h3 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-1">
                 Business Hours
               </h3>
@@ -136,7 +136,7 @@ export default function ContactUsPage() {
                     htmlFor="name"
                     className="block text-sm font-medium text-mainwave-black mb-1"
                   >
-                    Name <span className="text-mainwave-red">*</span>
+                    Name <span className="text-brand-accent">*</span>
                   </label>
                   <input
                     type="text"
@@ -145,7 +145,7 @@ export default function ContactUsPage() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-mainwave-red focus:border-transparent"
+                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -153,7 +153,7 @@ export default function ContactUsPage() {
                     htmlFor="email"
                     className="block text-sm font-medium text-mainwave-black mb-1"
                   >
-                    Email <span className="text-mainwave-red">*</span>
+                    Email <span className="text-brand-accent">*</span>
                   </label>
                   <input
                     type="email"
@@ -162,7 +162,7 @@ export default function ContactUsPage() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-mainwave-red focus:border-transparent"
+                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -178,7 +178,7 @@ export default function ContactUsPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-mainwave-red focus:border-transparent"
+                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
                   />
                 </div>
                 {/* Honeypot: hidden from humans, bots fill it */}
@@ -191,7 +191,7 @@ export default function ContactUsPage() {
                     htmlFor="subject"
                     className="block text-sm font-medium text-mainwave-black mb-1"
                   >
-                    Subject <span className="text-mainwave-red">*</span>
+                    Subject <span className="text-brand-accent">*</span>
                   </label>
                   <select
                     id="subject"
@@ -199,7 +199,7 @@ export default function ContactUsPage() {
                     required
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-mainwave-red focus:border-transparent"
+                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
                   >
                     <option value="">Select a subject</option>
                     <option value="general">General Enquiry</option>
@@ -215,7 +215,7 @@ export default function ContactUsPage() {
                     htmlFor="message"
                     className="block text-sm font-medium text-mainwave-black mb-1"
                   >
-                    Message <span className="text-mainwave-red">*</span>
+                    Message <span className="text-brand-accent">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -224,7 +224,7 @@ export default function ContactUsPage() {
                     rows={5}
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-mainwave-red focus:border-transparent resize-y"
+                    className="w-full bg-white border border-mainwave-border px-4 py-2.5 text-sm text-mainwave-text focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent resize-y"
                   />
                 </div>
                 {error && (
@@ -233,7 +233,7 @@ export default function ContactUsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-brand-accent text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? "Sending..." : "Send Message"}
                 </button>
@@ -256,7 +256,7 @@ export default function ContactUsPage() {
                     href="https://www.google.com/maps/search/?api=1&query=8+Jersey+Road+Bayswater+VIC+3153"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-mainwave-red hover:underline"
+                    className="text-sm text-brand-accent hover:underline"
                   >
                     Open in Google Maps
                   </a>

@@ -25,7 +25,7 @@ export default function GiftCardPage() {
       {/* Hero */}
       <section className="bg-mainwave-black text-white py-16 md:py-24">
         <div className="container-site text-center">
-          <GiftIcon className="w-12 h-12 mx-auto mb-4 text-mainwave-red" />
+          <GiftIcon className="w-12 h-12 mx-auto mb-4 text-brand-accent" />
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             Mainwave Gift Card
           </h1>
@@ -39,7 +39,7 @@ export default function GiftCardPage() {
       <section className="py-16 md:py-20">
         <div className="container-site">
           <div className="max-w-3xl mx-auto">
-            <div className="bg-mainwave-black text-white p-8 md:p-12 border border-mainwave-red relative overflow-hidden">
+            <div className="bg-mainwave-black text-white p-8 md:p-12 border border-brand-accent relative overflow-hidden">
               <div className="absolute top-4 right-4 opacity-10">
                 <GiftIcon className="w-32 h-32" />
               </div>
@@ -59,7 +59,7 @@ export default function GiftCardPage() {
                   premium neoprene seat covers — from front sets to full
                   vehicle packages.
                 </p>
-                <button className="bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider px-8 py-3 hover:bg-red-700 transition-colors">
+                <button className="bg-brand-accent text-white text-sm font-bold uppercase tracking-wider px-8 py-3 hover:bg-red-700 transition-colors">
                   Buy Now
                 </button>
               </div>

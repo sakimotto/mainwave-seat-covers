@@ -8,9 +8,9 @@ export function Story({ dict }: { dict: Dictionary }) {
       <div className="container-wide">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           <Reveal>
-            <p className="text-mainwave-red text-xs font-bold tracking-[0.4em] uppercase mb-4">{dict.story.kicker}</p>
+            <p className="text-brand-accent text-xs font-bold tracking-[0.4em] uppercase mb-4">{dict.story.kicker}</p>
             <h2 className="text-display text-[clamp(2.2rem,5.5vw,4.5rem)] text-bone">
-              {dict.story.titleA} <span className="text-mainwave-red">{dict.story.titleEm}</span> {dict.story.titleB}<br />
+              {dict.story.titleA} <span className="text-brand-accent">{dict.story.titleEm}</span> {dict.story.titleB}<br />
               {dict.story.title2}
             </h2>
           </Reveal>
@@ -49,7 +49,7 @@ export function Story({ dict }: { dict: Dictionary }) {
           {dict.story.stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 100} className="bg-ink-soft">
               <div className="p-6 md:p-8">
-                <p className="text-display text-4xl md:text-5xl text-mainwave-red">{stat.value}</p>
+                <p className="text-display text-4xl md:text-5xl text-brand-accent">{stat.value}</p>
                 <p className="mt-2 text-xs text-bone/50 uppercase tracking-[0.15em] leading-relaxed">{stat.label}</p>
               </div>
             </Reveal>

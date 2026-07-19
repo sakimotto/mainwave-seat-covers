@@ -18,15 +18,15 @@ export default async function AdminVehiclesPage() {
             name="make"
             placeholder="e.g. Tesla"
             required
-            className="flex-1 border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red"
+            className="flex-1 border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent"
           />
           <input
             name="slug"
             placeholder="e.g. tesla"
             required
-            className="flex-1 border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red"
+            className="flex-1 border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent"
           />
-          <button type="submit" className="bg-mainwave-red text-white px-4 py-2 text-sm font-medium hover:bg-red-700 transition-colors">
+          <button type="submit" className="bg-brand-accent text-white px-4 py-2 text-sm font-medium hover:bg-red-700 transition-colors">
             Add
           </button>
         </form>
@@ -38,7 +38,7 @@ export default async function AdminVehiclesPage() {
           <select
             name="vehicleId"
             required
-            className="flex-1 border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red"
+            className="flex-1 border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent"
           >
             <option value="">Select make</option>
             {vehicles.map((v) => (
@@ -49,9 +49,9 @@ export default async function AdminVehiclesPage() {
             name="name"
             placeholder="e.g. Model Y"
             required
-            className="flex-1 border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red"
+            className="flex-1 border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent"
           />
-          <button type="submit" className="bg-mainwave-red text-white px-4 py-2 text-sm font-medium hover:bg-red-700 transition-colors">
+          <button type="submit" className="bg-brand-accent text-white px-4 py-2 text-sm font-medium hover:bg-red-700 transition-colors">
             Add
           </button>
         </form>

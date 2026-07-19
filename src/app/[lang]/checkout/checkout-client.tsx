@@ -3,8 +3,9 @@
 import { useState, useEffect, useTransition } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { getCart, placeOrder } from "@/lib/actions/cart"
+import { getCart, placeOrder } from "@/commerce/vercel/cart"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
+import { formatMoney } from "@/lib/format"
 import type { Cart } from "@/types"
 
 export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Locale }) {
@@ -73,7 +74,7 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
             <h2 className="text-lg font-bold text-mainwave-black mb-3">{K.emptyTitle}</h2>
             <Link
               href={lp("/shop")}
-              className="inline-block bg-mainwave-red text-white font-bold uppercase tracking-wider px-8 py-3 text-sm hover:bg-red-700 transition-colors"
+              className="inline-block bg-brand-accent text-white font-bold uppercase tracking-wider px-8 py-3 text-sm hover:bg-red-700 transition-colors"
             >
               {K.shopNow}
             </Link>
@@ -104,7 +105,7 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
           </p>
           <Link
             href={lp("/shop")}
-            className="inline-block bg-mainwave-red text-white font-bold uppercase tracking-wider px-8 py-3 text-sm hover:bg-red-700 transition-colors"
+            className="inline-block bg-brand-accent text-white font-bold uppercase tracking-wider px-8 py-3 text-sm hover:bg-red-700 transition-colors"
           >
             {K.continueShopping}
           </Link>
@@ -126,15 +127,15 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-xs font-medium text-mainwave-text mb-1">{K.fullName}</label>
-                  <input id="name" required value={form.name} onChange={(e) => updateField("name", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red" />
+                  <input id="name" required value={form.name} onChange={(e) => updateField("name", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent" />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-xs font-medium text-mainwave-text mb-1">{K.email}</label>
-                  <input id="email" type="email" required value={form.email} onChange={(e) => updateField("email", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red" />
+                  <input id="email" type="email" required value={form.email} onChange={(e) => updateField("email", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent" />
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-xs font-medium text-mainwave-text mb-1">{K.phone}</label>
-                  <input id="phone" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red" />
+                  <input id="phone" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent" />
                 </div>
               </div>
             </div>
@@ -144,16 +145,16 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
               <h2 className="text-sm font-bold text-mainwave-black uppercase tracking-wider mb-4">{K.shippingAddress}</h2>
               <div>
                 <label htmlFor="address" className="block text-xs font-medium text-mainwave-text mb-1">{K.streetAddress}</label>
-                <input id="address" required value={form.address} onChange={(e) => updateField("address", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red mb-4" />
+                <input id="address" required value={form.address} onChange={(e) => updateField("address", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent mb-4" />
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="col-span-2 sm:col-span-1">
                   <label htmlFor="suburb" className="block text-xs font-medium text-mainwave-text mb-1">{K.suburb}</label>
-                  <input id="suburb" required value={form.suburb} onChange={(e) => updateField("suburb", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red" />
+                  <input id="suburb" required value={form.suburb} onChange={(e) => updateField("suburb", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent" />
                 </div>
                 <div>
                   <label htmlFor="state" className="block text-xs font-medium text-mainwave-text mb-1">{K.state}</label>
-                  <select id="state" required value={form.state} onChange={(e) => updateField("state", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red bg-white">
+                  <select id="state" required value={form.state} onChange={(e) => updateField("state", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent bg-white">
                     <option value="">{K.select}</option>
                     <option value="VIC">VIC</option>
                     <option value="NSW">NSW</option>
@@ -167,7 +168,7 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
                 </div>
                 <div>
                   <label htmlFor="postcode" className="block text-xs font-medium text-mainwave-text mb-1">{K.postcode}</label>
-                  <input id="postcode" required value={form.postcode} onChange={(e) => updateField("postcode", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red" />
+                  <input id="postcode" required value={form.postcode} onChange={(e) => updateField("postcode", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent" />
                 </div>
               </div>
             </div>
@@ -180,7 +181,7 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
                 onChange={(e) => updateField("notes", e.target.value)}
                 rows={3}
                 placeholder={K.notesPlaceholder}
-                className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red resize-none"
+                className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-none"
               />
             </div>
           </div>
@@ -199,7 +200,7 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
                     <p className="text-xs text-gray-500">{item.color}{item.size ? ` / ${item.size}` : ""}</p>
                     <div className="flex justify-between mt-1">
                       <span className="text-xs text-gray-500">{K.qty}: {item.quantity}</span>
-                      <span className="text-xs font-medium text-mainwave-black">${(item.price * item.quantity).toFixed(2)}</span>
+                      <span className="text-xs font-medium text-mainwave-black">{formatMoney(item.price * item.quantity)}</span>
                     </div>
                   </div>
                 </div>
@@ -208,7 +209,7 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
             <div className="border-t border-mainwave-border pt-4 space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-mainwave-text">{K.subtotal}</span>
-                <span className="font-medium">${cart.subtotal.toFixed(2)}</span>
+                <span className="font-medium">{formatMoney(cart.subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-mainwave-text">{K.shipping}</span>
@@ -218,13 +219,13 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
               </div>
               <div className="border-t border-mainwave-border pt-2 flex justify-between text-base">
                 <span className="font-bold text-mainwave-black">{K.total}</span>
-                <span className="font-bold text-mainwave-red">${cart.subtotal.toFixed(2)}</span>
+                <span className="font-bold text-brand-accent">{formatMoney(cart.subtotal)}</span>
               </div>
             </div>
             <button
               type="submit"
               disabled={pending}
-              className="w-full bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider text-center py-3 mt-4 hover:bg-red-700 transition-colors disabled:opacity-50"
+              className="w-full bg-brand-accent text-white text-sm font-bold uppercase tracking-wider text-center py-3 mt-4 hover:bg-red-700 transition-colors disabled:opacity-50"
             >
               {pending ? K.processing : K.placeOrder}
             </button>

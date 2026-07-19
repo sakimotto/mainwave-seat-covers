@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
+import { formatMoney } from "@/lib/format"
 import type { Product, Vehicle } from "@/types"
 
 interface SearchModalProps {
@@ -103,7 +104,7 @@ export function SearchModal({ open, onClose, products, vehicles, dict, locale }:
           />
           <button
             type="submit"
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-mainwave-red text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-brand-accent text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
           >
             {dict.search.button}
           </button>
@@ -156,7 +157,7 @@ export function SearchModal({ open, onClose, products, vehicles, dict, locale }:
                         <p className="text-sm font-medium text-mainwave-black line-clamp-1">{p.name}</p>
                         <p className="text-xs text-gray-500">{p.vehicle || p.category}</p>
                       </div>
-                      <p className="text-sm font-bold text-mainwave-black">${p.price.toFixed(2)}</p>
+                      <p className="text-sm font-bold text-mainwave-black">{formatMoney(p.price)}</p>
                     </Link>
                   ))}
                 </div>
@@ -182,7 +183,7 @@ export function SearchModal({ open, onClose, products, vehicles, dict, locale }:
                 <button
                   key={term}
                   onClick={() => setQuery(term)}
-                  className="px-3 py-1.5 text-xs bg-mainwave-grey rounded-full hover:bg-mainwave-red hover:text-white transition-colors"
+                  className="px-3 py-1.5 text-xs bg-mainwave-grey rounded-full hover:bg-brand-accent hover:text-white transition-colors"
                 >
                   {term}
                 </button>

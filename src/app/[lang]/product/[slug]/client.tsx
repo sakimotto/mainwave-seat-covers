@@ -8,8 +8,9 @@ import type { Product } from "@/types"
 import { StarIcon, TruckIcon, ShieldIcon, PhoneIcon, ChevronRightIcon, CartIcon } from "@/components/icons"
 import { cn } from "@/lib/utils"
 import { ProductCard } from "@/components/product-card"
-import { addToCart } from "@/lib/actions/cart"
+import { addToCart } from "@/commerce/vercel/cart"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
+import { formatMoney } from "@/lib/format"
 
 function StarDisplay({ rating }: { rating: number }) {
   return (
@@ -91,9 +92,9 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
       <div className="border-b border-mainwave-border">
         <div className="container-site py-3">
           <div className="flex items-center gap-1 text-xs text-gray-500">
-            <Link href={lp("/")} className="hover:text-mainwave-red transition-colors">{P.breadcrumbHome}</Link>
+            <Link href={lp("/")} className="hover:text-brand-accent transition-colors">{P.breadcrumbHome}</Link>
             <ChevronRightIcon className="w-3 h-3" />
-            <Link href={lp("/shop")} className="hover:text-mainwave-red transition-colors">{breadcrumbVehicle}</Link>
+            <Link href={lp("/shop")} className="hover:text-brand-accent transition-colors">{breadcrumbVehicle}</Link>
             <ChevronRightIcon className="w-3 h-3" />
             <span className="text-mainwave-black">{product.name}</span>
           </div>
@@ -126,12 +127,12 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
             </div>
 
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl font-bold text-mainwave-red">${price.toFixed(2)}</span>
+              <span className="text-2xl font-bold text-brand-accent">{formatMoney(price)}</span>
               {originalPrice && (
-                <span className="text-base text-gray-400 line-through">${originalPrice.toFixed(2)}</span>
+                <span className="text-base text-gray-400 line-through">{formatMoney(originalPrice)}</span>
               )}
               {product.isSale && (
-                <span className="bg-mainwave-red text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider">
+                <span className="bg-brand-accent text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider">
                   {P.saleOff} {salePercentage}%
                 </span>
               )}
@@ -154,8 +155,8 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
                       className={cn(
                         "flex items-center gap-2 px-3 py-2 text-xs border transition-colors",
                         selectedColor === opt.color
-                          ? "border-mainwave-red bg-mainwave-red/5 text-mainwave-red font-medium"
-                          : "border-mainwave-border text-mainwave-text hover:border-mainwave-red"
+                          ? "border-brand-accent bg-brand-accent/5 text-brand-accent font-medium"
+                          : "border-mainwave-border text-mainwave-text hover:border-brand-accent"
                       )}
                     >
                       {opt.colorHex && (
@@ -179,8 +180,8 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
                       className={cn(
                         "px-4 py-2 text-xs border font-medium transition-colors min-w-[48px] text-center",
                         selectedSize === size
-                          ? "border-mainwave-red bg-mainwave-red/5 text-mainwave-red"
-                          : "border-mainwave-border text-mainwave-text hover:border-mainwave-red"
+                          ? "border-brand-accent bg-brand-accent/5 text-brand-accent"
+                          : "border-mainwave-border text-mainwave-text hover:border-brand-accent"
                       )}
                     >
                       {size}
@@ -194,7 +195,7 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
               <div className="flex items-center border border-mainwave-border">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-9 h-9 flex items-center justify-center text-sm text-mainwave-text hover:text-mainwave-red hover:bg-mainwave-grey transition-colors"
+                  className="w-9 h-9 flex items-center justify-center text-sm text-mainwave-text hover:text-brand-accent hover:bg-mainwave-grey transition-colors"
                 >
                   -
                 </button>
@@ -206,7 +207,7 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
                 />
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-9 h-9 flex items-center justify-center text-sm text-mainwave-text hover:text-mainwave-red hover:bg-mainwave-grey transition-colors"
+                  className="w-9 h-9 flex items-center justify-center text-sm text-mainwave-text hover:text-brand-accent hover:bg-mainwave-grey transition-colors"
                 >
                   +
                 </button>
@@ -230,7 +231,7 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
                   })
                 }}
                 disabled={pending || !selectedVariant}
-                className="flex-1 flex items-center justify-center gap-2 bg-mainwave-red text-white text-sm font-bold py-3 px-6 hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 flex items-center justify-center gap-2 bg-brand-accent text-white text-sm font-bold py-3 px-6 hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <CartIcon className="w-5 h-5" />
                 {pending ? P.adding : added ? P.added : P.addToCart}
@@ -253,15 +254,15 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
 
             <div className="space-y-2 text-xs text-mainwave-text">
               <div className="flex items-center gap-2">
-                <TruckIcon className="w-4 h-4 text-mainwave-red" />
+                <TruckIcon className="w-4 h-4 text-brand-accent" />
                 <span>{P.freeShipping}</span>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldIcon className="w-4 h-4 text-mainwave-red" />
+                <ShieldIcon className="w-4 h-4 text-brand-accent" />
                 <span>{P.warrantyBadge}</span>
               </div>
               <div className="flex items-center gap-2">
-                <PhoneIcon className="w-4 h-4 text-mainwave-red" />
+                <PhoneIcon className="w-4 h-4 text-brand-accent" />
                 <span>{P.callUs}</span>
               </div>
             </div>
@@ -278,8 +279,8 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
                   className={cn(
                     "px-4 md:px-6 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors whitespace-nowrap",
                     activeTab === tab.key
-                      ? "border-mainwave-red text-mainwave-red"
-                      : "border-transparent text-gray-500 hover:text-mainwave-red"
+                      ? "border-brand-accent text-brand-accent"
+                      : "border-transparent text-gray-500 hover:text-brand-accent"
                   )}
                 >
                   {tab.label}

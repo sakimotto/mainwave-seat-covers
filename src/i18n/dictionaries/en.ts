@@ -117,7 +117,7 @@ export const en = {
       privacyPolicy: "Privacy Policy",
     },
     madeIn: "Made in Thailand · Launching 2026",
-    rights: "Mainwave Seat Covers Pty Ltd. All rights reserved.",
+    rights: "All rights reserved.",
   },
   search: {
     placeholder: "Search seat covers, vehicles, merchandise...",

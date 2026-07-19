@@ -64,7 +64,7 @@ export function VehicleSelector({ vehicles }: { vehicles: Vehicle[] }) {
                 className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300",
                   step >= s
-                    ? "bg-mainwave-red text-white scale-100"
+                    ? "bg-brand-accent text-white scale-100"
                     : "bg-white/20 text-white/40 scale-90"
                 )}
               >
@@ -85,7 +85,7 @@ export function VehicleSelector({ vehicles }: { vehicles: Vehicle[] }) {
                 {s === 1 ? "Make" : s === 2 ? "Model" : "Year"}
               </span>
             </div>
-            {s < 3 && <div className={cn("w-8 h-px transition-colors", step > s ? "bg-mainwave-red" : "bg-white/20")} />}
+            {s < 3 && <div className={cn("w-8 h-px transition-colors", step > s ? "bg-brand-accent" : "bg-white/20")} />}
           </div>
         ))}
       </div>
@@ -105,7 +105,7 @@ export function VehicleSelector({ vehicles }: { vehicles: Vehicle[] }) {
                 <button
                   key={v.id}
                   onClick={() => handleMakeSelect(v.slug)}
-                  className="group flex flex-col items-center gap-2 p-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 hover:border-mainwave-red/50 transition-all text-center"
+                  className="group flex flex-col items-center gap-2 p-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 hover:border-brand-accent/50 transition-all text-center"
                 >
                   <div className="w-10 h-10 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center transition-colors">
                     <img src={v.image} alt={v.make} className="w-6 h-6 object-contain opacity-80 group-hover:opacity-100" />
@@ -141,7 +141,7 @@ export function VehicleSelector({ vehicles }: { vehicles: Vehicle[] }) {
                 <button
                   key={model}
                   onClick={() => handleModelSelect(model)}
-                  className="p-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 hover:border-mainwave-red/50 transition-all text-center text-sm font-medium text-white"
+                  className="p-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 hover:border-brand-accent/50 transition-all text-center text-sm font-medium text-white"
                 >
                   {model}
                 </button>
@@ -181,7 +181,7 @@ export function VehicleSelector({ vehicles }: { vehicles: Vehicle[] }) {
                   className={cn(
                     "p-2 rounded-lg text-sm font-medium transition-all",
                     selectedYear === year
-                      ? "bg-mainwave-red text-white border-mainwave-red"
+                      ? "bg-brand-accent text-white border-brand-accent"
                       : "bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/30 text-white"
                   )}
                 >
@@ -198,7 +198,7 @@ export function VehicleSelector({ vehicles }: { vehicles: Vehicle[] }) {
         <div className={cn("mt-8 text-center transition-all duration-200", animating ? "opacity-0" : "opacity-100")}>
           <button
             onClick={handleFind}
-            className="bg-mainwave-red text-white font-bold text-sm uppercase tracking-wider px-10 py-4 hover:bg-red-700 transition-colors inline-flex items-center gap-2"
+            className="bg-brand-accent text-white font-bold text-sm uppercase tracking-wider px-10 py-4 hover:bg-red-700 transition-colors inline-flex items-center gap-2"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <circle cx="11" cy="11" r="8" />

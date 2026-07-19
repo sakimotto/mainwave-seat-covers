@@ -32,7 +32,7 @@ export default function DeliveryPage() {
       {/* Hero */}
       <section className="bg-mainwave-black text-white py-16 md:py-24">
         <div className="container-site text-center">
-          <TruckIcon className="w-12 h-12 mx-auto mb-4 text-mainwave-red" />
+          <TruckIcon className="w-12 h-12 mx-auto mb-4 text-brand-accent" />
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             Delivery Information
           </h1>
@@ -74,7 +74,7 @@ export default function DeliveryPage() {
                   <div className="px-4 py-3 font-semibold border-r border-mainwave-border">
                     {zone.zone}
                   </div>
-                  <div className="px-4 py-3 font-medium text-mainwave-red border-r border-mainwave-border md:border-r-0">
+                  <div className="px-4 py-3 font-medium text-brand-accent border-r border-mainwave-border md:border-r-0">
                     {zone.estimate}
                   </div>
                   <div className="hidden md:block px-4 py-3 text-gray-500">
@@ -130,7 +130,7 @@ export default function DeliveryPage() {
                 If you have any questions about your delivery, please{" "}
                 <Link
                   href="/form/contact-us"
-                  className="text-mainwave-red font-medium hover:underline"
+                  className="text-brand-accent font-medium hover:underline"
                 >
                   contact our team
                 </Link>

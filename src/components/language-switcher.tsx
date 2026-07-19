@@ -21,7 +21,7 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
     <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase" role="group" aria-label="Language">
       <button
         onClick={() => switchLocale("en")}
-        className={cn("transition-colors", locale === "en" ? "text-mainwave-red" : "text-bone/50 hover:text-bone")}
+        className={cn("transition-colors", locale === "en" ? "text-brand-accent" : "text-bone/50 hover:text-bone")}
         aria-current={locale === "en" ? "true" : undefined}
       >
         EN
@@ -29,7 +29,7 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
       <span className="text-bone/20" aria-hidden="true">|</span>
       <button
         onClick={() => switchLocale("th")}
-        className={cn("transition-colors", locale === "th" ? "text-mainwave-red" : "text-bone/50 hover:text-bone")}
+        className={cn("transition-colors", locale === "th" ? "text-brand-accent" : "text-bone/50 hover:text-bone")}
         aria-current={locale === "th" ? "true" : undefined}
       >
         ไทย

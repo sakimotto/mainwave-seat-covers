@@ -43,11 +43,11 @@ export default async function ModelPage({ params }: ModelPageProps) {
       <div className="bg-mainwave-grey border-b border-mainwave-border">
         <div className="container-site py-3">
           <nav className="flex items-center gap-1.5 text-xs text-gray-500">
-            <Link href="/" className="hover:text-mainwave-red transition-colors">Home</Link>
+            <Link href="/" className="hover:text-brand-accent transition-colors">Home</Link>
             <ChevronRightIcon className="w-3 h-3" />
-            <Link href={`/vehicle/${vehicle.slug}`} className="hover:text-mainwave-red transition-colors">{vehicle.make}</Link>
+            <Link href={`/vehicle/${vehicle.slug}`} className="hover:text-brand-accent transition-colors">{vehicle.make}</Link>
             <ChevronRightIcon className="w-3 h-3" />
-            <span className="text-mainwave-red font-medium capitalize">{modelName}</span>
+            <span className="text-brand-accent font-medium capitalize">{modelName}</span>
           </nav>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default async function ModelPage({ params }: ModelPageProps) {
               )}
               <Link
                 href={`/vehicle/${vehicle.slug}`}
-                className="inline-block mt-6 bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
+                className="inline-block mt-6 bg-brand-accent text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
               >
                 Back to {vehicle.make}
               </Link>
@@ -119,7 +119,7 @@ export default async function ModelPage({ params }: ModelPageProps) {
           </p>
           <Link
             href="/form/contact-us"
-            className="inline-block bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
+            className="inline-block bg-brand-accent text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
           >
             Contact Us
           </Link>

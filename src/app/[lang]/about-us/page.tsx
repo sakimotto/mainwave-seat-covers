@@ -96,7 +96,7 @@ export default function AboutUsPage() {
                 key={feature.title}
                 className="bg-white p-6 md:p-8 border border-mainwave-border"
               >
-                <feature.icon className="w-8 h-8 text-mainwave-red mb-4" />
+                <feature.icon className="w-8 h-8 text-brand-accent mb-4" />
                 <h3 className="text-lg font-bold text-mainwave-black mb-2">
                   {feature.title}
                 </h3>

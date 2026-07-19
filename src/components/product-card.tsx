@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { formatMoney } from "@/lib/format";
 import type { Product } from "@/types";
 
 export function ProductCard({ product, showRating }: { product: Product; showRating?: boolean }) {
@@ -30,11 +31,11 @@ export function ProductCard({ product, showRating }: { product: Product; showRat
           <span className="text-[11px] text-gray-400 ml-1">({product.reviewCount})</span>
         </div>
       )}
-      <h3 className="text-sm font-medium text-mainwave-black group-hover:text-mainwave-red transition-colors leading-snug mb-1">
+      <h3 className="text-sm font-medium text-mainwave-black group-hover:text-brand-accent transition-colors leading-snug mb-1">
         {product.name}
       </h3>
       <span className="text-sm font-semibold text-mainwave-black">
-        ${product.price.toFixed(2)}
+        {formatMoney(product.price)}
       </span>
     </Link>
   );

@@ -53,8 +53,8 @@ export function BlogListingClient({ initialPosts }: { initialPosts: BlogPost[] }
                 onClick={() => setActiveCategory(cat.value)}
                 className={`px-3 py-1.5 text-xs font-semibold border transition-colors uppercase tracking-wider ${
                   activeCategory === cat.value
-                    ? "bg-mainwave-red text-white border-mainwave-red"
-                    : "border-mainwave-border text-mainwave-text hover:bg-mainwave-red hover:text-white hover:border-mainwave-red"
+                    ? "bg-brand-accent text-white border-brand-accent"
+                    : "border-mainwave-border text-mainwave-text hover:bg-brand-accent hover:text-white hover:border-brand-accent"
                 }`}
               >
                 {cat.label}
@@ -67,7 +67,7 @@ export function BlogListingClient({ initialPosts }: { initialPosts: BlogPost[] }
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 text-xs border border-mainwave-border bg-white text-mainwave-text focus:outline-none focus:border-mainwave-red transition-colors"
+              className="w-full px-3 py-2 text-xs border border-mainwave-border bg-white text-mainwave-text focus:outline-none focus:border-brand-accent transition-colors"
             />
           </div>
         </div>
@@ -84,12 +84,12 @@ export function BlogListingClient({ initialPosts }: { initialPosts: BlogPost[] }
                   <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-[10px] font-bold text-mainwave-red uppercase tracking-wider">
+                  <span className="text-[10px] font-bold text-brand-accent uppercase tracking-wider">
                     {post.category}
                   </span>
                   <span className="text-[10px] text-gray-400">{post.date}</span>
                 </div>
-                <h2 className="text-sm md:text-base font-bold text-mainwave-black group-hover:text-mainwave-red transition-colors leading-snug mb-1">
+                <h2 className="text-sm md:text-base font-bold text-mainwave-black group-hover:text-brand-accent transition-colors leading-snug mb-1">
                   {post.title}
                 </h2>
                 <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
@@ -103,7 +103,7 @@ export function BlogListingClient({ initialPosts }: { initialPosts: BlogPost[] }
             <p className="text-gray-500 text-sm">No articles found matching your criteria.</p>
             <button
               onClick={() => { setActiveCategory("all"); setSearchQuery(""); }}
-              className="mt-3 text-mainwave-red text-sm font-medium hover:underline"
+              className="mt-3 text-brand-accent text-sm font-medium hover:underline"
             >
               Clear filters
             </button>

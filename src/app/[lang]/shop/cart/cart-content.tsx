@@ -4,8 +4,9 @@ import { useState, useEffect, useTransition } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { TrashIcon, MinusIcon, PlusIcon } from "@/components/icons"
-import { getCart, updateCartItemQuantity, removeCartItem } from "@/lib/actions/cart"
+import { getCart, updateCartItemQuantity, removeCartItem } from "@/commerce/vercel/cart"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
+import { formatMoney } from "@/lib/format"
 import type { Cart } from "@/types"
 
 export function CartContent({ dict, locale }: { dict: Dictionary; locale: Locale }) {
@@ -40,7 +41,7 @@ export function CartContent({ dict, locale }: { dict: Dictionary; locale: Locale
           </p>
           <Link
             href={lp("/shop")}
-            className="inline-block bg-mainwave-red text-white font-bold uppercase tracking-wider px-8 py-3 text-sm hover:bg-red-700 transition-colors"
+            className="inline-block bg-brand-accent text-white font-bold uppercase tracking-wider px-8 py-3 text-sm hover:bg-red-700 transition-colors"
           >
             {C.emptyCta}
           </Link>
@@ -85,7 +86,7 @@ export function CartContent({ dict, locale }: { dict: Dictionary; locale: Locale
             <div className="flex-1 min-w-0">
               <Link
                 href={lp(`/product/${item.productSlug}`)}
-                className="text-sm font-bold text-mainwave-black hover:text-mainwave-red transition-colors line-clamp-2"
+                className="text-sm font-bold text-mainwave-black hover:text-brand-accent transition-colors line-clamp-2"
               >
                 {item.productName}
               </Link>
@@ -113,12 +114,12 @@ export function CartContent({ dict, locale }: { dict: Dictionary; locale: Locale
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-bold text-mainwave-black">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    {formatMoney(item.price * item.quantity)}
                   </span>
                   <button
                     onClick={() => handleRemove(item.id)}
                     disabled={pending}
-                    className="text-gray-400 hover:text-mainwave-red transition-colors disabled:opacity-50"
+                    className="text-gray-400 hover:text-brand-accent transition-colors disabled:opacity-50"
                     aria-label={C.remove}
                   >
                     <TrashIcon className="w-4 h-4" />
@@ -135,7 +136,7 @@ export function CartContent({ dict, locale }: { dict: Dictionary; locale: Locale
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span className="text-mainwave-text">{C.subtotal} ({cart.itemCount} {C.items})</span>
-            <span className="font-medium text-mainwave-black">${cart.subtotal.toFixed(2)}</span>
+            <span className="font-medium text-mainwave-black">{formatMoney(cart.subtotal)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-mainwave-text">{C.shipping}</span>
@@ -152,18 +153,18 @@ export function CartContent({ dict, locale }: { dict: Dictionary; locale: Locale
         <div className="border-t border-mainwave-border mt-4 pt-4">
           <div className="flex justify-between text-base">
             <span className="font-bold text-mainwave-black">{C.total}</span>
-            <span className="font-bold text-mainwave-red">${cart.subtotal.toFixed(2)}</span>
+            <span className="font-bold text-brand-accent">{formatMoney(cart.subtotal)}</span>
           </div>
         </div>
         <Link
           href={lp("/checkout")}
-          className="block w-full bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider text-center py-3 mt-4 hover:bg-red-700 transition-colors"
+          className="block w-full bg-brand-accent text-white text-sm font-bold uppercase tracking-wider text-center py-3 mt-4 hover:bg-red-700 transition-colors"
         >
           {C.checkout}
         </Link>
         <Link
           href={lp("/shop")}
-          className="block w-full text-center text-xs text-mainwave-text hover:text-mainwave-red transition-colors mt-3"
+          className="block w-full text-center text-xs text-mainwave-text hover:text-brand-accent transition-colors mt-3"
         >
           {C.continueShopping}
         </Link>

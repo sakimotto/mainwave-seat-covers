@@ -36,7 +36,7 @@ export default function HeavyDutyPage() {
           {/* Main Content */}
           <article>
             <div className="flex items-center gap-2 text-xs text-gray-500 mb-6">
-              <span className="bg-mainwave-red text-white px-2 py-0.5 font-medium">Guides</span>
+              <span className="bg-brand-accent text-white px-2 py-0.5 font-medium">Guides</span>
               <span>December 5, 2025</span>
             </div>
 
@@ -72,7 +72,7 @@ export default function HeavyDutyPage() {
                 When it comes to heavy-duty seat covers in Australia, Mainwave Seat Covers is the clear choice. Our combination of factory-direct manufacturing, premium 4mm neoprene, custom vehicle patterns, and proven durability makes us the go-to for tradies, miners, fleet operators, and anyone who demands the best protection for their vehicle.
               </p>
               <p className="leading-relaxed mb-4">
-                <Link href="/shop" className="text-mainwave-red font-semibold hover:underline">
+                <Link href="/shop" className="text-brand-accent font-semibold hover:underline">
                   Shop our full range of heavy-duty seat covers →
                 </Link>
               </p>
@@ -81,7 +81,7 @@ export default function HeavyDutyPage() {
             <div className="mt-8 pt-6 border-t border-mainwave-border">
               <Link
                 href="/blog"
-                className="text-sm text-mainwave-red font-semibold hover:underline"
+                className="text-sm text-brand-accent font-semibold hover:underline"
               >
                 ← Back to all articles
               </Link>
@@ -104,12 +104,12 @@ export default function HeavyDutyPage() {
                     {recent.title}
                   </div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-bold text-mainwave-red uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-brand-accent uppercase tracking-wider">
                       {recent.category}
                     </span>
                     <span className="text-[10px] text-gray-400">{recent.date}</span>
                   </div>
-                  <h4 className="text-xs font-semibold text-mainwave-black group-hover:text-mainwave-red transition-colors leading-tight">
+                  <h4 className="text-xs font-semibold text-mainwave-black group-hover:text-brand-accent transition-colors leading-tight">
                     {recent.title}
                   </h4>
                 </Link>

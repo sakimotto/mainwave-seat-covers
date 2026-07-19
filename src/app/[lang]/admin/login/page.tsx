@@ -34,7 +34,7 @@ export default async function AdminLoginPage({
     <div className="container-site py-16 max-w-sm">
       <h1 className="text-2xl font-bold text-mainwave-black mb-6">Admin Login</h1>
       {error && (
-        <p className="mb-4 text-sm text-mainwave-red">Invalid token. Try again.</p>
+        <p className="mb-4 text-sm text-brand-accent">Invalid token. Try again.</p>
       )}
       <form action={login} className="space-y-4">
         <div>
@@ -47,12 +47,12 @@ export default async function AdminLoginPage({
             type="password"
             required
             autoComplete="off"
-            className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-mainwave-red"
+            className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent"
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider py-3 hover:bg-red-700 transition-colors"
+          className="w-full bg-brand-accent text-white text-sm font-bold uppercase tracking-wider py-3 hover:bg-red-700 transition-colors"
         >
           Sign In
         </button>

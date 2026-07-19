@@ -36,7 +36,7 @@ export default function RipProofPage() {
           {/* Main Content */}
           <article>
             <div className="flex items-center gap-2 text-xs text-gray-500 mb-6">
-              <span className="bg-mainwave-red text-white px-2 py-0.5 font-medium">Materials</span>
+              <span className="bg-brand-accent text-white px-2 py-0.5 font-medium">Materials</span>
               <span>November 18, 2025</span>
             </div>
 
@@ -79,7 +79,7 @@ export default function RipProofPage() {
                 Rip-proof neoprene seat covers represent the ultimate in vehicle interior protection. With unmatched durability, waterproof protection, UV resistance, superior comfort, and Australian engineering, they are the smart choice for anyone who demands the best. Mainwave Seat Covers offers a full range of rip-proof neoprene covers for Australia&apos;s most popular vehicles.
               </p>
               <p className="leading-relaxed mb-4">
-                <Link href="/shop" className="text-mainwave-red font-semibold hover:underline">
+                <Link href="/shop" className="text-brand-accent font-semibold hover:underline">
                   Browse Mainwave rip-proof neoprene seat covers →
                 </Link>
               </p>
@@ -88,7 +88,7 @@ export default function RipProofPage() {
             <div className="mt-8 pt-6 border-t border-mainwave-border">
               <Link
                 href="/blog"
-                className="text-sm text-mainwave-red font-semibold hover:underline"
+                className="text-sm text-brand-accent font-semibold hover:underline"
               >
                 ← Back to all articles
               </Link>
@@ -111,12 +111,12 @@ export default function RipProofPage() {
                     {recent.title}
                   </div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-bold text-mainwave-red uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-brand-accent uppercase tracking-wider">
                       {recent.category}
                     </span>
                     <span className="text-[10px] text-gray-400">{recent.date}</span>
                   </div>
-                  <h4 className="text-xs font-semibold text-mainwave-black group-hover:text-mainwave-red transition-colors leading-tight">
+                  <h4 className="text-xs font-semibold text-mainwave-black group-hover:text-brand-accent transition-colors leading-tight">
                     {recent.title}
                   </h4>
                 </Link>

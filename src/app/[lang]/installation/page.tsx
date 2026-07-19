@@ -117,7 +117,7 @@ export default function InstallationPage() {
                   key={step.number}
                   className="flex gap-4 bg-white p-5 md:p-6 border border-mainwave-border"
                 >
-                  <span className="flex-shrink-0 w-9 h-9 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                  <span className="flex-shrink-0 w-9 h-9 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                     {step.number}
                   </span>
                   <div>
@@ -140,7 +140,7 @@ export default function InstallationPage() {
         <div className="container-site">
           <div className="max-w-3xl mx-auto">
             <div className="flex items-center gap-3 mb-6">
-              <WrenchIcon className="w-6 h-6 text-mainwave-red" />
+              <WrenchIcon className="w-6 h-6 text-brand-accent" />
               <h2 className="text-2xl font-bold text-mainwave-black">
                 Tools Needed
               </h2>
@@ -151,7 +151,7 @@ export default function InstallationPage() {
                   key={tool}
                   className="flex items-start gap-3 text-sm text-mainwave-text"
                 >
-                  <CheckCircleIcon className="w-5 h-5 text-mainwave-red flex-shrink-0 mt-0.5" />
+                  <CheckCircleIcon className="w-5 h-5 text-brand-accent flex-shrink-0 mt-0.5" />
                   {tool}
                 </li>
               ))}
@@ -173,7 +173,7 @@ export default function InstallationPage() {
                   key={tip}
                   className="flex items-start gap-3 text-sm text-mainwave-text"
                 >
-                  <span className="flex-shrink-0 w-1.5 h-1.5 bg-mainwave-red rounded-full mt-2" />
+                  <span className="flex-shrink-0 w-1.5 h-1.5 bg-brand-accent rounded-full mt-2" />
                   <span className="leading-relaxed">{tip}</span>
                 </li>
               ))}
@@ -199,7 +199,7 @@ export default function InstallationPage() {
                 Need help?{" "}
                 <Link
                   href="/form/contact-us"
-                  className="text-mainwave-red font-medium hover:underline"
+                  className="text-brand-accent font-medium hover:underline"
                 >
                   Contact our team
                 </Link>{" "}

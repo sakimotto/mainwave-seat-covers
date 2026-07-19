@@ -18,11 +18,11 @@ export default function CarCareTipsPage() {
       <div className="container-site">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1 text-xs text-gray-400 mb-8">
-          <Link href="/" className="hover:text-mainwave-red transition-colors">
+          <Link href="/" className="hover:text-brand-accent transition-colors">
             Home
           </Link>
           <ChevronRightIcon className="w-3 h-3" />
-          <Link href="/blog" className="hover:text-mainwave-red transition-colors">
+          <Link href="/blog" className="hover:text-brand-accent transition-colors">
             Blog
           </Link>
           <ChevronRightIcon className="w-3 h-3" />
@@ -34,7 +34,7 @@ export default function CarCareTipsPage() {
           <article>
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-[11px] font-bold text-mainwave-red uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-brand-accent uppercase tracking-wider">
                   Car Care
                 </span>
                 <span className="text-[11px] text-gray-400">|</span>
@@ -134,7 +134,7 @@ export default function CarCareTipsPage() {
             <div className="mt-8 pt-6 border-t border-mainwave-border">
               <Link
                 href="/blog"
-                className="text-sm text-mainwave-red font-semibold hover:underline"
+                className="text-sm text-brand-accent font-semibold hover:underline"
               >
                 ← Back to all articles
               </Link>
@@ -157,12 +157,12 @@ export default function CarCareTipsPage() {
                     <img src={recent.image} alt={recent.title} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-bold text-mainwave-red uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-brand-accent uppercase tracking-wider">
                       {recent.category}
                     </span>
                     <span className="text-[10px] text-gray-400">{recent.date}</span>
                   </div>
-                  <h4 className="text-xs font-semibold text-mainwave-black group-hover:text-mainwave-red transition-colors leading-tight">
+                  <h4 className="text-xs font-semibold text-mainwave-black group-hover:text-brand-accent transition-colors leading-tight">
                     {recent.title}
                   </h4>
                 </Link>

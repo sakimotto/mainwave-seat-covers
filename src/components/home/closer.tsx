@@ -5,7 +5,7 @@ import { localePath, type Dictionary, type Locale } from "@/i18n"
 
 export function Closer({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   return (
-    <section className="relative bg-mainwave-red overflow-hidden">
+    <section className="relative bg-brand-accent overflow-hidden">
       <Image
         src="/images/lifestyle/coast-cliffs.jpg"
         alt=""
@@ -14,7 +14,7 @@ export function Closer({ dict, locale }: { dict: Dictionary; locale: Locale }) {
         sizes="100vw"
         className="object-cover opacity-25"
       />
-      <div className="absolute inset-0 bg-mainwave-red/70" aria-hidden="true" />
+      <div className="absolute inset-0 bg-brand-accent/70" aria-hidden="true" />
       <div className="absolute inset-0 bg-grain opacity-40" aria-hidden="true" />
       <div className="container-wide relative z-10 py-24 md:py-32 text-center">
         <Reveal>

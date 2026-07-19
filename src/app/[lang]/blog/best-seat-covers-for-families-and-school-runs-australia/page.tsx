@@ -13,9 +13,9 @@ export default function FamiliesSchoolRunsPage() {
       <div className="border-b border-mainwave-border">
         <div className="container-site py-3">
           <div className="flex items-center gap-1 text-xs text-gray-500">
-            <Link href="/" className="hover:text-mainwave-red transition-colors">Home</Link>
+            <Link href="/" className="hover:text-brand-accent transition-colors">Home</Link>
             <ChevronRightIcon className="w-3 h-3" />
-            <Link href="/blog" className="hover:text-mainwave-red transition-colors">Blog</Link>
+            <Link href="/blog" className="hover:text-brand-accent transition-colors">Blog</Link>
             <ChevronRightIcon className="w-3 h-3" />
             <span className="text-mainwave-black">Best Seat Covers for Families</span>
           </div>
@@ -24,7 +24,7 @@ export default function FamiliesSchoolRunsPage() {
 
       <article className="container-site py-8 md:py-12 max-w-3xl mx-auto">
         <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
-          <span className="bg-mainwave-red text-white px-2 py-0.5 font-medium">Guides</span>
+          <span className="bg-brand-accent text-white px-2 py-0.5 font-medium">Guides</span>
           <span>January 5, 2026</span>
         </div>
 

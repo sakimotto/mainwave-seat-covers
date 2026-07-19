@@ -36,7 +36,7 @@ export default function RentalFleetsPage() {
           {/* Main Content */}
           <article>
             <div className="flex items-center gap-2 text-xs text-gray-500 mb-6">
-              <span className="bg-mainwave-red text-white px-2 py-0.5 font-medium">Industry</span>
+              <span className="bg-brand-accent text-white px-2 py-0.5 font-medium">Industry</span>
               <span>October 15, 2025</span>
             </div>
 
@@ -74,7 +74,7 @@ export default function RentalFleetsPage() {
                 Protecting your rental fleet investment starts with the right seat covers. Mainwave&apos;s Australian-made neoprene covers offer the durability, cleanability, and professional appearance that rental operators need. With cost-effective fleet pricing and a proven track record across Australian rental fleets, Mainwave is the partner you can trust.
               </p>
               <p className="leading-relaxed mb-4">
-                <Link href="/shop" className="text-mainwave-red font-semibold hover:underline">
+                <Link href="/shop" className="text-brand-accent font-semibold hover:underline">
                   Shop Mainwave fleet-rated seat covers →
                 </Link>
               </p>
@@ -83,7 +83,7 @@ export default function RentalFleetsPage() {
             <div className="mt-8 pt-6 border-t border-mainwave-border">
               <Link
                 href="/blog"
-                className="text-sm text-mainwave-red font-semibold hover:underline"
+                className="text-sm text-brand-accent font-semibold hover:underline"
               >
                 ← Back to all articles
               </Link>
@@ -106,12 +106,12 @@ export default function RentalFleetsPage() {
                     {recent.title}
                   </div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-bold text-mainwave-red uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-brand-accent uppercase tracking-wider">
                       {recent.category}
                     </span>
                     <span className="text-[10px] text-gray-400">{recent.date}</span>
                   </div>
-                  <h4 className="text-xs font-semibold text-mainwave-black group-hover:text-mainwave-red transition-colors leading-tight">
+                  <h4 className="text-xs font-semibold text-mainwave-black group-hover:text-brand-accent transition-colors leading-tight">
                     {recent.title}
                   </h4>
                 </Link>

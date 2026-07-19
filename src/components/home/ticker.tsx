@@ -1,7 +1,7 @@
 export function Ticker({ items }: { items: string[] }) {
   const row = [...items, ...items]
   return (
-    <div className="bg-mainwave-red overflow-hidden border-y border-ink/20 py-3" aria-hidden="true">
+    <div className="bg-brand-accent overflow-hidden border-y border-ink/20 py-3" aria-hidden="true">
       <div className="flex w-max animate-marquee motion-reduce:animate-none">
         {[0, 1].map((half) => (
           <div key={half} className="flex shrink-0">

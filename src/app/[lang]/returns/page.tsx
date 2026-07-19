@@ -66,7 +66,7 @@ export default function ReturnsPage() {
                   key={condition}
                   className="flex items-start gap-3 text-sm text-mainwave-text"
                 >
-                  <span className="flex-shrink-0 w-1.5 h-1.5 bg-mainwave-red rounded-full mt-2" />
+                  <span className="flex-shrink-0 w-1.5 h-1.5 bg-brand-accent rounded-full mt-2" />
                   <span className="leading-relaxed">{condition}</span>
                 </li>
               ))}
@@ -84,7 +84,7 @@ export default function ReturnsPage() {
             </h2>
             <ol className="space-y-6">
               <li className="flex gap-4">
-                <span className="flex-shrink-0 w-8 h-8 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                <span className="flex-shrink-0 w-8 h-8 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                   1
                 </span>
                 <div>
@@ -98,7 +98,7 @@ export default function ReturnsPage() {
                 </div>
               </li>
               <li className="flex gap-4">
-                <span className="flex-shrink-0 w-8 h-8 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                <span className="flex-shrink-0 w-8 h-8 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                   2
                 </span>
                 <div>
@@ -112,7 +112,7 @@ export default function ReturnsPage() {
                 </div>
               </li>
               <li className="flex gap-4">
-                <span className="flex-shrink-0 w-8 h-8 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                <span className="flex-shrink-0 w-8 h-8 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                   3
                 </span>
                 <div>
@@ -127,7 +127,7 @@ export default function ReturnsPage() {
                 </div>
               </li>
               <li className="flex gap-4">
-                <span className="flex-shrink-0 w-8 h-8 bg-mainwave-red text-white text-sm font-bold rounded-full flex items-center justify-center">
+                <span className="flex-shrink-0 w-8 h-8 bg-brand-accent text-white text-sm font-bold rounded-full flex items-center justify-center">
                   4
                 </span>
                 <div>
@@ -200,7 +200,7 @@ export default function ReturnsPage() {
             <div className="mt-8">
               <Link
                 href="/form/contact-us"
-                className="inline-block bg-mainwave-red text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
+                className="inline-block bg-brand-accent text-white text-sm font-bold uppercase tracking-wider px-6 py-3 hover:bg-red-700 transition-colors"
               >
                 Contact Us to Start a Return
               </Link>

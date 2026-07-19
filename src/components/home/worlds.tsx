@@ -15,7 +15,7 @@ export function Worlds({ dict, locale }: { dict: Dictionary; locale: Locale }) {
     <section id="worlds" className="bg-ink py-20 md:py-28">
       <div className="container-wide">
         <Reveal>
-          <p className="text-mainwave-red text-xs font-bold tracking-[0.4em] uppercase mb-4">{dict.worlds.kicker}</p>
+          <p className="text-brand-accent text-xs font-bold tracking-[0.4em] uppercase mb-4">{dict.worlds.kicker}</p>
           <h2 className="text-display text-[clamp(2.2rem,5.5vw,4.5rem)] text-bone max-w-3xl">
             {dict.worlds.title1}<br />{dict.worlds.title2}
           </h2>
@@ -26,7 +26,7 @@ export function Worlds({ dict, locale }: { dict: Dictionary; locale: Locale }) {
             <Reveal key={world.name} delay={i * 120}>
               <Link
                 href={localePath(locale, worldMedia[i].href)}
-                className="group relative block aspect-[3/4] overflow-hidden border border-white/10 hover:border-mainwave-red/60 transition-colors duration-500"
+                className="group relative block aspect-[3/4] overflow-hidden border border-white/10 hover:border-brand-accent/60 transition-colors duration-500"
               >
                 <Image
                   src={worldMedia[i].image}
@@ -36,11 +36,11 @@ export function Worlds({ dict, locale }: { dict: Dictionary; locale: Locale }) {
                   className="object-cover grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" aria-hidden="true" />
-                <span className="absolute top-4 left-4 text-[11px] font-bold tracking-[0.3em] text-bone/50 group-hover:text-mainwave-red transition-colors">
+                <span className="absolute top-4 left-4 text-[11px] font-bold tracking-[0.3em] text-bone/50 group-hover:text-brand-accent transition-colors">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="absolute inset-x-4 bottom-4">
-                  <p className="text-display text-3xl md:text-4xl text-bone group-hover:text-mainwave-red transition-colors duration-300">
+                  <p className="text-display text-3xl md:text-4xl text-bone group-hover:text-brand-accent transition-colors duration-300">
                     {world.name}
                   </p>
                   <p className="mt-1 text-xs text-bone/60 leading-snug">{world.tagline}</p>

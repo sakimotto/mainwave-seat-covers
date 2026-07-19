@@ -16,7 +16,7 @@ export function Band({ dict }: { dict: Dictionary }) {
       <div className="absolute inset-0 bg-gradient-to-b from-ink via-transparent to-ink" aria-hidden="true" />
       <div className="container-wide relative z-10 h-full flex flex-col justify-center">
         <Reveal>
-          <p className="text-mainwave-red text-xs font-bold tracking-[0.4em] uppercase mb-4">
+          <p className="text-brand-accent text-xs font-bold tracking-[0.4em] uppercase mb-4">
             {dict.band.kicker}
           </p>
           <p className="text-display text-[clamp(2.4rem,7vw,6rem)] text-bone max-w-4xl">
