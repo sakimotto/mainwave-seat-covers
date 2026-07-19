@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCommerce } from "@/commerce";
+import { getDictionary } from "@/i18n";
 import { ProductCard } from "@/components/product-card";
 import { ChevronRightIcon } from "@/components/icons";
 
 interface VehicleMakePageProps {
-  params: Promise<{ make: string }>;
+  params: Promise<{ lang: string; make: string }>;
 }
 
 export async function generateMetadata({
@@ -23,14 +24,15 @@ export async function generateMetadata({
 }
 
 export default async function VehicleMakePage({ params }: VehicleMakePageProps) {
-  const { make } = await params;
+  const { lang, make } = await params;
+  const { locale } = getDictionary(lang);
   const vehicle = await getCommerce().catalog.getVehicleBySlug(make);
 
   if (!vehicle) {
     notFound();
   }
 
-  const matchingProducts = (await getCommerce().catalog.getProductsByVehicle(make)).slice(0, 4);
+  const matchingProducts = (await getCommerce().catalog.getProductsByVehicle(make, locale)).slice(0, 4);
 
   return (
     <main>

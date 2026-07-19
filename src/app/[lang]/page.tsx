@@ -16,7 +16,7 @@ export default async function HomePage({
 }) {
   const { lang } = await params;
   const { locale, dict } = getDictionary(lang);
-  const popularProducts = await getCommerce().catalog.getPopularProducts();
+  const popularProducts = await getCommerce().catalog.getPopularProducts(locale);
 
   return (
     <>

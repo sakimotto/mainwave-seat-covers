@@ -16,6 +16,7 @@ export const mainwave: BrandConfig = {
   url: "https://www.mainwaveseatcovers.com.au",
   currency: "AUD",
   currencyLocale: "en-AU",
+  addressRegion: "au",
   locales: ["en", "th"],
   theme: {
     accent: "#cc0000",

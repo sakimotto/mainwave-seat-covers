@@ -23,8 +23,8 @@ export default async function ProductDetailPage({ params }: Props) {
   const { lang, slug } = await params
   const { locale, dict } = getDictionary(lang)
   const [product, all] = await Promise.all([
-    getCommerce().catalog.getProductBySlug(slug),
-    getCommerce().catalog.getProducts(),
+    getCommerce().catalog.getProductBySlug(slug, locale),
+    getCommerce().catalog.getProducts(locale),
   ])
 
   if (!product) notFound()

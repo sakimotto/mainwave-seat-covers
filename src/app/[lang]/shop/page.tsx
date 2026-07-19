@@ -9,7 +9,7 @@ export default async function ShopPage(props: {
   const [params, searchParams] = await Promise.all([props.params, props.searchParams])
   const { locale, dict } = getDictionary(params.lang)
   const [products, vehicles] = await Promise.all([
-    getCommerce().catalog.getProducts(),
+    getCommerce().catalog.getProducts(locale),
     getCommerce().catalog.getVehicles(),
   ])
 

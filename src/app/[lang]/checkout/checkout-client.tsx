@@ -6,6 +6,8 @@ import Image from "next/image"
 import { getCart, placeOrder } from "@/commerce/vercel/cart"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
 import { formatMoney } from "@/lib/format"
+import { brand } from "@/brands"
+import { THAI_PROVINCES } from "@/lib/thai-provinces"
 import type { Cart } from "@/types"
 
 export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Locale }) {
@@ -156,14 +158,22 @@ export function CheckoutClient({ dict, locale }: { dict: Dictionary; locale: Loc
                   <label htmlFor="state" className="block text-xs font-medium text-mainwave-text mb-1">{K.state}</label>
                   <select id="state" required value={form.state} onChange={(e) => updateField("state", e.target.value)} className="w-full border border-mainwave-border px-3 py-2 text-sm focus:outline-none focus:border-brand-accent bg-white">
                     <option value="">{K.select}</option>
-                    <option value="VIC">VIC</option>
-                    <option value="NSW">NSW</option>
-                    <option value="QLD">QLD</option>
-                    <option value="WA">WA</option>
-                    <option value="SA">SA</option>
-                    <option value="TAS">TAS</option>
-                    <option value="ACT">ACT</option>
-                    <option value="NT">NT</option>
+                    {brand.addressRegion === "th" ? (
+                      THAI_PROVINCES.map((p) => (
+                        <option key={p} value={p}>{p}</option>
+                      ))
+                    ) : (
+                      <>
+                        <option value="VIC">VIC</option>
+                        <option value="NSW">NSW</option>
+                        <option value="QLD">QLD</option>
+                        <option value="WA">WA</option>
+                        <option value="SA">SA</option>
+                        <option value="TAS">TAS</option>
+                        <option value="ACT">ACT</option>
+                        <option value="NT">NT</option>
+                      </>
+                    )}
                   </select>
                 </div>
                 <div>

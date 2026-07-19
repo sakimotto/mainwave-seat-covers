@@ -10,12 +10,12 @@ export function SearchWrapper({ vehicles, dict, locale }: { vehicles: Vehicle[];
   const [products, setProducts] = useState<Product[]>([])
 
   useEffect(() => {
-    // Fetch products on mount
-    fetch("/api/products")
+    // Fetch products on mount (localized names)
+    fetch(`/api/products?lang=${locale}`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch(() => {})
-  }, [])
+  }, [locale])
 
   // Listen for search trigger from header
   useEffect(() => {

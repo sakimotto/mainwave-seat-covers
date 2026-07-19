@@ -17,6 +17,8 @@ export type BrandConfig = {
   currency: string
   /** BCP-47 locale used for currency formatting */
   currencyLocale: string
+  /** Which region/province list the checkout address form uses */
+  addressRegion: "au" | "th"
   /** Enabled locales — must be a subset of i18n locales */
   locales: readonly string[]
   /** Theme tokens (override Tailwind @theme defaults via inline CSS vars) */

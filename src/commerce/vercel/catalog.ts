@@ -19,16 +19,18 @@ function mapProduct(p: {
   category: string | null; vehicleLabel: string | null;
   isSale: boolean; description: string | null; features: string[];
   material: string | null;
+  nameTh: string | null; descriptionTh: string | null;
   variants: { id: string; price: unknown; originalPrice: unknown; color: string; colorHex: string | null; size: string | null; sku: string; stock: number }[];
   reviews: { rating: number }[];
-}): Product {
+}, locale?: string): Product {
   const v = p.variants[0]
   const avgRating = p.reviews.length > 0
     ? p.reviews.reduce((s, r) => s + r.rating, 0) / p.reviews.length
     : 0
+  const th = locale === "th"
   return {
     id: p.id,
-    name: p.name,
+    name: (th && p.nameTh) || p.name,
     slug: p.slug,
     image: p.image,
     price: v ? Number(v.price) : 0,
@@ -38,7 +40,7 @@ function mapProduct(p: {
     vehicle: p.vehicleLabel ?? "",
     category: p.category ?? "",
     isSale: p.isSale || undefined,
-    description: p.description ?? undefined,
+    description: (th && p.descriptionTh) || p.description || undefined,
     features: p.features.length > 0 ? p.features : undefined,
     material: p.material ?? undefined,
     variants: p.variants.map((v) => ({
@@ -97,23 +99,23 @@ export const vercelCatalog: CatalogProvider = {
     return row ? mapVehicle(row) : null
   }),
 
-  getProducts: cache(async (): Promise<Product[]> => {
+  getProducts: cache(async (locale?: string): Promise<Product[]> => {
     const rows = await prisma.product.findMany({
       include: productInclude,
       orderBy: { createdAt: "desc" },
     })
-    return rows.map(mapProduct)
+    return rows.map((p) => mapProduct(p, locale))
   }),
 
-  getProductBySlug: cache(async (slug: string): Promise<Product | null> => {
+  getProductBySlug: cache(async (slug: string, locale?: string): Promise<Product | null> => {
     const row = await prisma.product.findUnique({
       where: { slug },
       include: productDetailInclude,
     })
-    return row ? mapProduct(row) : null
+    return row ? mapProduct(row, locale) : null
   }),
 
-  getProductsByVehicle: cache(async (vehicleSlug: string): Promise<Product[]> => {
+  getProductsByVehicle: cache(async (vehicleSlug: string, locale?: string): Promise<Product[]> => {
     const vehicle = await prisma.vehicle.findUnique({
       where: { slug: vehicleSlug },
       select: { id: true, make: true },
@@ -124,10 +126,10 @@ export const vercelCatalog: CatalogProvider = {
       include: productInclude,
       orderBy: { createdAt: "desc" },
     })
-    return rows.map(mapProduct)
+    return rows.map((p) => mapProduct(p, locale))
   }),
 
-  getProductsByMakeModel: cache(async (makeSlug: string, modelName: string): Promise<Product[]> => {
+  getProductsByMakeModel: cache(async (makeSlug: string, modelName: string, locale?: string): Promise<Product[]> => {
     const vehicle = await prisma.vehicle.findUnique({
       where: { slug: makeSlug },
       select: { id: true, make: true },
@@ -141,16 +143,16 @@ export const vercelCatalog: CatalogProvider = {
       include: productInclude,
       orderBy: { createdAt: "desc" },
     })
-    return rows.map(mapProduct)
+    return rows.map((p) => mapProduct(p, locale))
   }),
 
-  getPopularProducts: cache(async (): Promise<Product[]> => {
+  getPopularProducts: cache(async (locale?: string): Promise<Product[]> => {
     const rows = await prisma.product.findMany({
       include: productInclude,
       orderBy: { createdAt: "desc" },
       take: 8,
     })
-    return rows.map(mapProduct)
+    return rows.map((p) => mapProduct(p, locale))
   }),
 
   getBlogPosts: cache(async (): Promise<BlogPost[]> => {

@@ -13,11 +13,11 @@ export type CommerceCapabilities = {
 export type CatalogProvider = {
   getVehicles(): Promise<Vehicle[]>
   getVehicleBySlug(slug: string): Promise<Vehicle | null>
-  getProducts(): Promise<Product[]>
-  getProductBySlug(slug: string): Promise<Product | null>
-  getProductsByVehicle(vehicleSlug: string): Promise<Product[]>
-  getProductsByMakeModel(makeSlug: string, modelName: string): Promise<Product[]>
-  getPopularProducts(): Promise<Product[]>
+  getProducts(locale?: string): Promise<Product[]>
+  getProductBySlug(slug: string, locale?: string): Promise<Product | null>
+  getProductsByVehicle(vehicleSlug: string, locale?: string): Promise<Product[]>
+  getProductsByMakeModel(makeSlug: string, modelName: string, locale?: string): Promise<Product[]>
+  getPopularProducts(locale?: string): Promise<Product[]>
   getBlogPosts(): Promise<BlogPost[]>
   getBlogPostBySlug(slug: string): Promise<BlogPost | null>
 }

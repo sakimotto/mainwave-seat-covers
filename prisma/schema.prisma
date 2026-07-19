@@ -23,6 +23,8 @@ model Product {
   name         String
   slug         String          @unique
   description  String?
+  nameTh       String?
+  descriptionTh String?
   material     String?
   features     String[]
   image        String

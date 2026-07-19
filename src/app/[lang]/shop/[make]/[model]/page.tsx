@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCommerce } from "@/commerce";
+import { getDictionary } from "@/i18n";
 import { ProductCard } from "@/components/product-card";
 import { ChevronRightIcon } from "@/components/icons";
 
 interface ModelPageProps {
-  params: Promise<{ make: string; model: string }>;
+  params: Promise<{ lang: string; make: string; model: string }>;
 }
 
 export async function generateMetadata({ params }: ModelPageProps): Promise<Metadata> {
@@ -24,7 +25,8 @@ export async function generateMetadata({ params }: ModelPageProps): Promise<Meta
 }
 
 export default async function ModelPage({ params }: ModelPageProps) {
-  const { make, model } = await params;
+  const { lang, make, model } = await params;
+  const { locale } = getDictionary(lang);
   const vehicle = await getCommerce().catalog.getVehicleBySlug(make);
   const modelName = model.replace(/-/g, " ");
 
@@ -33,8 +35,8 @@ export default async function ModelPage({ params }: ModelPageProps) {
   }
 
   const [matchingProducts, allVehicleProducts] = await Promise.all([
-    getCommerce().catalog.getProductsByMakeModel(make, modelName),
-    getCommerce().catalog.getProductsByVehicle(make),
+    getCommerce().catalog.getProductsByMakeModel(make, modelName, locale),
+    getCommerce().catalog.getProductsByVehicle(make, locale),
   ]);
 
   return (
