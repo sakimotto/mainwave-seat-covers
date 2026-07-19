@@ -1,0 +1,224 @@
+"use server"
+
+import { cookies } from "next/headers"
+import { revalidatePath } from "next/cache"
+import { prisma } from "@/lib/prisma"
+import type { Cart, CartItem } from "@/types"
+
+async function getOrCreateSessionId(): Promise<string> {
+  const cookieStore = await cookies()
+  let sessionId = cookieStore.get("cart_session")?.value
+  if (!sessionId) {
+    sessionId = crypto.randomUUID()
+  }
+  return sessionId
+}
+
+async function getOrCreateCart(sessionId: string) {
+  let cart = await prisma.cart.findUnique({ where: { sessionId } })
+  if (!cart) {
+    cart = await prisma.cart.create({ data: { sessionId } })
+  }
+  return cart
+}
+
+export async function addToCart(
+  variantId: string,
+  quantity: number
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const sessionId = await getOrCreateSessionId()
+    const cart = await getOrCreateCart(sessionId)
+
+    const existing = await prisma.cartItem.findUnique({
+      where: { cartId_variantId: { cartId: cart.id, variantId } },
+    })
+
+    if (existing) {
+      await prisma.cartItem.update({
+        where: { id: existing.id },
+        data: { quantity: existing.quantity + quantity },
+      })
+    } else {
+      await prisma.cartItem.create({
+        data: { cartId: cart.id, variantId, quantity },
+      })
+    }
+
+    const cookieStore = await cookies()
+    cookieStore.set("cart_session", sessionId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30,
+    })
+
+    return { success: true }
+  } catch {
+    return { success: false, error: "Failed to add item to cart" }
+  }
+}
+
+export async function updateCartItemQuantity(
+  itemId: string,
+  quantity: number
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    if (quantity < 1) {
+      return { success: false, error: "Quantity must be at least 1" }
+    }
+    const sessionId = await getOrCreateSessionId()
+    const result = await prisma.cartItem.updateMany({
+      where: { id: itemId, cart: { sessionId } },
+      data: { quantity },
+    })
+    if (result.count === 0) {
+      return { success: false, error: "Item not found" }
+    }
+    return { success: true }
+  } catch {
+    return { success: false, error: "Failed to update item" }
+  }
+}
+
+export async function removeCartItem(
+  itemId: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const sessionId = await getOrCreateSessionId()
+    const result = await prisma.cartItem.deleteMany({
+      where: { id: itemId, cart: { sessionId } },
+    })
+    if (result.count === 0) {
+      return { success: false, error: "Item not found" }
+    }
+    return { success: true }
+  } catch {
+    return { success: false, error: "Failed to remove item" }
+  }
+}
+
+export async function getCart(): Promise<Cart | null> {
+  try {
+    const sessionId = await getOrCreateSessionId()
+    const cart = await prisma.cart.findUnique({
+      where: { sessionId },
+      include: {
+        items: {
+          include: {
+            variant: {
+              include: { product: true },
+            },
+          },
+        },
+      },
+    })
+
+    if (!cart || cart.items.length === 0) {
+      return null
+    }
+
+    const items: CartItem[] = cart.items.map((item) => ({
+      id: item.id,
+      variantId: item.variantId,
+      productId: item.variant.productId,
+      productName: item.variant.product.name,
+      productSlug: item.variant.product.slug,
+      productImage: item.variant.product.image,
+      color: item.variant.color,
+      size: item.variant.size ?? undefined,
+      sku: item.variant.sku,
+      price: Number(item.variant.price),
+      quantity: item.quantity,
+    }))
+
+    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+
+    return { id: cart.id, items, subtotal, itemCount }
+  } catch {
+    return null
+  }
+}
+
+export async function getCartSummary(): Promise<{ itemCount: number; subtotal: number }> {
+  try {
+    const cart = await getCart()
+    if (!cart) return { itemCount: 0, subtotal: 0 }
+    return { itemCount: cart.itemCount, subtotal: cart.subtotal }
+  } catch {
+    return { itemCount: 0, subtotal: 0 }
+  }
+}
+
+export async function placeOrder(formData: {
+  name: string
+  email: string
+  phone: string
+  address: string
+  suburb: string
+  state: string
+  postcode: string
+  notes?: string
+}): Promise<{ success: boolean; orderId?: string; error?: string }> {
+  try {
+    const cart = await getCart()
+    if (!cart || cart.items.length === 0) {
+      return { success: false, error: "Cart is empty" }
+    }
+
+    // Find or create customer
+    let customer = await prisma.customer.findUnique({ where: { email: formData.email } })
+    if (!customer) {
+      customer = await prisma.customer.create({
+        data: { email: formData.email, name: formData.name },
+      })
+    }
+
+    // Create the order
+    const order = await prisma.order.create({
+      data: {
+        customerId: customer.id,
+        status: "PENDING",
+        total: cart.subtotal,
+        items: {
+          create: cart.items.map((item) => ({
+            variantId: item.variantId,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+        },
+      },
+      include: { items: true },
+    })
+
+    // Create inquiry for the shipping details
+    await prisma.inquiry.create({
+      data: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        subject: `Order #${order.id.slice(-8)} — Shipping Details`,
+        message: `Order ID: ${order.id}\n\nShipping Address:\n${formData.address}\n${formData.suburb}, ${formData.state} ${formData.postcode}\n\nNotes: ${formData.notes || "None"}\n\nProducts:\n${cart.items.map((i) => `- ${i.productName} (${i.color}${i.size ? ` / ${i.size}` : ""}) x${i.quantity} @ $${i.price.toFixed(2)}`).join("\n")}`,
+      },
+    })
+
+    // Clear all cart items
+    await prisma.cartItem.deleteMany({ where: { cartId: cart.id } })
+
+    // Delete the cart record
+    await prisma.cart.delete({ where: { id: cart.id } })
+
+    // Clear the session cookie
+    const cookieStore = await cookies()
+    cookieStore.delete("cart_session")
+
+    revalidatePath("/en/checkout")
+    revalidatePath("/th/checkout")
+
+    return { success: true, orderId: order.id }
+  } catch (err) {
+    console.error("placeOrder error:", err)
+    return { success: false, error: "Failed to place order. Please try again." }
+  }
+}
