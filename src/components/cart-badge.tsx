@@ -18,7 +18,7 @@ export function CartBadge() {
   }, [])
 
   return (
-    <Link href="/shop/cart" className="flex items-center gap-1 text-mainwave-text hover:text-mainwave-red transition-colors relative">
+    <Link href="/shop/cart" className="flex items-center gap-1 text-bone/70 hover:text-mainwave-red transition-colors relative">
       <CartIcon className="w-5 h-5" />
       <span className="hidden md:inline text-sm font-medium">${summary.subtotal.toFixed(2)}</span>
       {summary.itemCount > 0 && (
