@@ -3,6 +3,7 @@ import { createOpenAI } from "@ai-sdk/openai"
 import { SYSTEM_PROMPT } from "@/lib/ai/system-prompt"
 import { makeAiTools } from "@/lib/ai/tools"
 import { rateLimit, clientIp, tooManyRequests } from "@/lib/rate-limit"
+import { getSessionCustomer } from "@/lib/actions/auth"
 
 const provider = createOpenAI({
   baseURL: process.env.LLM_BASE_URL ?? "https://api.deepseek.com/v1",
