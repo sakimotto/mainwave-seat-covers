@@ -4,6 +4,7 @@ import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/prisma"
 import { getSessionCustomer } from "@/lib/actions/auth"
+import type { Customer } from "@/generated/prisma/client"
 import type { Cart, CartItem } from "@/types"
 
 type CartContext = { customerId: string } | { sessionId: string }
@@ -195,7 +196,7 @@ export async function placeOrder(formData: {
 
     // Signed-in customers order as themselves; guests find-or-create by email
     const sessionCustomer = await getSessionCustomer()
-    let customer = sessionCustomer
+    let customer: Customer | null = sessionCustomer
     if (!customer) {
       const email = formData.email.trim().toLowerCase()
       customer = await prisma.customer.findUnique({ where: { email } })
