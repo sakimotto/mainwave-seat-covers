@@ -5,7 +5,6 @@ import { Story } from "@/components/home/story";
 import { Spotlight } from "@/components/home/spotlight";
 import { Band } from "@/components/home/band";
 import { Roadmap } from "@/components/home/roadmap";
-import { Testimonials } from "@/components/home/testimonials";
 import { Closer } from "@/components/home/closer";
 import { getPopularProducts } from "@/lib/db";
 import { getDictionary } from "@/i18n";
@@ -28,7 +27,6 @@ export default async function HomePage({
       <Spotlight products={popularProducts.slice(0, 8)} dict={dict} locale={locale} />
       <Band dict={dict} />
       <Roadmap dict={dict} />
-      <Testimonials dict={dict} />
       <Closer dict={dict} locale={locale} />
     </>
   );

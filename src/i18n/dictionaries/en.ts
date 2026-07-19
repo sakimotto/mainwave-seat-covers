@@ -88,29 +88,6 @@ export const en = {
       },
     ] as { market: string; detail: string; status: string }[],
   },
-  testimonials: {
-    kicker: "05 — Proof",
-    title1: "Beaten up.",
-    title2: "Still going.",
-    items: [
-      {
-        quote: "These covers have taken an absolute beating on the mine site and still look brand new. Best investment for my Hilux.",
-        name: "Jason R.",
-        context: "Toyota Hilux — Mining",
-      },
-      {
-        quote: "Ordered a full set for the family Prado. The kids have spilled everything imaginable and these just wipe clean. Game changer.",
-        name: "Sarah M.",
-        context: "Toyota Prado — Family",
-      },
-      {
-        quote: "Fitted perfectly on my Ranger Raptor. The quality is insane for the price — and supporting real manufacturing feels great.",
-        name: "Dave K.",
-        context: "Ford Ranger Raptor — Tradie",
-      },
-    ] as { quote: string; name: string; context: string }[],
-    starsLabel: "5 out of 5 stars",
-  },
   closer: {
     kicker: "Drive · Camp · Wear · Live",
     title1: "Join the",
@@ -222,6 +199,8 @@ export const en = {
       p3: "For warranty claims, please contact our customer service team with your order number and photographs of the issue.",
     },
     sampleReviewsNote: "Sample reviews shown. Real customer reviews coming soon.",
+    noReviews: "No reviews yet",
+    noReviewsBody: "Real customer reviews will appear here once orders ship. We never show fake ones.",
     moreFromCategory: "More From This Category",
   },
   cart: {

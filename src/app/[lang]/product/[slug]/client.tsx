@@ -10,13 +10,6 @@ import { ProductCard } from "@/components/product-card"
 import { addToCart } from "@/lib/actions/cart"
 import { localePath, type Dictionary, type Locale } from "@/i18n"
 
-const sampleReviews = [
-  { name: "Michael T.", rating: 5, text: "Absolutely fantastic quality. Fit perfectly on my Hilux and looks amazing.", date: "2 weeks ago" },
-  { name: "Sarah K.", rating: 5, text: "Easy to install and feels really premium. Great value for money.", date: "1 month ago" },
-  { name: "David R.", rating: 4, text: "Good quality covers. Took a bit of effort to fit but once on they look great.", date: "3 months ago" },
-  { name: "Emma L.", rating: 5, text: "Best seat covers I've bought. The neoprene material is top notch.", date: "2 months ago" },
-]
-
 function StarDisplay({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5">
@@ -358,21 +351,12 @@ export function ProductDetailClient({ product, related, dict, locale }: { produc
                     <p className="text-xs text-gray-500 mt-1">{product.reviewCount} {P.reviews}</p>
                   </div>
                 </div>
-                <div className="space-y-4">
-                  {sampleReviews.map((review, i) => (
-                    <div key={i} className="border border-mainwave-border p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-mainwave-black">{review.name}</span>
-                        <span className="text-xs text-gray-400">{review.date}</span>
-                      </div>
-                      <StarDisplay rating={review.rating} />
-                      <p className="text-sm text-mainwave-text mt-2">{review.text}</p>
-                    </div>
-                  ))}
+                <div className="border border-mainwave-border p-8 text-center">
+                  <p className="text-sm font-medium text-mainwave-black">{P.noReviews}</p>
+                  <p className="text-xs text-gray-500 mt-2 max-w-sm mx-auto">
+                    {P.noReviewsBody}
+                  </p>
                 </div>
-                <p className="text-xs text-gray-400 mt-4 text-center">
-                  {P.sampleReviewsNote}
-                </p>
               </div>
             )}
           </div>
