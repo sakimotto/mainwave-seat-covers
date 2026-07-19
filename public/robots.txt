@@ -1,3 +1,28 @@
+# AI Crawler Access Policy — last updated 2026-07-20
+# Posture: allow AI search & training crawlers (drives citations and agentic shopping),
+# block aggressive scrapers. Business decision, review quarterly.
+
+# --- AI search-augmented crawlers (citations + agent traffic) ---
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# --- Aggressive scrapers ---
+User-agent: Bytespider
+Disallow: /
+
+# --- Default ---
 User-agent: *
 Allow: /
 Disallow: /admin

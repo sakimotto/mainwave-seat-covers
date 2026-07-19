@@ -4,6 +4,7 @@ import { getCommerce } from "@/commerce"
 import { getDictionary } from "@/i18n"
 import { getSessionCustomer } from "@/lib/actions/auth"
 import { matchesGarage } from "@/lib/fitment"
+import { brand } from "@/brands"
 import { ProductDetailClient } from "./client"
 
 interface Props {
@@ -36,13 +37,45 @@ export default async function ProductDetailPage({ params }: Props) {
   const garageVehicleIds = customer?.garage.map((g) => g.vehicleId) ?? []
   const fits = garageVehicleIds.length > 0 && Boolean(product.vehicleId) && matchesGarage(product, garageVehicleIds)
 
+  // AEO: machine-readable Product schema for search + AI agents
+  const firstVariant = product.variants?.[0]
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    image: [`${brand.url}${product.image}`],
+    description: product.description ?? undefined,
+    category: product.category || undefined,
+    brand: { "@type": "Brand", name: brand.name },
+    ...(firstVariant?.sku ? { sku: firstVariant.sku } : {}),
+    offers: {
+      "@type": "Offer",
+      url: `${brand.url}${locale === "th" ? "/th" : ""}/product/${product.slug}`,
+      priceCurrency: brand.currency,
+      price: product.price.toFixed(2),
+      availability:
+        (firstVariant?.stock ?? 1) > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      ...(product.originalPrice && product.originalPrice > product.price
+        ? { priceValidUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10) }
+        : {}),
+    },
+  }
+
   return (
-    <ProductDetailClient
-      product={product}
-      related={related}
-      dict={dict}
-      locale={locale}
-      fitsYourVehicle={fits}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <ProductDetailClient
+        product={product}
+        related={related}
+        dict={dict}
+        locale={locale}
+        fitsYourVehicle={fits}
+      />
+    </>
   )
 }
